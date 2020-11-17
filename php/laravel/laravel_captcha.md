@@ -233,7 +233,7 @@ Route::any('captcha-test', function() {
 });
 ```
 
-## 3.2 无状态模式 : 当你从请求网址拿到 key 和 img,可以使用下面方法来验证(代码来自官方文档)
+## 3.2 无状态模式 : 当你从请求网址拿到 key 和 img，可以使用下面方法来验证(代码来自官方文档)
 ```
 //key is the one that you got from json response
 // fix validator
@@ -250,7 +250,7 @@ if ($validator->fails()) {
 }
 ```
 
-### 这里我们追一下 check_api() 方法,还是在 captcha.php 里:
+### 这里我们追一下 check_api() 方法，还是在 captcha.php 里:
 ```
 /**
  * Captcha check
