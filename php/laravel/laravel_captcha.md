@@ -65,7 +65,7 @@ Captcha::create();
 
 ### 返回如下:
 
-![效果如下](/images/captcha_ri.jpg "效果")
+![效果如下](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/php_laravel_captcha_ri.jpg "效果")
 
 ### 看一下源码，这里我加了整体的逻辑注释，详细的内部方法实现可以访问项目内的 /vendor/mews/captcha/src/Captcha.php
 ```
