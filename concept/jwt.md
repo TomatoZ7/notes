@@ -30,7 +30,7 @@ JWT 是一个开放标准(RFC 7519)，它定义了一种用于简洁，自包含
 + Header 头部  
 
 头部包含了两部分：
-1. 声明类型，这里是jwt
+1. 声明类型，这里是 jwt
 2. 声明加密的算法 通常直接使用 HMAC SHA256 
 ```
 {
@@ -40,8 +40,6 @@ JWT 是一个开放标准(RFC 7519)，它定义了一种用于简洁，自包含
 ```
 它会使用 Base64 编码组成 JWT 结构的第一部分,也就是说，它是可以被翻译回原来的样子来的。它并不是一种加密过程。如下图所示：  
 ![text](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/concept_jwt_header_decode.jpg)
-
-&emsp;
 
 + Payload 有效载荷  
 
@@ -53,14 +51,14 @@ JWT 是一个开放标准(RFC 7519)，它定义了一种用于简洁，自包含
 &emsp;
 
 **标准中注册的声明** (建议但不强制使用)：
-+ iss: 该JWT的签发者，一般是服务器，是否使用是可选的；
++ iss: 该 JWT 的签发者，一般是服务器，是否使用是可选的；
 + iat(issued at): 在什么时候签发的(UNIX时间)，是否使用是可选的；
 + exp(expires): 什么时候过期，这里是一个Unix时间戳，是否使用是可选的；
 + aud: 接收该JWT的一方，是否使用是可选的；
 + sub: 该JWT所面向的用户，userid，是否使用是可选的；  
 其他还有：
-+ nbf (Not Before)：如果当前时间在nbf里的时间之前，则Token不被接受；一般都会留一些余地，比如几分钟；，是否使用是可选的；
-+ jti: jwt的唯一身份标识，主要用来作为一次性token，从而回避重放攻击。
++ nbf (Not Before)：如果当前时间在nbf里的时间之前，则Token不被接受；一般都会留一些余地，比如几分钟，是否使用是可选的；
++ jti: jwt 的唯一身份标识，主要用来作为一次性 token，从而回避重放攻击。
 
 &emsp;
 
@@ -91,18 +89,19 @@ JWT 是一个开放标准(RFC 7519)，它定义了一种用于简洁，自包含
 + Signature 签名  
 
 前面两部分都是使用 Base64 进行编码的，即前端可以解开知道里面的信息。Signature 需要使用编码后的 header 和 payload 以及我们提供的一个密钥，然后使用 header 中指定的签名算法（HS256）进行签名。签名的作用是保证 JWT 没有被篡改过。
-
-三个部分通过.连接在一起就是我们的 JWT 了，它可能长这个样子，长度貌似和你的加密算法和私钥有关系。
-
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU3ZmVmMTY0ZTU0YWY2NGZmYzUzZGJkNSIsInhzcmYiOiI0ZWE1YzUwOGE2NTY2ZTc2MjQwNTQzZjhmZWIwNmZkNDU3Nzc3YmUzOTU0OWM0MDE2NDM2YWZkYTY1ZDIzMzBlIiwiaWF0IjoxNDc2NDI3OTMzfQ.PA3QjeyZSUh7H0GfE0vJaKW4LjKJuC3dVLQiY4hii8s
-
-其实到这一步可能就有人会想了，HTTP 请求总会带上 token，这样这个 token 传来传去占用不必要的带宽啊。如果你这么想了，那你可以去了解下 HTTP2，HTTP2 对头部进行了压缩，相信也解决了这个问题。
+1. header (base64后的)
+2. payload (base64后的)
+3. secret  
+将这三部分用 . 连接成一个完整的字符串,构成了最终的 jwt:
+```
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9zaGluaW5nLWhvdXNlLmRldi5jb21cL2FwaVwvYWRtaW5cL29wZXJhdG9yXC9sb2dpbiIsImlhdCI6MTYwNTY3NzE3MSwiZXhwIjoxNjA1NzIwMzcxLCJuYmYiOjE2MDU2NzcxNzEsImp0aSI6InVQWHdueVI2UFpKaWJ5TVoiLCJzdWIiOjEsInBydiI6IjJjMTA2MTYyYTllNmVkOGI2NDk3ZmViNzc4ZTNlMDA3NzM0Zjk4YjQifQ.PiBvhIJfY0u0h8LkFyQbJ26Xg7wc9gNSdIyjZTjdw3U
+```
 
 &emsp;
 
 + 签名的目的  
 
-最后一步签名的过程，实际上是对头部以及有效载荷内容进行签名，防止内容被窜改。如果有人对头部以及有效载荷的内容解码之后进行修改，再进行编码，最后加上之前的签名组合形成新的 JWT 的话，那么服务器端会判断出新的头部和有效载荷形成的签名和 JWT 附带上的签名是不一样的。如果要对新的头部和有效载荷进行签名，在不知道服务器加密时用的密钥的话，得出来的签名也是不一样的。
+最后一步签名的过程，实际上是对头部以及有效载荷内容进行签名，防止内容被窜改。如果有人对头部以及有效载荷的内容解码之后进行修改，再进行编码，最后加上之前的签名组合形成新的 JWT 的话，那么服务器端会判断出新的头部和有效载荷形成的签名和 JWT 附带上的签名是不一样的。如果要对新的头部和有效载荷进行签名，在不知道服务器加密时用的密钥的话，得出来的签名也是不一样的。这样就能保证token不会被篡改。
 
 &emsp;
 
@@ -138,5 +137,22 @@ Session 方式来存储用户 id，一开始用户的 Session 只会存储在一
 
 &emsp;
 
+## 优点
++ 因为 json 的通用性，所以JWT是可以进行跨语言支持的，像 JAVA, JavaScript, NodeJS, PHP 等很多语言都可以使用。  
++ 因为有了 payload 部分，所以 JWT 可以在自身存储一些其他业务逻辑所必要的非敏感信息。  
++ 便于传输，jwt 的构成非常简单，字节占用很小，所以它是非常便于传输的。  
++ 它不需要在服务端保存会话信息, 所以它易于应用的扩展。
+
+&emsp;
+
+## 安全相关
++ 不应该在 jwt 的 payload 部分存放敏感信息，因为该部分是客户端可解密的部分。
++ 保护好 secret 私钥，该私钥非常重要。
++ 如果可以，请使用 https 协议。
+
+&emsp;
+
+
 参考：  
 #### [前后端分离之JWT用户认证](http://lion1ou.win/2017/01/18/)
+#### [JWT认证原理](https://blog.csdn.net/houmenghu/article/details/99181326)
