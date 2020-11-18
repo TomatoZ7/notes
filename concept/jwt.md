@@ -27,7 +27,7 @@ JWT 是一个开放标准(RFC 7519)，它定义了一种用于简洁，自包含
 &emsp;
 
 ### JWT 组成
-![Alt text](/path/to/img.jpg)
+![text](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/concept_jwt_compose.jpg)
 + Header 头部  
 
 头部包含了两部分，token 类型和采用的加密算法:
@@ -38,7 +38,7 @@ JWT 是一个开放标准(RFC 7519)，它定义了一种用于简洁，自包含
 }
 ```
 它会使用 Base64 编码组成 JWT 结构的第一部分,也就是说，它是可以被翻译回原来的样子来的。它并不是一种加密过程。如下图所示：  
-![Alt text](/path/to/img.jpg)
+![text](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/concept_jwt_header_decode.jpg)
 
 &emsp;
 
@@ -87,7 +87,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU3ZmVmMTY0ZTU0YWY2NGZmYzUzZGJkNSI
 &emsp;
 
 ### JWT 使用
-![Alt text](/path/to/img.jpg)  
+![text](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/concept_jwt_use.jpg)  
 1. 首先，前端通过 Web 表单将自己的用户名和密码发送到后端的接口。这一过程一般是一个 HTTP POST 请求。建议的方式是通过 SSL 加密的传输（https 协议），从而避免敏感信息被嗅探。
 2. 后端核对用户名和密码成功后，将用户的 id 等其他信息作为 JWT Payload（负载），将其与头部分别进行 Base64 编码拼接后签名，形成一个 JWT。形成的 JWT 就是一个形同 lll.zzz.xxx 的字符串。
 3. 后端将 JWT 字符串作为登录成功的返回结果返回给前端。前端可以将返回的结果保存在 localStorage 或 sessionStorage 上，退出登录时前端删除保存的 JWT 即可。
