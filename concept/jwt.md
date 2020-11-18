@@ -92,6 +92,7 @@ JWT 是一个开放标准(RFC 7519)，它定义了一种用于简洁，自包含
 1. header (base64后的)
 2. payload (base64后的)
 3. secret  
+
 将这三部分用 . 连接成一个完整的字符串,构成了最终的 jwt:
 ```
 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9zaGluaW5nLWhvdXNlLmRldi5jb21cL2FwaVwvYWRtaW5cL29wZXJhdG9yXC9sb2dpbiIsImlhdCI6MTYwNTY3NzE3MSwiZXhwIjoxNjA1NzIwMzcxLCJuYmYiOjE2MDU2NzcxNzEsImp0aSI6InVQWHdueVI2UFpKaWJ5TVoiLCJzdWIiOjEsInBydiI6IjJjMTA2MTYyYTllNmVkOGI2NDk3ZmViNzc4ZTNlMDA3NzM0Zjk4YjQifQ.PiBvhIJfY0u0h8LkFyQbJ26Xg7wc9gNSdIyjZTjdw3U
