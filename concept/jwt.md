@@ -152,6 +152,17 @@ Session 方式来存储用户 id，一开始用户的 Session 只会存储在一
 
 &emsp;
 
+## 思考
+假设给你这么一段 token `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9zaGluaW5nLWhvdXNlLmRldi5jb21cL2FwaVwvYWRtaW5cL29wZXJhdG9yXC9sb2dpbiIsImlhdCI6MTYwNTY3NzE3MSwiZXhwIjoxNjA1NzIwMzcxLCJuYmYiOjE2MDU2NzcxNzEsImp0aSI6InVQWHdueVI2UFpKaWJ5TVoiLCJzdWIiOjEsInBydiI6IjJjMTA2MTYyYTllNmVkOGI2NDk3ZmViNzc4ZTNlMDA3NzM0Zjk4YjQifQ.PiBvhIJfY0u0h8LkFyQbJ26Xg7wc9gNSdIyjZTjdw3U`
+
+1. 你知道这个 token 有几部分组成吗？
+2. 这个 token 每一部分是怎么编码的？
+3. 这段token里背后到底包含了哪些信息呢？它想干什么呢？
+4. 这个token是否值得我们信任呢？它有没有加密或签名过？有没有被更改过？
+5. 我们如何往这个token里添加信息呢？可以添加哪些信息呢？
+6. 假设这是个有效的token，它一旦签发出去，就相当于把锁的钥匙给了别人，就总是能打开门的，但我们如何让其失效掉呢？分别有哪些有效手段呢？
+7. JWT除了用来用户认证，还可以干些什么呢？
+
 
 参考：  
 #### [前后端分离之JWT用户认证](http://lion1ou.win/2017/01/18/)
