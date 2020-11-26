@@ -99,20 +99,32 @@ set global local_infile = 'ON';
 ### step.2 在 role_level 表上为 role_id 添加索引
 我们一般会将数据量小的表作为驱动表，一般情况下Mysql 也会默认将小表作为驱动表。
 
-此次查询结果如下，查询时间为 40 秒左右，查询到接近 50 万条记录：
+此次查询结果如下，查询时间为 40 秒左右，查询到接近 50 万条记录：  
 ![images](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/sql_optimize_step_one.jpg)
 
 #### EXPLAIN 结果如下：
 ![images](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/sql_optimize_step_one_explain.jpg)
 
 
-2.3 优化 sql1
+### step.3 优化主表查询
+首先给 role_create.date_time 构建索引, 其次去除 DATE 函数的使用。  
+重构后的 sql 语句如下
+```
+EXPLAIN
+SELECT 
+  c.role_id AS '角色id',
+  c.date_time AS '角色创建时间',
+  MAX(l.LEVEL) AS '角色最高等级'
+FROM
+  role_create AS c
+  LEFT JOIN role_level AS l ON c.role_id = l.role_id
+WHERE
+  l.LEVEL >= 3
+  AND c.date_time BETWEEN '2019-01-01 00:00:00' AND '2019-01-02 23:59:59'
+GROUP BY
+  c.date_time,
+  l.role_id
+```
+此时 EXPLAIN 结果并无发生变化，说明没有效果。
 
-sql1 全表扫描，尝试以下几个步骤：
-
-2.3.1 去除 where 子句的 DATE 函数；
-
-2.3.2 在 date_time 列添加索引；
-
-
-此时做完上述两步，发现还是全表扫描
+### step.4 
