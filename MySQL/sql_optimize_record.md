@@ -100,10 +100,10 @@ set global local_infile = 'ON';
 我们一般会将数据量小的表作为驱动表，一般情况下Mysql 也会默认将小表作为驱动表。
 
 此次查询结果如下，查询时间为 40 秒左右，查询到接近 50 万条记录：
+![images](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/sql_optimize_step_one.jpg)
 
-
-
-EXPLAIN 结果如下：
+#### EXPLAIN 结果如下：
+![images](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/sql_optimize_step_one_explain.jpg)
 
 
 2.3 优化 sql1
