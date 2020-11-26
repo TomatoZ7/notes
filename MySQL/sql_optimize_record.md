@@ -89,12 +89,11 @@ LOAD DATA local INFILE 'e:/insert.sql' INTO TABLE role_create(`role_id`, `date_t
 set global local_infile = 'ON';
 ```
 #### 结果如下:
+![images](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/sql_optimize_count.jpg)
 
+&emsp;
 
-
-
-
-2、开始测试。
+## 开始调优
 2.1 直接运行上述 sql 语句，等待时间十分久，这一 part 直接略过。
 
 
