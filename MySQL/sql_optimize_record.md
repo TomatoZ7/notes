@@ -106,8 +106,8 @@ set global local_infile = 'ON';
 ![images](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/sql_optimize_step_one_explain.jpg)
 
 
-### step.3 优化主表查询
-首先给 role_create.date_time 构建索引, 其次去除 DATE 函数的使用。  
+### step.3 优化驱动表查询
+首先给role_create构建联合索引 date_time,role_id(根据最左匹配原则), 其次去除 DATE 函数的使用。  
 重构后的 sql 语句如下
 ```
 EXPLAIN
@@ -125,6 +125,6 @@ GROUP BY
   c.date_time,
   l.role_id
 ```
-此时 EXPLAIN 结果并无发生变化，说明没有效果。
+此时运行结果并无发生变化，说明没有效果。
 
 ### step.4 
