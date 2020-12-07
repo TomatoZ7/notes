@@ -1,4 +1,4 @@
-# (转) Laravel Dependency injection 依赖注入
+# (转) Laravel [Dependency injection] 依赖注入
 
 HTTP 协议是无状态的，web 应用程序如果需要在请求之间存储用户信息，可以通过 COOKIE 或 SESSION :
 ``` 
@@ -180,10 +180,27 @@ $user->sessionStorage = $storage;
 
 作为经验，**Constructor 注入**最适合必须的依赖关系；**Setter Injection**最适合可选的依赖关系，比如缓存一个对象实例。  
 现在，大多数现代的 PHP 框架都大量使用依赖注入来提供一组 **去耦** 但 **粘合** 的组件：
+```
+// symfony: A constructor injection example
+$dispatcher = new sfEventDispatcher();
+$storage = new sfMySQLSessionStorage([
+    'database' => 'session',
+    'db_table' => 'session'
+]);
+$user = new sfUser($dispatcher, $storage, ['default_culture' => 'en']);
 
-
-
+// Zend Framework: A setter injection example
+$transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', [
+    'auth'  => 'login',
+    'username' => 'foo',
+    'password' => 'bar,
+    'ssl'   =>  'ssl',
+    'port'  =>  465
+]);
+$mailer = new Zend_Mail();
+$mailer->setDefaultTransport($transport);
+```
 
 &emsp;
 
-[传送门](https://learnku.com/articles/6117/laravel-dependency-injection-dependency-injection-concept-detailed) 
+[传送门 : Laravel Dependency Injection (依赖注入) 概念详解](https://learnku.com/articles/6117/laravel-dependency-injection-dependency-injection-concept-detailed) 
