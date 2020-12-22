@@ -159,7 +159,9 @@ class Container()
 + Container 管理对象实例化到配置的过程
 + 对象本身不知道自己是由 Container 管理的，对 Container 一无所知。
 
-这就是为什么 Container 能够管理任何 PHP 对象。对象使用 DI 来管理依赖关系非常好，但不是必须的。
+&emsp;
+
+这就是为什么 Container 能够管理任何 PHP 对象。对象使用 DI 来管理依赖关系非常好，但不是必须的。  
 Container 很容易实现，但手工维护乱七八糟的对象还是很麻烦，下一篇将介绍 Laravel 中 Container 的实现方式。
 
 
