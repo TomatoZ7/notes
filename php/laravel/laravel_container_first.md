@@ -95,3 +95,72 @@ class Container
     }
 }
 ```
+
+现在就可以随时更改 username 和 password 了：
+```
+$container = new Container([
+    'mailer.username' => 'foo',
+    'mailer.password' => 'bar'
+]);
+$mailer = $container->getMailer();
+```
+
+如果需要更改 mailer 类，把类名也当参数传入就行：
+```
+class Container
+{
+    // ...
+
+    public function getMailer()
+    {
+        $class = $this->parameters['mailer.class'];
+
+        $mailer = new Class();
+        $mailer->setDefaultTransport($this->getMailTransport());
+
+        return $mailer;
+    }
+}
+
+$container = new Container([
+    'mailer.username' => 'foo',
+    'mailer.password' => 'bar',
+    'mailer.class'  =>  'Zend_Mail'
+]);
+$mailer = $container->getMailer();
+```
+
+如果想每次获取同一个 mailer 实例，可以用 单例模式 ：
+```
+class Container()
+{
+    static protected $shared = [];
+
+    // ... 
+
+    public function getMailer()
+    {
+        if (isset(self::shared['mailer']))
+        {
+            return self::shared['mailer'];
+        }
+
+        $class = $this->parameters['mailer.class'];
+
+        $mailer = new $class();
+        $mailer->setDefaultTransport($this->getDefaultTransport());
+
+        return self::$shared['mailer'] = $mailer;
+    }
+}
+```
+
+这就包含了 Dependency Injection Containers 的基本功能：
++ Container 管理对象实例化到配置的过程
++ 对象本身不知道自己是由 Container 管理的，对 Container 一无所知。
+
+这就是为什么 Container 能够管理任何 PHP 对象。对象使用 DI 来管理依赖关系非常好，但不是必须的。
+Container 很容易实现，但手工维护乱七八糟的对象还是很麻烦，下一篇将介绍 Laravel 中 Container 的实现方式。
+
+
+[传送门 : Laravel Container (容器) 概念详解 (上)](https://learnku.com/articles/6139/laravel-container-container-concept-detailed-last)

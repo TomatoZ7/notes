@@ -112,3 +112,5 @@ $iphone->charger();
 ```
 可见，使用**依赖注入**后，控制权 \[反转\] 了，由外部来决定给它什么类型的充电器(依赖对象)。  
 Laravel 管这个 **容器控制程序** 叫 **Service Container (服务容器)**，它来控制着各种依赖的获取方法。
+
+[传送门 : Laravel Inversion of Control (控制反转) 概念简介](https://learnku.com/articles/6248/laravel-inversion-of-control-control-inversion-concept-brief-introduction)
