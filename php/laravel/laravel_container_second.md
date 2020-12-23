@@ -183,3 +183,33 @@ $container->bind(Cache::class, RedisCache::class);
 $result = $container->make(Worker::class)->result();
 ```
 这里用 Redis 做缓存，如果改用其他缓存，只要把 RedisCache 换成别的就行了。
+
+### Part3. Binding Abstract & Concert Classes (绑定抽象类和具体类)
+绑定还可以用在抽象类：
+```
+$container->bind(MyAbstract::class, MyConcreteClass::class);
+```
+
+或者继承的类中：
+```
+$container->bind(MysqlDatabase::class, CustomMysqlDatabase::class);
+```
+
+### Part4. 自定义绑定
+如果类中需要一些附加的配置项，可以把 `bind()` 方法中的第二个参数换成 `Closure(闭包函数)`:
+```
+$container->bind(Database::class, function (Container $container) {
+    return new MysqlDatabase(MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASS);
+});
+```
+
+闭包也可用于定制 具体类 的实例化方式：
+```
+$container->bind(GitHub\Client::class, function (Container $container) {
+    $client = new GitHub\Client();
+    $client->setEnterpriseUrl(GITHUB_HOST);
+    return $client;
+})
+```
+
+### Part5. Resolving Callbacks(回调)
