@@ -6,6 +6,8 @@ Laravel 中实现的 Inversion of Control（IoC）/ Dependency Injection（DI）
 
 > 本文示例基于 laravel5.5，其他版本类似。
 
+&emsp;
+
 ## 准备工作
 ### Dependency Injection 
 关于 DI 请看这篇 [Laravel [Dependency injection] 依赖注入](https://github.com/TomatoZ7/notes-of-tz/blob/master/php/laravel/laravel_dependency_injection.md) 。
@@ -32,8 +34,10 @@ include './vendor/autoload.php';
 $container = Container::getInstance();
 ```
 
+&emsp;
+
 ## Container 的技能们
-### 基本用法，用 type hint(类型提示) 注入依赖：
+### Part1.基本用法，用 type hint(类型提示) 注入依赖：
 只需要在自己类的构造函数中使用 `type hint` 就能实现 DI ：
 ```
 class MyClass
@@ -60,3 +64,75 @@ $instance = new MyClass(new AnotherClass());
 如果 AnotherClass 也有依赖，那么 Container 会递归注入它所需的依赖。
 > Container 使用 [反射](https://www.php.net/manual/zh/book.reflection.php) 来找到并实例化构造函数参数中的那些类，实现起来并不复杂，以后有机会再介绍。
 
+### 实战
+下面是 [PHP-DI 文档](https://php-di.org/doc/getting-started.html) 中的一个例子，它分离了 [用户注册] 和 [发邮件] 的过程：
+```
+class Mailer
+{
+    public function mail($recipient, $content)
+    {
+        // Send an email to the recipient
+        // ...
+    }
+}
+```
+```
+class UserManager
+{
+    private $mailer;
+
+    public function __construct(Mailer $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
+    public function register($email, $password)
+    {
+        // 创建新账户
+        // ...
+
+        // 给用户邮箱发送 "hello" 邮件
+        $this->mailer->mail($email, "Hello And Welcome!");
+    }
+}
+```
+```
+use Illuminate\Container\Container;
+
+$container = Container::getInstance();
+
+$userManager = $container->make(UserManager::class);
+$userManager->register('dave@davejamesmiller.com', 'MySuperSecurePassword!');
+```
+
+### Part2.Binding interface to Implementations(绑定接口到实现)
+用 Container 可以轻松地写一个接口，然后在运行时实例化一个具体的实例，首先定义接口：
+```
+interface MyInterface{}
+interface AnotherInterface{}
+```
+
+然后声明实现这些接口的具体类。下面这个类不但实现了一个接口，还依赖了实现另一个接口的类实例：
+```
+class MyClass implements MyInterface
+{
+    private $dependency;
+
+    // 依赖了一个实现 AnotherInterface 接口的类的实例
+    public function __construct(AnotherInterface $dependency)
+    {
+        $this->dependency = $dependency;
+    }
+}
+```
+
+现在用 Container 的 `bind()` 方法来让每个 接口 和实现它的类一一对应起来：
+```
+$container->bind(MyInterface::class, MyClass::class);
+$container->bind(AnotherInterface::class, AnotherClass::class);
+```
+
+最后，用 **接口名** 而不是 **类名** 来传给 `make()` ：
+```
+$instance = $container->make(MyInterface::class);
+```
