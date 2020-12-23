@@ -37,7 +37,7 @@ $container = Container::getInstance();
 &emsp;
 
 ## Container 的技能们
-### Part1.基本用法，用 type hint(类型提示) 注入依赖：
+### Part1. 基本用法，用 type hint(类型提示) 注入依赖：
 只需要在自己类的构造函数中使用 `type hint` 就能实现 DI ：
 ```
 class MyClass
@@ -105,7 +105,7 @@ $userManager = $container->make(UserManager::class);
 $userManager->register('dave@davejamesmiller.com', 'MySuperSecurePassword!');
 ```
 
-### Part2.Binding interface to Implementations(绑定接口到实现)
+### Part2. Binding interface to Implementations(绑定接口到实现)
 用 Container 可以轻松地写一个接口，然后在运行时实例化一个具体的实例，首先定义接口：
 ```
 interface MyInterface{}
@@ -136,3 +136,50 @@ $container->bind(AnotherInterface::class, AnotherClass::class);
 ```
 $instance = $container->make(MyInterface::class);
 ```
+
+> 如果你忘记绑定它们，会导致一个 fetal error: "Uncaught ReflectionException: Class MyInterface does not exist"。
+
+### 实战
+下面是可封装的 Cache 层：
+```
+interface Cache
+{
+    public function get($key);
+    public function put($key, $value);
+}
+```
+```
+class Worker
+{
+    private $cache;
+
+    public function __construct(Cache $cache)
+    {
+        $this->cache = $cache;
+    }
+
+    public function result()
+    {
+        // 去缓存里查询
+        $result = $this->cache->get('worker);
+
+        if ($result == null){
+            // 如果缓存里没有，就去别的地方查询，然后放入缓存中
+            $result = do_something_slow();
+
+            $this->cache->put('worker', $result);
+        }
+
+        return $result;
+    }
+}
+```
+```
+use Illuminate\Container\Container;
+
+$container = Container::getInstance();
+$container->bind(Cache::class, RedisCache::class);
+
+$result = $container->make(Worker::class)->result();
+```
+这里用 Redis 做缓存，如果改用其他缓存，只要把 RedisCache 换成别的就行了。
