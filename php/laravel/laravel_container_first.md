@@ -115,7 +115,7 @@ class Container
     {
         $class = $this->parameters['mailer.class'];
 
-        $mailer = new Class();
+        $mailer = new $class();
         $mailer->setDefaultTransport($this->getMailTransport());
 
         return $mailer;
