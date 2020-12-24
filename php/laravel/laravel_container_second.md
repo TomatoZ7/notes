@@ -378,7 +378,7 @@ $container->singleton('database', function (Container $container) {
 $db = $container['database'];
 ```
 
-### Dependency Injection for Function & Method(给函数或方法注入依赖)
+### Part10. Dependency Injection for Function & Method(给函数或方法注入依赖)
 除了给构造函数注入依赖，Laravel 还可以往任意函数中注入：
 ```php
 function do_something(Cache $cache){ /*...*/ }
@@ -428,7 +428,7 @@ $container->call([$controller, 'show'], ['id' => 1]);
 ```
 都可以注入。
 
-### 调用实例方法的快捷方式
+### Part11. 调用实例方法的快捷方式
 使用 `ClassName@method` 语法可以快捷调用实例中的方法：
 ```php
 $container->call('PostController@index');
@@ -460,3 +460,26 @@ $container->call(MyEventHandler::class, $parameters, 'handle');
 // 相当于：
 $container->call('MyEventHandler@handle', $parameters);
 ```
+
+### Part.12 Method Call Bindings(方法调用绑定)
+`bindMethod()` 方法可用来覆盖方法，例如用来传递其他参数：
+```php
+$container->bindMethod('PostController@index', function ($controller $container) {
+    $posts = get_posts(...);
+
+    return $controller->index($posts);
+})
+```
+
+下面的方式都有效，调用闭包来代替原始的方法：
+```php
+$container->call('PostController@index');
+$container->call('PostController', [], 'index');
+$container->call([new PostController, 'index']);
+```
+
+但是， `call()` 的任何其他参数都不会传递到闭包中，因此不能使用它们。
+```php
+$container->call('PostController@index', ['Not used :-(']);
+```
+> 注意：这种方式不是 [Container接口](https://github.com/laravel/framework/blob/5.5/src/Illuminate/Contracts/Container/Container.php) 的一部分，只有在他的实现类 [Container](https://github.com/laravel/framework/blob/5.4/src/Illuminate/Container/Container.php) 才有。在这个 [PR](https://github.com/laravel/framework/pull/16800) 里可以看到它加了什么以及为什么参数被忽略。
