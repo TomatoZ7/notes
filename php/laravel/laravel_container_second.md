@@ -427,3 +427,36 @@ $container->call([$controller, 'index']);
 $container->call([$controller, 'show'], ['id' => 1]);
 ```
 都可以注入。
+
+### 调用实例方法的快捷方式
+使用 `ClassName@method` 语法可以快捷调用实例中的方法：
+```php
+$container->call('PostController@index');
+$container->call('PostController@index', ['id' => 1]);
+```
+
+因为 Container 被用来实例化类，意味着：
+1. **依赖** 被注入进构造函数(或方法)；
+2. 如果需要复用实例，可以定义为单例；
+3. 可以用接口或任何名称来代替具体类。
+
+所以这样调用也可以生效：
+```php
+class PostController
+{
+    public function __construct(Request $request) { /*...*/ }
+    public function index(Cache $cache) { /*...*/ }
+}
+```
+```php
+$container->singleton('post', PostController::class);
+$container->call('post@index');
+```
+
+最后，还可以传一个 [默认方法] 作为第三个参数。如果第一个参数是没有指定方法的类名称，则将调用默认方法。Laravel 用这种方法来处理 [event handlers](https://learnku.com/docs/laravel/5.5/events/1318#registering-events-and-listeners)
+```php
+$container->call(MyEventHandler::class, $parameters, 'handle');
+
+// 相当于：
+$container->call('MyEventHandler@handle', $parameters);
+```
