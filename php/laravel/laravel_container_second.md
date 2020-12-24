@@ -483,3 +483,36 @@ $container->call([new PostController, 'index']);
 $container->call('PostController@index', ['Not used :-(']);
 ```
 > 注意：这种方式不是 [Container接口](https://github.com/laravel/framework/blob/5.5/src/Illuminate/Contracts/Container/Container.php) 的一部分，只有在他的实现类 [Container](https://github.com/laravel/framework/blob/5.4/src/Illuminate/Container/Container.php) 才有。在这个 [PR](https://github.com/laravel/framework/pull/16800) 里可以看到它加了什么以及为什么参数被忽略。
+
+### Part13. Contextual Bindings(上下文绑定)
+有时候你想在不同地方给接口不同的实现。这里有 [Laravel文档](https://learnku.com/docs/laravel/5.5/container/1289#contextual-binding) 里的一个例子。
+```php
+$container
+    ->when(PhotoController::class)
+    ->needs(Filesystem::class)
+    ->give(LocalFilesystem::class);
+
+$container
+    ->when(VideoController::class)
+    ->needs(Filesystem::class)
+    ->give(S3Filesystem::class);
+```
+
+现在 PhotoController 和 VideoController 都依赖了 Filesystem 接口，但是收到了不同的实例。  
+可以像 `bind()` 那样，给 `give()` 传闭包：
+```php
+    ->when(VideoController::class)
+    ->needs(Filesystem::class)
+    ->give(function () {
+        return Storage::disk('s3');
+    });
+```
+或者短名称
+```php
+$container->instance('s3', $s3Filesystem);
+
+$container
+    ->when(VideoController::class)
+    ->needs(Filesystem::class)
+    ->give('s3');
+```
