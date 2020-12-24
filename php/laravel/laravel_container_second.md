@@ -14,7 +14,7 @@ Laravel 中实现的 Inversion of Control（IoC）/ Dependency Injection（DI）
 
 ### 初识 Container
 Laravel 中有一大堆访问 Container 实例的姿势，例如最简单的：
-```
+```php
 $container = app();
 ```
 
