@@ -2,7 +2,7 @@
 
 # 1 安装配置
 ## 1.1 使用 composer 安装 [mews/captcha] 扩展
-```
+```shell
 composer require mews/captcha
 ```
 
@@ -12,7 +12,7 @@ composer require mews/captcha
 ```
 
 ## 1.2 config/app.php 添加相应代码
-```
+```php
 'providers'=>[
     // ...
 
@@ -27,12 +27,12 @@ composer require mews/captcha
 ```
 
 ## 1.3 发布配置文件(不发布即使用默认配置)
-```
+```shell
 php artisan vendor:publish  // 生成 config/captcha.php 文件
 ```
 
 ## 1.4 (可选)配置自己的验证码
-```
+```php
 return [
 
     // 生成的验证码字符集
@@ -55,7 +55,7 @@ return [
 
 # 2 生成验证码
 ## 2.1 Return Image
-```
+```php
 return captcha();
 
 // or
@@ -68,7 +68,7 @@ Captcha::create();
 ![效果如下](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/php_laravel_captcha_ri.jpg "效果")
 
 ### 看一下源码，这里我加了整体的逻辑注释，详细的内部方法实现可以访问项目内的 /vendor/mews/captcha/src/Captcha.php
-```
+```php
 /**
  * Create captcha image
  *
@@ -149,7 +149,7 @@ public function create(string $config = 'default', bool $api = false)
 
 ## 2.2 Return URL
 ### 返回 url 地址
-```
+```php
 captcha_src();
 
 // or
@@ -158,7 +158,7 @@ Captcha::src('default');
 ```
 
 ### 源码如下：
-```
+```php
 /**
  * Generate captcha image source
  *
@@ -173,7 +173,7 @@ public function src(string $config = 'default'): string
 
 ## 2.3 Return HTML
 ### 返回一个携带 src 的 img 标签
-```
+```php
 captcha_img();
 
 // or
@@ -182,7 +182,7 @@ Captcha::img();
 ```
 
 ### 源码如下：
-```
+```php
 /**
  * Generate captcha image html tag
  *
@@ -210,7 +210,7 @@ public function img(string $config = 'default', array $attrs = []): string
 
 # 3 验证 : 使用 laravel validatesRequest 
 ## 3.1 session 模式(代码来自官方文档)
-```
+```php
 // [your site path]/Http/routes.php
 Route::any('captcha-test', function() {
     if (request()->getMethod() == 'POST') {
@@ -234,7 +234,7 @@ Route::any('captcha-test', function() {
 ```
 
 ## 3.2 无状态模式 : 当你从请求网址拿到 key 和 img，可以使用下面方法来验证(代码来自官方文档)
-```
+```php
 //key is the one that you got from json response
 // fix validator
 // $rules = ['captcha' => 'required|captcha_api:'. request('key')];
@@ -251,7 +251,7 @@ if ($validator->fails()) {
 ```
 
 ### 这里我们追一下 check_api() 方法，还是在 captcha.php 里:
-```
+```php
 /**
  * Captcha check
  *
