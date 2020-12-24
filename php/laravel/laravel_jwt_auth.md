@@ -27,14 +27,14 @@ RC 即 Release Candidate 的缩写，作为一个固定术语，意味着最终�
 &emsp;
 
 ## 1.3 使用 composer 安装 [tymon/jwt-auth] 扩展
-```
+```shell
 composer require tymon/jwt-auth
 ```
 
 &emsp;
 
 ## 1.4 配置 config/app.php
-```
+```php
 'providers' => [
 
     ...
@@ -47,7 +47,7 @@ composer require tymon/jwt-auth
 
 ## 1.5 发布配置
 在你的 shell 运行以下命令发布程序包配置文件：
-```
+```shell
 php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
 ```
 此命令会在 config 目录下生成 jwt.php 文件，你可以在此进行自定义配置。
@@ -56,7 +56,7 @@ php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServicePro
 
 ### 配置项详解
 config/jwt.php
-```
+```php
 <?php
 
 return [
@@ -266,7 +266,7 @@ return [
 
 ## 1.6 生成密钥
 jwt-auth 已经预先设定好了 artisan 命令，你只需运行如下命令即可生成密钥：
-```
+```shell
 php artisan jwt:secret
 ```
 此命令会在 .env 文件中新增一行 `JWT_SECRET=foobar`
@@ -276,7 +276,7 @@ php artisan jwt:secret
 # 2 开始使用
 ## 2.1 配置 Auth guard (只有在使用 Laravel 5.2 及以上版本的情况下才能使用)
 config/auth.php
-```
+```php
 'defaults' => [
     'guard' => 'api',
     'passwords' => 'users',
@@ -298,7 +298,7 @@ config/auth.php
 
 ## 2.2 更改模型
 使用 jwt-auth 作为用户认证，需要对你的用户模型稍作改动，主要是引入 Tymon\JWTAuth\Contracts\JWTSubject 接口并在模型类中实现2个方法，以 User 为例：
-```
+```php
 <?php
 
 namespace App;
@@ -339,7 +339,7 @@ class User extends Authenticatable implements JWTSubject
 
 ## 2.3 添加权限路由
 routes/api.php
-```
+```php
 Route::group([
 
     'middleware' => 'api',
@@ -359,7 +359,7 @@ Route::group([
 
 ## 2.4 添加相应的控制器方法
 app/Http/Controllers/AuthController
-```
+```php
 <?php
 
 namespace App\Http\Controllers;
@@ -445,7 +445,7 @@ class AuthController extends Controller
 }
 ```
 login 接口响应示例如下：
-```
+```json
 {
     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ",
     "token_type": "bearer",
@@ -477,7 +477,7 @@ http://example.dev/me/token/eyJhbGciOiJIUzI1NiI...
 ## 2.6 自定义认证中间件
 中间件需要继承 jwt 的 BaseMiddleware。  
 下面我从网上借鉴的无痛刷新 token 中间件：
-```
+```php
 <?php
 namespace App\Http\Middleware;
 use Auth;
@@ -531,7 +531,7 @@ class RefreshToken extends BaseMiddleware
 这里主要需要说的就是在token进行刷新后，不但需要将token放在返回头中，最好也将请求头中的token进行置换，因为刷新过后，请求头中的token就已经失效了，如果接口内的业务逻辑使用到了请求头中的token，那么就会产生问题。
 
 这里使用
-```
+```php
 $request->headers->set('Authorization','Bearer '.$token);
 ```
 将token在请求头中刷新。
@@ -540,7 +540,7 @@ $request->headers->set('Authorization','Bearer '.$token);
 
 # 3 方法介绍
 ## 3.1 attempt()
-```
+```php
 $token = auth('api')->attempt($credentials);
 ```
 auth() 传参取决于你的 config/auth.php 配置，需传入 driver 为 jwt 的 guards。默认为 defaults 定义。  
@@ -550,7 +550,7 @@ attempt() 方法将会返回 token 值或 null。
 
 ## 3.2 login()
 登录用户并为其返回 token 值。
-```
+```php
 // Get some user from somewhere
 $user = User::first();
 
@@ -562,7 +562,7 @@ $token = auth()->login($user);
 
 ## 3.3 user()
 获取当前通过验证的用户。
-```
+```php
 $user = auth()->user();
 ```
 如果用户未通过验证，则返回 null。
@@ -576,7 +576,7 @@ $user = auth()->user();
 
 ## 3.5 logout()
 用户登出，会使用户 token 失效并用户处于未验证状态。
-```
+```php
 auth()->logout();
 
 // 传递 true 将令牌永远拉黑
@@ -587,7 +587,7 @@ auth()->logout(true);
 
 ## 3.6 refresh()
 刷新令牌并使当前令牌失效
-```
+```php
 $newToken = auth()->refresh();
 
 // Pass true as the first param to force the token to be blacklisted "forever".
@@ -599,7 +599,7 @@ $newToken = auth()->refresh(true, true);
 
 ## 3.7 invalidate（）
 使令牌无效（将其添加到黑名单）
-```
+```php
 auth()->invalidate();
 
 // Pass true as the first param to force the token to be blacklisted "forever".
@@ -610,7 +610,7 @@ auth()->invalidate(true);
 
 ## 3.8 tokenById（）
 根据给定用户的ID获取令牌。
-```
+```php
 $token = auth()->tokenById(123);
 ```
 
@@ -618,18 +618,18 @@ $token = auth()->tokenById(123);
 
 ## 3.9 其他比较少见的方法
 ### 3.9.1 添加自定义声明
-```
+```php
 $token = auth()->claims(['foo' => 'bar'])->attempt($credentials);
 ```
 ### 3.9.2 显式设置令牌
-```
+```php
 $user = auth()->setToken('eyJhb...')->user();
 ```
 ### 3.9.3 显式设置请求实例
-```
+```php
 $user = auth()->setRequest($request)->user();
 ```
 ### 3.9.4 覆盖令牌ttl
-```
+```php
 $token = auth()->setTTL(7200)->attempt($credentials);
 ```
