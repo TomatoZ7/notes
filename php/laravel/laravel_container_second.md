@@ -303,3 +303,27 @@ $container->bind(Getable::class, APIClient::class);
 // 此时 $instance 的 $client 属性已经是 APIClientDecorator 类型了
 $instance = $container->make(User::class);
 ```
+
+### Part7. 单例
+使用 `bind()` 方法绑定后，每次解析时都会新实例化一个对象(或重新调用闭包)，如果想获取 **单例**，则用 `singleton()` 方法代替 `bind()`:
+```
+$container->singleton(Cache::class, RedisCache::class);
+```
+
+绑定单例 **闭包**
+```
+$container->singleton(Database::class, function (Container $container) {
+    return new MySQLDatabase('localhost', 'testdb', 'user', 'pass');
+});
+```
+
+绑定 **具体类** 的时候，不需要第二个参数：
+```
+$container->singleton(MySQLDatabase::class);
+```
+
+在每种情况下，**单例** 对象将在第一次需要时创建，然后在后续重复使用。  
+如果你已经有一个 **实例** 并且想重复使用，可以用 `instance()` 方法。Laravel 就是用这种方法确保每次获取到的都是同一个 Container 实例：
+```
+$container->instance(Container::class, $container);
+```
