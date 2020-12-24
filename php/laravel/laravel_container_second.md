@@ -637,5 +637,91 @@ $post2 = $container->makeWith(Post::class, ['id' => 2]);
 ### 其他
 这涵盖了我认为有用的方法，但仅仅只是简介...
 
-**bound()**  
-如果一个类
+#### bound()
+如果一个类/名称已经被 `bind()`，`singleton()`，`instance()` 或 `alias()` 绑定，那么 `bound()` 方法返回 true。
+```php
+if (!$container->bound('database.user')) {
+    // ...
+}
+```
+
+还可以用数组访问语法和 `isset()`:
+```php
+if (!isset($container['database.user'])) {
+    // ...
+}
+```
+
+可以使用 `unset()` 来重置它，这会删除指定的绑定/实例/别名。
+```php
+unset($container['database.user']);
+var_dump($container->bound('database.user'));   // false
+```
+
+#### bindIf()
+`bindIf()` 和 `bind()` 功能类似，差别在于 `bindIf()` 只有在现有绑定不存在的情况下才注册绑定。它一般被用在 package 中注册一个可被用户重写的默认绑定。
+```php
+$container->bindIf(Loader::class, FallbackLoader::class);
+```
+
+不过并没有 `singletonIf()` 方法，只能用 `bindIf($abstract, $concrete, true)` 来实现。
+```php
+$container->bindIf(Loader::class, FallbackLoader::class, true);
+```
+
+它等同于
+```php
+if (!$container->bound(Loader::class)) {
+    $container->singleton(Loader::class, FallbackLoader::class);
+}
+```
+
+#### resolved()
+如果一个类已经被解析，`resolved()` 方法会返回 true：
+```php
+var_dump($container->resolved(Database::class));    // false
+$db = $container->make(Database::class);
+var_dump($container->resolved(Database::class));    // true
+```
+
+如果 `unset()` 之后它会被重置：
+```php
+unset($container[Database::class]);
+var_dump($container->resolved(Database::class));    // false
+```
+
+#### factory()
+`factory()` 方法返回一个不需要参数并调用 `make()` 的闭包。
+```php
+$dbFactory = $container->factory(Database::class);
+$db = $dbFactory();
+```
+
+#### wrap()
+`wrap()` 方法包装一个闭包，以便在执行时依赖关系被注入。它接受一个数组参数，返回的闭包不带参数：
+```php
+$cacheGetter = function (Cache $cache, $key) {
+    return $cache->get($key);
+};
+
+$usernameGetter = $container->wrap($cacheGetter, ['username']);
+
+$username = $usernameGetter();
+```
+> 注意：这个方法不是 [Container接口](https://github.com/laravel/framework/blob/5.5/src/Illuminate/Contracts/Container/Container.php) 的一部分，只有在他的实现类 [Container](https://github.com/laravel/framework/blob/5.4/src/Illuminate/Container/Container.php) 才有。
+
+#### afterResolving()
+`afterResolving()` 方法作用与 `resolving()` 完全相同，不同之处是 调用 [resolving] 回调之后再调用 [afterResolving] 回调。
+
+### 最后再附几个
+`isShared()` – 确定一个给定的类型是一个 singleton/instance
+`isAlias()` – 确定给定的字符串是否是已注册的 别名
+`hasMethodBinding()` - 确定容器是否具有给定的 method binding
+`getBindings()` - 取回所有已注册绑定的原始数组
+`getAlias($`abstract) - 获取基础类 / 绑定名称的别名
+`forgetInstance($`abstract) - 清除单个实例对象
+`forgetInstances()` - 清除所有实例对象
+`flush()` - 清除所有绑定和实例，有效地重置容器
+`setInstance()` - 替换 getInstance() 使用的实例 (提示：使用 setInstance (null) 来清除它，这样下一次它将生成一个新的实例)
+
+[传送门 : Laravel Container (容器) 深入理解 (下)](https://learnku.com/articles/6158/laravel-container-container-understand-below)
