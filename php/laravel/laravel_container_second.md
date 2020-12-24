@@ -377,3 +377,53 @@ $container->singleton('database', function (Container $container) {
 ```
 $db = $container['database'];
 ```
+
+### Dependency Injection for Function & Method(给函数或方法注入依赖)
+除了给构造函数注入依赖，Laravel 还可以往任意函数中注入：
+```php
+function do_something(Cache $cache){ /*...*/ }
+$result = $container->call('do_something');
+```
+
+函数的附加参数可以作为索引或关联数组传递：
+```php
+function show_product(Cache $cache, $id, $tab = 'details'){ /*...*/ }
+
+// show_product($cache, 1);
+$container->call('show_product', [1]);
+$container->call('show_product', ['id' => 1]);
+
+// show_product($cache, 1, 'spec');
+$container->call('show_product', [1, 'spec']);
+$container->call('show_product', ['id' => 1, 'tab' => 'spec']);
+```
+
+除此之外  
+**闭包**
+```php
+$closure = function (Cache $cache) { /*...*/ }
+$container->call($closure);
+```
+**静态方法**
+```php
+class SomeClass
+{
+    public static function (Cache $cache) { /*...*/ }
+}
+```
+**实例的方法**
+```php
+class PostController
+{
+    public function index (Cache $cache) { /*...*/ }
+
+    public function show (Cache $cache, $id) { /*...*/ }
+}
+```
+```php
+$controller = $container->make(PostController::class);
+
+$container->call([$controller, 'index']);
+$container->call([$controller, 'show'], ['id' => 1]);
+```
+都可以注入。
