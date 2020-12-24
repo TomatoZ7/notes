@@ -516,3 +516,33 @@ $container
     ->needs(Filesystem::class)
     ->give('s3');
 ```
+
+### Part14. Binding Parameters to Primitives(绑定初始数据)
+当有一个类不仅需要接受一个注入类，还需要注入一个基本值(比如整数)。  
+还可以通过将变量名称(而不是接口)传递给 `needs()` 并将值传递给 `give()` 来注入需要的任何值(字符串、整数等)：
+```php
+$container
+    ->when(MySQLDatabase::class)
+    ->needs('$username')
+    ->give(DB_USER);
+```
+
+还可以在闭包中实现延时加载，只在需要的时候取回这个 **值**。
+```php
+$container
+    ->when(MySQLDatabse::class)
+    ->needs('$username')
+    ->give(function () {
+        return config('database.user');
+    });
+```
+
+这种情况下，不能传递类或命名的依赖关系(例如，give('database.user'))，因为它作为字面值返回。所以需要使用闭包：
+```php
+$container
+    ->when(MySQLDatabase::class)
+    ->needs('$username')
+    ->give(function (Container $container) {
+        return $container['database.user'];
+    });
+```
