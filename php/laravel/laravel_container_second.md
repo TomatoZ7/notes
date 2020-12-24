@@ -566,3 +566,57 @@ foreach ($container->tagged('plugin') as $plugin) {
 $container->tag([MyPlugin::class, AnotherPlugin::class], 'plugin');
 $container->tag(MyPlugin::class, ['plugin', 'plugin.admin']);
 ```
+
+### Rebinding(重新绑定)
+> 这个功能很少用到，可以跳过，仅供参考。
+
+在绑定或实例被使用之后又发生了变化，将调用一个 rebinding 方法。 下例中， Auth 使用 Session 类后，Session 类将被替换，此时需要通知 Auth 类这个变动：
+```php
+$container->singleton(Auth::class, function (Container $container) {
+    $auth = new Auth;
+    $auth->setSession($container->make(Session::class));
+
+    $container->rebinding(Session::class, function ($container, $session) use ($auth) {
+        $auth->setSession($session);
+    });
+
+    return $auth;
+});
+
+$container->instance(Session::class, new Session(['username' => 'dave']));
+$auth = $container->make(Auth::class);
+echo $auth->username(); // dave
+$container->instance(Session::class, new Session(['username' => 'danny']));
+
+echo $auth->username(); // danny
+```
+
+Rebinding 的更多信息可以看这两个链接：  
+[https://stackoverflow.com/questions/389745](https://stackoverflow.com/questions/389745)...  
+[https://code.tutsplus.com/tutorials/diggin](https://code.tutsplus.com/tutorials/diggin)...  
+
+还有一个 `refresh()` 方法来处理这种模式：
+```php
+$container->singleton(Auth::class, function (Container $container) {
+    $auth = new Auth;
+    $auth->setSession($container->make(Session::class));
+
+    $container->refresh(Session::class, $auth, 'setSession');
+
+    return $auth;
+});
+```
+
+它还返回现有的实例或绑定（如果有的话），所以可以这样做：
+```php
+// This only works if you call singleton() or bind() on the class
+$container->singleton(Session::class);
+
+$container->singleton(Auth::class, function (Container $container) {
+    $auth = new Auth;
+    $auth->setSession($container->refresh(Session::class, $auth, 'setSession'));
+    return $auth;
+});
+```
+> 注意：这种方式不是 [Container](https://github.com/laravel/framework/blob/5.5/src/Illuminate/Contracts/Container/Container.php) 接口 的一部分，只有在它的实现类 [Container](https://github.com/laravel/framework/blob/5.4/src/Illuminate/Container/Container.php) 才有。
+
