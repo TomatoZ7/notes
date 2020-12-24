@@ -546,3 +546,23 @@ $container
         return $container['database.user'];
     });
 ```
+
+### Part15. Tagging(标记)
+Container 可以用来 [标记] 有关系的绑定：
+```php
+$container->tag(MyPlugin::class, 'plugin');
+$container->tag(AnotherPlugin::class, 'plugin');
+```
+
+这样会以数组的形式返回所有 [标记] 的实例：
+```php
+foreach ($container->tagged('plugin') as $plugin) {
+    $plugin->init();
+}
+```
+
+`tag()` 方法的两个参数都可以接收数组：
+```php
+$container->tag([MyPlugin::class, AnotherPlugin::class], 'plugin');
+$container->tag(MyPlugin::class, ['plugin', 'plugin.admin']);
+```
