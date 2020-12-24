@@ -723,6 +723,7 @@ $username = $usernameGetter();
 `forgetInstances()` - 清除所有实例对象  
 `flush()` - 清除所有绑定和实例，有效地重置容器  
 `setInstance()` - 替换 getInstance() 使用的实例 (提示：使用 setInstance (null) 来清除它，这样下一次它将生成一个新的实例)  
+> 注意：这些方法不是 [Container接口](https://github.com/laravel/framework/blob/5.5/src/Illuminate/Contracts/Container/Container.php) 的一部分，只有在他的实现类 [Container](https://github.com/laravel/framework/blob/5.4/src/Illuminate/Container/Container.php) 才有。
 
 &emsp;
 
