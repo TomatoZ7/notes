@@ -714,14 +714,16 @@ $username = $usernameGetter();
 `afterResolving()` 方法作用与 `resolving()` 完全相同，不同之处是 调用 [resolving] 回调之后再调用 [afterResolving] 回调。
 
 ### 最后再附几个
-`isShared()` – 确定一个给定的类型是一个 singleton/instance
-`isAlias()` – 确定给定的字符串是否是已注册的 别名
-`hasMethodBinding()` - 确定容器是否具有给定的 method binding
-`getBindings()` - 取回所有已注册绑定的原始数组
-`getAlias($`abstract) - 获取基础类 / 绑定名称的别名
-`forgetInstance($`abstract) - 清除单个实例对象
-`forgetInstances()` - 清除所有实例对象
-`flush()` - 清除所有绑定和实例，有效地重置容器
-`setInstance()` - 替换 getInstance() 使用的实例 (提示：使用 setInstance (null) 来清除它，这样下一次它将生成一个新的实例)
+`isShared()` – 确定一个给定的类型是一个 singleton/instance  
+`isAlias()` – 确定给定的字符串是否是已注册的 别名  
+`hasMethodBinding()` - 确定容器是否具有给定的 method binding  
+`getBindings()` - 取回所有已注册绑定的原始数组  
+`getAlias($`abstract) - 获取基础类 / 绑定名称的别名  
+`forgetInstance($`abstract) - 清除单个实例对象  
+`forgetInstances()` - 清除所有实例对象  
+`flush()` - 清除所有绑定和实例，有效地重置容器  
+`setInstance()` - 替换 getInstance() 使用的实例 (提示：使用 setInstance (null) 来清除它，这样下一次它将生成一个新的实例)  
+
+&emsp;
 
 [传送门 : Laravel Container (容器) 深入理解 (下)](https://learnku.com/articles/6158/laravel-container-container-understand-below)
