@@ -592,8 +592,8 @@ echo $auth->username(); // danny
 ```
 
 Rebinding 的更多信息可以看这两个链接：  
-[https://stackoverflow.com/questions/389745](https://stackoverflow.com/questions/389745)...  
-[https://code.tutsplus.com/tutorials/diggin](https://code.tutsplus.com/tutorials/diggin)...  
+[https://stackoverflow.com/questions/389745...](https://stackoverflow.com/questions/389745)  
+[https://code.tutsplus.com/tutorials/diggin...](https://code.tutsplus.com/tutorials/diggin)  
 
 还有一个 `refresh()` 方法来处理这种模式：
 ```php
@@ -620,3 +620,22 @@ $container->singleton(Auth::class, function (Container $container) {
 ```
 > 注意：这种方式不是 [Container](https://github.com/laravel/framework/blob/5.5/src/Illuminate/Contracts/Container/Container.php) 接口 的一部分，只有在它的实现类 [Container](https://github.com/laravel/framework/blob/5.4/src/Illuminate/Container/Container.php) 才有。
 
+### Overriding Constructor Parameters(重写构造函数参数)
+`makeWith` 方法允许将附加参数传递给构造函数。它忽略任何现有的实例或单例，可以用于创建具有不同参数的类的多个实例，同时仍然注入依赖关系：
+```php
+class Post
+{
+    public function __construct(Database $db, int $id) { /*...*/}
+}
+```
+```php
+$post1 = $container->makeWith(Post::class, ['id' => 1]);
+$post2 = $container->makeWith(Post::class, ['id' => 2]);
+```
+> 注意：Laravel 5.3 及以下使用 `make($class, $parameters)` 。Laravel 5.4 中移除了此方法，但是在 5.4.16 以后又重新加回来了 `makeWith()` 。详见 PR:[https://github.com/laravel/framework/pull/...](https://github.com/laravel/framework/pull/19201)。
+
+### 其他
+这涵盖了我认为有用的方法，但仅仅只是简介...
+
+**bound()**  
+如果一个类
