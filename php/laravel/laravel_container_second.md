@@ -327,3 +327,21 @@ $container->singleton(MySQLDatabase::class);
 ```php
 $container->instance(Container::class, $container);
 ```
+
+### Part8. Arbitrary Binding Names(任意绑定名称)
+Container 还可以绑定任意字符串而不是类/接口名称。但这种情况下不能使用类型提示，并且只能用 `make()` 来获取实例。
+```php
+$container->bind('database', MySQLDatabase::class);
+$db = $container->make('database');
+```
+
+为了同时支持类/接口名称和短名称，可以使用 `alias()` :
+```php
+$container->singleton(Cache::class, RedisCache::class);
+$container->alias(Cache::class, 'cache');
+
+$cache1 = $container->make(Cache::class);
+$cache2 = $container->make('cache');
+
+assert($cache1 === $cache2);
+```
