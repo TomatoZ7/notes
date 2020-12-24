@@ -22,11 +22,11 @@ $container = app();
 > Laravel 官方文档中一般使用 $this->app 代替 $container。它是 Application 类的实例，而 Application 类继承自 Container 类。
 
 ### 在 Laravel 之外使用 Illuminate\Container 
-```
+```shell
 mkdir container && cd container
 composer require illuminate\container 
 ```
-```
+```php
 // 新建一个 container.php，文件名任取
 
 <?php
@@ -39,7 +39,7 @@ $container = Container::getInstance();
 ## Container 的技能们
 ### Part1. 基本用法，用 type hint(类型提示) 注入依赖：
 只需要在自己类的构造函数中使用 `type hint` 就能实现 DI ：
-```
+```php
 class MyClass
 {
     private $dependency;
@@ -52,12 +52,12 @@ class MyClass
 ```
 
 接下来用 Container 的 `make` 方法来取代 `new MyClass()` :
-```
+```php
 $instance = $container->make(MyClass::class);
 ```
 
 Container 会自动实例化依赖的对象，所以它等同于：
-```
+```php
 $instance = new MyClass(new AnotherClass());
 ```
 
@@ -66,7 +66,7 @@ $instance = new MyClass(new AnotherClass());
 
 ### 实战
 下面是 [PHP-DI 文档](https://php-di.org/doc/getting-started.html) 中的一个例子，它分离了 [用户注册] 和 [发邮件] 的过程：
-```
+```php
 class Mailer
 {
     public function mail($recipient, $content)
@@ -76,7 +76,7 @@ class Mailer
     }
 }
 ```
-```
+```php
 class UserManager
 {
     private $mailer;
@@ -96,7 +96,7 @@ class UserManager
     }
 }
 ```
-```
+```php
 use Illuminate\Container\Container;
 
 $container = Container::getInstance();
@@ -107,13 +107,13 @@ $userManager->register('dave@davejamesmiller.com', 'MySuperSecurePassword!');
 
 ### Part2. Binding interface to Implementations(绑定接口到实现)
 用 Container 可以轻松地写一个接口，然后在运行时实例化一个具体的实例，首先定义接口：
-```
+```php
 interface MyInterface{}
 interface AnotherInterface{}
 ```
 
 然后声明实现这些接口的具体类。下面这个类不但实现了一个接口，还依赖了实现另一个接口的类实例：
-```
+```php
 class MyClass implements MyInterface
 {
     private $dependency;
@@ -127,13 +127,13 @@ class MyClass implements MyInterface
 ```
 
 现在用 Container 的 `bind()` 方法来让每个 接口 和实现它的类一一对应起来：
-```
+```php
 $container->bind(MyInterface::class, MyClass::class);
 $container->bind(AnotherInterface::class, AnotherClass::class);
 ```
 
 最后，用 **接口名** 而不是 **类名** 来传给 `make()` ：
-```
+```php
 $instance = $container->make(MyInterface::class);
 ```
 
@@ -141,14 +141,14 @@ $instance = $container->make(MyInterface::class);
 
 ### 实战
 下面是可封装的 Cache 层：
-```
+```php
 interface Cache
 {
     public function get($key);
     public function put($key, $value);
 }
 ```
-```
+```php
 class Worker
 {
     private $cache;
@@ -174,7 +174,7 @@ class Worker
     }
 }
 ```
-```
+```php
 use Illuminate\Container\Container;
 
 $container = Container::getInstance();
@@ -186,25 +186,25 @@ $result = $container->make(Worker::class)->result();
 
 ### Part3. Binding Abstract & Concert Classes (绑定抽象类和具体类)
 绑定还可以用在抽象类：
-```
+```php
 $container->bind(MyAbstract::class, MyConcreteClass::class);
 ```
 
 或者继承的类中：
-```
+```php
 $container->bind(MysqlDatabase::class, CustomMysqlDatabase::class);
 ```
 
 ### Part4. 自定义绑定
 如果类中需要一些附加的配置项，可以把 `bind()` 方法中的第二个参数换成 `Closure(闭包函数)`:
-```
+```php
 $container->bind(Database::class, function (Container $container) {
     return new MysqlDatabase(MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASS);
 });
 ```
 
 闭包也可用于定制 具体类 的实例化方式：
-```
+```php
 $container->bind(GitHub\Client::class, function (Container $container) {
     $client = new GitHub\Client();
     $client->setEnterpriseUrl(GITHUB_HOST);
@@ -214,14 +214,14 @@ $container->bind(GitHub\Client::class, function (Container $container) {
 
 ### Part5. Resolving Callbacks(回调)
 可用 `resolving()` 方法来注册一个 callback(回调函数) ，而不是直接覆盖之前的 **绑定** 。这个函数会在绑定的类解析完成后调用。
-```
+```php
 $container->bind(GitHub\Client::class, function ($client, Container $container) {
     $client->setEnterpriseUrl(GITHUB_HOST);
 });
 ```
 
 如果有一大堆 callbacks ,他们全部都会被调用。对于 **接口** 和 **抽象类** 也可以这么用：
-```
+```php
 $container->resolving(Logger::class, function (Logger $logger) {
     $logger->setLevel('debug');
 });
@@ -236,7 +236,7 @@ $logger = $container->make(Logger::class);
 ```
 
 更厉害的是，还可以注册成 [什么类解析完之后都调用]:
-```
+```php
 $container->resolving(function ($object, Container $container) {
     // ...
 })
@@ -245,19 +245,19 @@ $container->resolving(function ($object, Container $container) {
 
 ### Part6. Extending a Class(扩展一个类)
 使用 `extend()` 方法，可以封装一个类然后返回一个不同的对象(装饰模式)：
-```
+```php
 $container->extend(APIClient::class, function ($client, Container $container) {
     return new APIClientDecorator($client);
 });
 ```
 注意：这两个类要实现相同的 **接口** ，不然用类型提示的时候会出错：
-```
+```php
 interface Getable
 {
     public function get();
 }
 ```
-```
+```php
 class APIClient implements Getable
 {
     public function get()
@@ -266,7 +266,7 @@ class APIClient implements Getable
     }
 }
 ```
-```
+```php
 class APIClientDecorator implements Getable
 {
     private $client;
@@ -282,7 +282,7 @@ class APIClientDecorator implements Getable
     }
 }
 ```
-```
+```php
 class User
 {
     private $client;
@@ -293,7 +293,7 @@ class User
     }
 }
 ```
-```
+```php
 $container->extend(APIClient::class, function ($client, Container $container) {
     return new APIClientDecorator($client);
 });
@@ -306,24 +306,24 @@ $instance = $container->make(User::class);
 
 ### Part7. 单例
 使用 `bind()` 方法绑定后，每次解析时都会新实例化一个对象(或重新调用闭包)，如果想获取 **单例**，则用 `singleton()` 方法代替 `bind()`:
-```
+```php
 $container->singleton(Cache::class, RedisCache::class);
 ```
 
 绑定单例 **闭包**
-```
+```php
 $container->singleton(Database::class, function (Container $container) {
     return new MySQLDatabase('localhost', 'testdb', 'user', 'pass');
 });
 ```
 
 绑定 **具体类** 的时候，不需要第二个参数：
-```
+```php
 $container->singleton(MySQLDatabase::class);
 ```
 
 在每种情况下，**单例** 对象将在第一次需要时创建，然后在后续重复使用。  
 如果你已经有一个 **实例** 并且想重复使用，可以用 `instance()` 方法。Laravel 就是用这种方法确保每次获取到的都是同一个 Container 实例：
-```
+```php
 $container->instance(Container::class, $container);
 ```
