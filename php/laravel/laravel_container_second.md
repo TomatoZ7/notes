@@ -213,3 +213,93 @@ $container->bind(GitHub\Client::class, function (Container $container) {
 ```
 
 ### Part5. Resolving Callbacks(回调)
+可用 `resolving()` 方法来注册一个 callback(回调函数) ，而不是直接覆盖之前的 **绑定** 。这个函数会在绑定的类解析完成后调用。
+```
+$container->bind(GitHub\Client::class, function ($client, Container $container) {
+    $client->setEnterpriseUrl(GITHUB_HOST);
+});
+```
+
+如果有一大堆 callbacks ,他们全部都会被调用。对于 **接口** 和 **抽象类** 也可以这么用：
+```
+$container->resolving(Logger::class, function (Logger $logger) {
+    $logger->setLevel('debug');
+});
+
+$container->resolving(FileLogger::class, function (FileLogger $logger) {
+    $logger->setFilename('logs/debug.log');
+});
+
+$container->bind(Logger::class, FileLogger::class);
+
+$logger = $container->make(Logger::class);
+```
+
+更厉害的是，还可以注册成 [什么类解析完之后都调用]:
+```
+$container->resolving(function ($object, Container $container) {
+    // ...
+})
+```
+但这个估计只有 logging 和 debugging 才会用到。
+
+### Part6. Extending a Class(扩展一个类)
+使用 `extend()` 方法，可以封装一个类然后返回一个不同的对象(装饰模式)：
+```
+$container->extend(APIClient::class, function ($client, Container $container) {
+    return new APIClientDecorator($client);
+});
+```
+注意：这两个类要实现相同的 **接口** ，不然用类型提示的时候会出错：
+```
+interface Getable
+{
+    public function get();
+}
+```
+```
+class APIClient implements Getable
+{
+    public function get()
+    {
+        return 'yes';
+    }
+}
+```
+```
+class APIClientDecorator implements Getable
+{
+    private $client;
+
+    public function __construct(APIClient $client)
+    {
+        $this->client = $client;
+    }
+
+    public function get()
+    {
+        return 'no';
+    }
+}
+```
+```
+class User
+{
+    private $client;
+
+    public function __construct(Getable $client)
+    {
+        $this->client = $client;
+    }
+}
+```
+```
+$container->extend(APIClient::class, function ($client, Container $container) {
+    return new APIClientDecorator($client);
+});
+//
+$container->bind(Getable::class, APIClient::class);
+
+// 此时 $instance 的 $client 属性已经是 APIClientDecorator 类型了
+$instance = $container->make(User::class);
+```
