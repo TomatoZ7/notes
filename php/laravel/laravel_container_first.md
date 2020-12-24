@@ -6,13 +6,13 @@
 
 [Laravel Dependency Injection (依赖注入) 概念详解](https://github.com/TomatoZ7/notes-of-tz/blob/master/php/laravel/laravel_dependency_injection.md) 中提到：
 创建 User 对象需要先创建 SessionStorage 对象。这里有个瑕疵，创建对象时需要提前知道它所有的依赖项：
-```
+```php
 $storage = new SessionStorage('SESSION_ID');
 $user = new User($storage);
 ```
 
 以 Zend_Framework 中 Zend_Mail 库发送邮件为例：
-```
+```php
 $transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', [
     'auth'  =>  'login',
     'username'  =>  'foo',
@@ -31,7 +31,7 @@ $mailer->setDefaultTransport($transport);
 Dependency Injection Container 是一个 "知道如何实例化和配置对象" 的对象 (工厂模式的升华)。为了做到这点，它需要知道构造函数的参数以及对象之间的关系。
 
 下面是一个写死的 Zend_Mail 的 Container :
-```
+```php
 class Container
 {
     public function getMailerTransport()
@@ -55,7 +55,7 @@ class Container
 }
 ```
 这个 container 用起来就相当简单了：
-```
+```php
 $container = new Container();
 $mailer = $container->getMailer();
 ```
@@ -65,7 +65,7 @@ $mailer = $container->getMailer();
 Container 通过 getMailTransport() 方法，把 Zend_Mail_Transport_Smtp 这个依赖自动注入到了 Zend_Mail 中。
 
 细心的网友可能发现，这里的 Container 把什么都写死了，我们可以改善一下。
-```
+```php
 class Container
 {
     protected $parameters = [];
@@ -97,7 +97,7 @@ class Container
 ```
 
 现在就可以随时更改 username 和 password 了：
-```
+```php
 $container = new Container([
     'mailer.username' => 'foo',
     'mailer.password' => 'bar'
@@ -106,7 +106,7 @@ $mailer = $container->getMailer();
 ```
 
 如果需要更改 mailer 类，把类名也当参数传入就行：
-```
+```php
 class Container
 {
     // ...
@@ -131,7 +131,7 @@ $mailer = $container->getMailer();
 ```
 
 如果想每次获取同一个 mailer 实例，可以用 单例模式 ：
-```
+```php
 class Container()
 {
     static protected $shared = [];
