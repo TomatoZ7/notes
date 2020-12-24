@@ -26,7 +26,7 @@ class A 中用到了 class B 的对象b，一般情况下，需要在 A 的内�
 而具体的获取方法、对象被获取时的状态由 **容器** 来指定。  
 
 ### 假设我有一部 iPhone，我的 iPhone 依赖充电器才能充电。
-```
+```php
 class iPhone
 {
     // 电量
@@ -40,7 +40,7 @@ class iPhone
 }
 ```
 ### 我还有一个苹果充电器：
-```
+```php
 class AppleCharger
 {
     public function charge()
@@ -50,7 +50,7 @@ class AppleCharger
 }
 ```
 ### 在此前，iPhone 内部 [控制] 着只能用哪一款充电器：
-```
+```php
 class iPhone
 {
     // 电量
@@ -70,7 +70,7 @@ $iphone = new iPhone;
 $iphone->charge();
 ```
 ### 使用**依赖注入**以后，我来决定给 iPhone 用哪一款充电器。
-```
+```php
 class iPhone
 {
     private $power;
@@ -89,13 +89,13 @@ class iPhone
     }
 }
 ```
-```
+```php
 interface Charger
 {
     public function charge();
 }
 ```
-```
+```php
 // Laravel 容器
 use Illuminate\Container\Container;
 $container = Container::getInstance();
