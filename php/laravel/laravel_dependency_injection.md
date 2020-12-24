@@ -1,17 +1,17 @@
 # (转) Laravel [Dependency injection] 依赖注入
 
 HTTP 协议是无状态的，web 应用程序如果需要在请求之间存储用户信息，可以通过 COOKIE 或 SESSION :
-``` 
+```php
 $_SESSION['language'] = 'fr';
 ```
 
 上述代码中，我们将 language 存储在全局变量，因此可以这样获得它：
-```
+```php
 $user_language = $_SESSION['language'];
 ```
 
 只有在 OOP 开发时才会遇到**依赖注入**，因此假设我们有一个封装 SESSION 的 SessionStorage 类：
-```
+```php
 class SessionStorage
 {
     public function __construct($cookieName="PHPSESSID")
@@ -35,7 +35,7 @@ class SessionStorage
 ```
 
 以及一个更高层的类 User ：
-```
+```php
 class User
 {
     protected $storage;
@@ -58,7 +58,7 @@ class User
 ```
 
 这两个类很简单，用起来也方便：
-```
+```php
 $user = new User();
 $user->setLanguage('fr');
 
@@ -68,7 +68,7 @@ $user_language = $user->getLanguage();
 这种方式看起来很完美，但是并不够灵活。比如：现在要修改会话的 COOKIE 名称(默认为 PHPSESSID )，怎么办? 可能会存在一系列方法：
 
 + 把会话的名称直接写死在 User 类中的构造函数里。
-```
+```php
 class User
 {
     protected $storage;
@@ -83,7 +83,7 @@ class User
 ```
 
 + 在 User 类里定义一个常量：
-```
+```php
 class User
 {
     protected $storage;
@@ -100,7 +100,7 @@ define('SESSION_COOKIE_NAME', 'SESSION_ID');
 ```
 
 + 把会话名称作为参数传入 User 类的构造函数：
-```
+```php
 class User
 {
     protected $storage;
@@ -122,7 +122,7 @@ $user = new User('SESSION_ID');
 + 使用参数看起来很灵活，但是把 User 无关的东西掺杂在了构造函数中
 
 ### 通过构造函数，把一个外部的 SessionStorage 实例“注入”到 User 实例内部，而不是在 User 实例内部创建 SessionStorage 实例，这就是“依赖注入”。
-```
+```php
 class User{
     protected $storage;
 
@@ -135,7 +135,7 @@ class User{
 }
 ```
 只需先创建 SessionStorage 实例，再创建 User 实例：
-```
+```php
 $storage = new SessionStorage('SESSION_ID');
 $user = new User($storage);
 ```
@@ -143,7 +143,7 @@ $user = new User($storage);
 
 ### **依赖注入**并不限于构造函数。
 + Constructor Injection
-```
+```php
 class User
 {
     function __construct($storage)
@@ -156,7 +156,7 @@ class User
 ```
 
 + Setter Injection
-```
+```php
 class User
 {
     function setSessionStorage($storage)
@@ -169,7 +169,7 @@ class User
 ```
 
 + Property Injection 
-```
+```php
 class User
 {
     public $sessionStorage;
@@ -180,7 +180,7 @@ $user->sessionStorage = $storage;
 
 作为经验，**Constructor 注入**最适合必须的依赖关系；**Setter Injection**最适合可选的依赖关系，比如缓存一个对象实例。  
 现在，大多数现代的 PHP 框架都大量使用依赖注入来提供一组 **去耦** 但 **粘合** 的组件：
-```
+```php
 // symfony: A constructor injection example
 $dispatcher = new sfEventDispatcher();
 $storage = new sfMySQLSessionStorage([
