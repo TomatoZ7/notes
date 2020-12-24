@@ -345,3 +345,35 @@ $cache2 = $container->make('cache');
 
 assert($cache1 === $cache2);
 ```
+
+### Part9. 保存任何值
+Container 还可以用来保存任何值，例如 configuration 数据：
+```php
+$container->instance('database.name', 'testdb');
+$db_name = $container->make('database.name');
+```
+
+它支持数组访问语法，这样用起来更自然：
+```php
+$container['database.name'] = 'testdb';
+$db_name = $container['database.name'];
+```
+> 这是因为 Container 实现了 PHP 的 [ArrayAccess](https://www.php.net/manual/zh/class.arrayaccess.php) 接口
+
+当处理 Closure 绑定的时候，你会发现这个方法特别好用：
+```php
+$container->singleton('database', function (Container $container) {
+    return new MySQLDatabse(
+        $container['database.host'],
+        $container['database.name'],
+        $container['database.user'],
+        $container['database.pass']
+    );
+});
+```
+> Laravel 自己没有用这种方式来处理配置项，它使用了一个单独的 Config 类， PHP-DI 用了。
+
+数组访问语法还可以代替 `make()` 来实例化对象。
+```
+$db = $container['database'];
+```
