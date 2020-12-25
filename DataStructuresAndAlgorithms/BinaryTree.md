@@ -73,3 +73,160 @@ B、C节点的父节点都是同一个节点，所以它们互称**兄弟节点*
 说完二叉树的概念，接下来我们来看二叉树的遍历，也是面试中的一个高频考点。
 
 如何将一棵树的节点都遍历出来呢？经典的方法有三种：**前序遍历**、**中序遍历**、**后序遍历**。其中，前、中、后序分别表示的是节点与它左右子树节点遍历打印的先后顺序。
++ 前序遍历：对于树中的任意节点来说，先打印这个节点，再打印左子树，最后打印右子树。（根-左-右）
++ 中序遍历：对于树中的任意节点来说，先打印左子树，再打印这个节点，最后打印右子树。（左-根-右）
++ 后序遍历：对于树中的任意节点来说，先打印左子树，再打印右子树，最后打印这个节点。（左-右-根）
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/treeGif1.gif)
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/treeGif2.gif)
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/treeGif3.gif)
+
+实际上，二叉树的前、中、后序遍历就是一个递归的过程。比如前序遍历，先打印根节点，然后递归打印左子树，接着递归打印右子树。
+
+写递归代码的关键，就是递归公式。这里我们给出三种遍历顺序的递归公式：
+```php
+// 前序遍历
+preOrder($node) = print($node->elem)->preOrder($node->left)->preOrder($node->right);
+
+// 中序遍历
+inOrder($node) =  inOrder($node->left)->print($node->elem)->inOrder($node->right);
+
+// 后序遍历
+postOrder($node) = postOrder($node->left)->postOrder($node->right)->print($node->elem);
+```
+
+> 具体的实现代码请看文末。
+
+那么二叉树遍历的时间复杂度是多少？结合 gif 图和递归流程的分析，每一个节点被访问的次数最多为两次。所以遍历的时间复杂度与 n 成正比，根据大O表示法，那么最终时间复杂度就是 O(n)。
+
+## 思考
+
+## 完全二叉树的代码实现
+php 版：
+```php
+// 先声明一个节点类
+class Node
+{
+    public function __construct($item)
+    {
+        $this->elem  = $item;
+        $this->left  = null;
+        $this->right = null;
+    }
+}
+```
+```php
+class BinaryTree
+{
+    public function __construct()
+	{
+		$this->root = null;
+    }
+    
+    /**
+	 * 添加节点
+	 *
+	 * @param $item 数据值
+	 */
+	public function add($item)
+	{
+		$node = new Node($item);
+
+		// 特殊情况：空树
+		if ($this->root == null) {
+			$this->root = $node;
+			return true;
+		}
+
+		// 对于一般情况，可以模仿队列这类数据结构
+		$queue = [$this->root];
+		while ( !empty($queue) ) {
+			$cur_node = array_shift($queue);
+
+			if ( is_null($cur_node->left) ) {
+				$cur_node->left = $node;
+				return true;
+			} else {
+				array_push($queue, $cur_node->left);
+			}
+
+			if ( is_null($cur_node->right) ) {
+				$cur_node->right = $node;
+				return true;
+			} else {
+				array_push($queue, $cur_node->right);
+			}
+		}
+    }
+    
+    /**
+	 * 前序遍历
+	 *
+	 * @param $node 节点
+     */
+    public function preOrder($node)
+    {
+    	if ( is_null($this->root) ) {
+    		return;
+    	}
+
+    	if ( !$node ) {
+    		$node = $this->root;
+    	}
+
+    	print($node->elem);
+    	$this->preOrder($this->left);
+    	$this->preOrder($this->right);
+    }
+
+    /**
+	 * 中序遍历
+	 *
+	 * @param $node 节点
+     */
+    public function inOrder($node)
+    {
+    	if ( is_null($this->root) ) {
+    		return;
+    	}
+
+    	if ( !$node ) {
+    		$node = $this->root;
+    	}
+
+    	$this->inOrder($this->left);
+    	print($node->elem);
+    	$this->inOrder($this->right);
+    }
+
+    /**
+	 * 后序遍历
+	 *
+	 * @param $node 节点
+     */
+    public function postOrder($node)
+    {
+    	if ( is_null($this->root) ) {
+    		return;
+    	}
+
+    	if ( !$node ) {
+    		$node = $this->root;
+    	}
+
+    	$this->postOrder($this->left);
+    	$this->postOrder($this->right);
+    	print($node->elem);
+    }
+
+    /**
+	 * 广度优先遍历
+     */
+    public function breadth()
+    {
+
+    }
+}
+```
