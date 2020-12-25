@@ -41,4 +41,4 @@ B、C节点的父节点都是同一个节点，所以它们互称**兄弟节点*
 有边的则是完全二叉树，它所有的叶子节点都在最底下两层，并且最底层的叶子节点都靠左排列，并且除了最后一层，其它层的节点数都要达到最大。
 &emsp;
 满二叉树很好理解，但是完全二叉树，有的人可能就分不清了。这里画了完全二叉树和非完全二叉树，你们可以比较一下他们的区别：  
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/treeImage4.png)
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/treeImage5.png)
