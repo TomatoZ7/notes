@@ -2,7 +2,14 @@
 
 ##  树（Tree）
 什么样的数据结构是 **树** ？语言上理解可能比较困难，可以直接看图：
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/treeImage1.png)
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/treeImage1.jpg)
 
 上图中我画了3棵 **树** ，这些 **树** 都有哪些特征？  
-如果反过来看，可以很直观的发现，数据结构 **树** 跟我们现实中的 **树** 十分类似，图中的每一个圆圈我们称为 **节点**，相邻节点之间的连接关系称为 **父子关系**
+如果反过来看，可以很直观的发现，数据结构 **树** 跟我们现实中的 **树** 十分类似，图中的每一个圆圈我们称为 **节点**，相邻节点之间的连接关系称为 **父子关系**。
+
+如下图所示，A、B节点为父子关系，其中A节点为B节点的**父节点**，B节点是A节点的**子节点**；  
+B、C节点的父节点都是同一个节点，所以它们互称**兄弟节点**；  
+我们把没有父节点的节点称为**根节点**，也就是图中的节点A；  
+我们把没有子节点的节点称为**叶子节点**或**叶节点**，比如图中的G、H、E、F节点。
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/treeimage2.png)
