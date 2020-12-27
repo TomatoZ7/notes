@@ -166,7 +166,7 @@ class BinaryTree
 	 *
 	 * @param $node 节点
      */
-    public function preOrder($node)
+    public function preOrder($node = null)
     {
     	if ( is_null($this->root) ) {
     		return;
@@ -177,8 +177,12 @@ class BinaryTree
     	}
 
     	print($node->elem);
-    	$this->preOrder($this->left);
-    	$this->preOrder($this->right);
+    	if ( !is_null($node->left) ) {
+    		$this->preOrder($node->left);
+    	}
+    	if ( !is_null($node->left) ) {
+    		$this->preOrder($node->right);
+    	}
     }
 
     /**
@@ -186,7 +190,7 @@ class BinaryTree
 	 *
 	 * @param $node 节点
      */
-    public function inOrder($node)
+    public function inOrder($node = null)
     {
     	if ( is_null($this->root) ) {
     		return;
@@ -196,9 +200,13 @@ class BinaryTree
     		$node = $this->root;
     	}
 
-    	$this->inOrder($this->left);
+    	if ( !is_null($node->left) ) {
+    		$this->inOrder($node->left);
+    	}
     	print($node->elem);
-    	$this->inOrder($this->right);
+    	if ( !is_null($node->left) ) {
+    		$this->inOrder($node->right);
+    	}
     }
 
     /**
@@ -206,7 +214,7 @@ class BinaryTree
 	 *
 	 * @param $node 节点
      */
-    public function postOrder($node)
+    public function postOrder($node = null)
     {
     	if ( is_null($this->root) ) {
     		return;
@@ -216,8 +224,12 @@ class BinaryTree
     		$node = $this->root;
     	}
 
-    	$this->postOrder($this->left);
-    	$this->postOrder($this->right);
+    	if ( !is_null($node->left) ) {
+    		$this->postOrder($node->left);
+    	}
+    	if ( !is_null($node->left) ) {
+    		$this->postOrder($node->right);
+    	}
     	print($node->elem);
     }
 
@@ -226,7 +238,24 @@ class BinaryTree
      */
     public function breadth()
     {
+    	if ($this->root == null) {
+			return;
+		}
 
+		$queue = [$this->root];
+		while ( !empty($queue) ) {
+			$cur_node = array_shift($queue);
+
+			print($cur_node->elem);
+
+			if ( !is_null($cur_node->left) ) {
+				array_push($queue, $cur_node->left);
+			}
+
+			if ( !is_null($cur_node->right) ) {
+				array_push($queue, $cur_node->right);
+			}
+		}
     }
 }
 ```
