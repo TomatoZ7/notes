@@ -132,6 +132,13 @@ class Node
 }
 ```
 ```php
+/** 部分函数说明
+ *
+ * @method array_shift() 删除数组中的第一个元素，并返回被删除元素的值.
+ * @method is_null() 	 检测变量是否为 NULL，返回 boolean 。
+ * @method array_push()	 向第一个参数的数组尾部添加一个或多个元素（入栈），然后返回新数组的长度。
+ * @method empty()		 判断数组是否为空，为空返回 true 。
+ */
 class BinaryTree
 {
     public function __construct()
