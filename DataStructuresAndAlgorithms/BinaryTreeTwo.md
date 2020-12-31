@@ -180,3 +180,50 @@ class BinarySearchTree
 ```
 
 其实，删除操作还有一种比较简单、取巧的方法，那就是**软删除**。我们不是将节点真正地从树中删除，而是将它标记为"已删除"状态。这样原本要删除的节点还会存在于内存中，比较浪费内存空间，但是简化了删除操作。同时，这种方法并不会提高添加、查询操作的实现难度。
+
+&emsp;
+
+### 4. 二叉查找树的其他操作
+除了查找、插入、删除操作外，二叉查找树还支持**快速查找最大节点和最小节点、前驱结点和后继节点**。
+
+查找最大节点，只需递归二叉查找树的右子树，直到右子树为空的节点，即为最大节点。
+```php
+public function findMax()
+{
+    if ( is_null($this->root) ) {
+        return null;
+    }
+
+    $max_node = $this->root;
+    while ( !is_null($max_node->right) ) {
+        $max_node = $max_node->right;
+    }
+
+    return $max_node;
+}
+```
+
+查找最小节点，只需递归二叉查找树的左子树，直到左子树为空的节点，即为最小节点。
+```php
+public function findMin()
+{
+    if ( is_null($this->root) ) {
+        return null;
+    }
+
+    $max_node = $this->root;
+    while ( !is_null($max_node->right) ) {
+        $max_node = $max_node->right;
+    }
+
+    return $max_node;
+}
+```
+
+> 对一棵二叉树进行中序遍历，遍历后的顺序，当前节点的前一个节点为该节点的前驱节点；当前节点的后一个节点为该节点的后继节点。
+
+查找前驱节点分为两种情况：
+
+1. 如果节点的左子树不为空，则返回左子树中最大的节点即可；
+
+2. 如果节点的左子树为空，那么其祖先节点
