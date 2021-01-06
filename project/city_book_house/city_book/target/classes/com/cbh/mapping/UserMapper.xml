@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbh.dao.UserDao">
+    <!-- 对于数据表与实体类属性不一致情况，使用resultMap进行处理 -->
+     <resultMap id="data" type="com.cbh.domain.User">
+        <result property="id" column="id"/>
+        <result column="name" property="name"/>
+        <result column="account" property="account"/>
+        <result column="gender" property="gender"/>
+        <result column="phone" property="phone"/>
+        <result column="status" property="status"/>
+    </resultMap>
+    	
+    <resultMap id="count" type="java.lang.Integer">
+        <result column="count"/>
+    </resultMap>
+    
+    <select id="getUserList" parameterType="Map" resultMap="data,count">
+        SELECT SQL_CALC_FOUND_ROWS * FROM cb_user ORDER BY id DESC LIMIT #{limit} OFFSET #{offset};
+        SELECT FOUND_ROWS() as count;
+    </select>
+    
+    <select id="getUserById" resultType="com.cbh.domain.User">
+        SELECT * FROM cb_user WHERE id=#{id};
+    </select>
+    
+    <insert id="insertUser" parameterType="com.cbh.domain.User">
+        INSERT INTO
+        cb_user(name,password,account,gender,phone,avatar,status,has_rights,create_time)
+        VALUES(#{name},#{password},#{account},#{gender},#{phone},#{avatar},#{status},#{has_rights},#{create_time});
+    </insert>
+    
+    <update id="updateUser" parameterType="com.cbh.domain.User">
+        UPDATE cb_user set 
+        	account = #{account},
+        	password = #{password},
+        	name = #{name},
+        	gender = #{gender},
+        	phone = #{phone},
+        	avatar = #{avatar},
+        	status = #{status},
+        	has_rights = #{has_rights}
+		where
+			id = #{id};
+    </update>
+    
+    <delete id="delUserById" parameterType="java.lang.Integer">
+        DELETE FROM cb_user WHERE id = #{id};
+    </delete>
+</mapper>
