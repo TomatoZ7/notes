@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	
 	<typeAliases>
 		 <!-- <typeAlias alias="User" type="domain.User"/> -->
-		 <typeAlias alias="User" type="com.cbh.domain.User"/>
+		 <typeAlias alias="Manager" type="com.cbh.domain.Manager"/>
 	</typeAliases>
 	
 	<!-- 环境, 就是配置数据库访问环境的标签. default - 默认使用什么环境 -->
