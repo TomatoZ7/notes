@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.cbh.dao.BorrowRecordDao">
+     <resultMap id="list" type="com.cbh.domain.BorrowRecord">
+        <result property="id" column="id"/>
+        <result column="user_id" property="user_id"/>
+        <result column="book_id" property="book_id"/>
+        <result column="status" property="status"/>
+        <result column="start_time" property="start_time"/>
+        <result column="end_time" property="end_time"/>
+        <result column="create_time" property="create_time"/>
+    </resultMap>
+    	
+    <resultMap id="recordCount" type="java.lang.Integer">
+        <result column="count"/>
+    </resultMap>
+ 	
+ 	<!-- 列表查询 -->
+    <select id="getBorrowRecordList" parameterType="Map" resultMap="list, recordCount">
+    	<!-- 连表查询 -->
+    	SELECT SQL_CALC_FOUND_ROWS 
+        	*
+        FROM cb_borrow_record
+        ORDER BY id DESC LIMIT #{limit} OFFSET #{offset};
+        SELECT FOUND_ROWS() as count;
+    </select>
+ </mapper>

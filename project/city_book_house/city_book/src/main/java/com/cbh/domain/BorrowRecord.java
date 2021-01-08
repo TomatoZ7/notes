@@ -8,7 +8,7 @@ public class BorrowRecord {
 	private String start_time;
 	private String end_time;
 	private String create_time;
-	
+
 	public BorrowRecord(int id, int user_id, int book_id, int status, String start_time, String end_time,
 			String create_time) {
 		super();
@@ -19,6 +19,11 @@ public class BorrowRecord {
 		this.start_time = start_time;
 		this.end_time = end_time;
 		this.create_time = create_time;
+	}
+
+	public BorrowRecord() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	public int getId() {

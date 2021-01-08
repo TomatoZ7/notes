@@ -1,0 +1,192 @@
+{
+	"info": {
+		"_postman_id": "b5fc980c-b0a3-4017-b04a-70e32114edca",
+		"name": "localhost",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "manager",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8079/city_book/manager/list?offset=0&limit=10&status=0&content=admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"city_book",
+								"manager",
+								"list"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "status",
+									"value": "0"
+								},
+								{
+									"key": "content",
+									"value": "admin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "single",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": "http://localhost:8079/city_book/manager/9"
+					},
+					"response": []
+				},
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "account",
+									"value": "kobe9527",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "242424",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "kobe",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "13314415510",
+									"type": "text"
+								},
+								{
+									"key": "avatar",
+									"value": "good",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "has_rights",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": "http://localhost:8079/city_book/manager/add"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "account",
+									"value": "adminadmin",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "小红",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "13515013510",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8079/city_book/manager/10"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8079/city_book/manager/4"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "category",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": ""
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
