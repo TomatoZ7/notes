@@ -34,4 +34,31 @@ public class CategoryTest {
 		Category category = categoryDao.getCategoryById(1);
         System.out.println(category);
 	}
+	
+	@Test
+	public void testInsertCategory() {
+		Category category = new Category();
+		category.setCategory_name("美食");
+		category.setPid(0);
+		int result = categoryDao.insertCategory(category);
+		
+        System.out.println(result);
+	}
+	
+	@Test
+	public void testGetCategoryByName() {
+		String firstCate = "美食";
+		String secondCate = "小吃";
+
+		Category result = categoryDao.getCategoryByName(firstCate);
+		
+		System.out.println(result.getId());
+	}
+	
+	@Test
+	public void testGetCategoryWithLevel() {
+		List<List<?>> list = categoryDao.getCategoryWithLevel();
+		
+		System.out.println(list);
+	}
 }

@@ -19,8 +19,14 @@
         <result column="count"/>
     </resultMap>
     
+    <resultMap id="categorySingle" type="com.cbh.domain.Category">
+        <result property="id" column="id"/>
+        <result column="category_name" property="category_name"/>
+        <result column="pid" property="pid"/>
+    </resultMap>
+    
     <!-- 列表查询 -->
-    <select id="getCategoryList" parameterType="Map" resultMap="category categoryCount">
+    <select id="getCategoryList" parameterType="Map" resultMap="category, categoryCount">
         SELECT SQL_CALC_FOUND_ROWS 
         	cate.*, c.id as cid, c.category_name as parent_name
         FROM 
@@ -42,6 +48,42 @@
        	FROM 
        		cb_category AS cate
        		LEFT JOIN cb_category AS c ON cate.pid = c.id
-     	WHERE id=#{id};
+     	WHERE cate.id=#{id};
+    </select>
+    
+    <!-- 新增 -->
+    <insert id="insertCategory" parameterType="com.cbh.domain.Category">
+ 		<!-- 插入后获取id -->
+    	<selectKey keyProperty="id" keyColumn="id" resultType="int" order="AFTER">
+    		SELECT last_insert_id();
+    	</selectKey>
+        INSERT INTO
+        cb_category(category_name,pid,create_time)
+        VALUES(#{category_name},#{pid},#{create_time});
+    </insert>
+    
+    <!-- 根据分类名精确查询 -->
+    <select id="getCategoryByName" parameterType="String">
+        SELECT * FROM cb_category WHERE category_name = #{category_name} AND pid = 0 LIMIT 1;
+    </select>
+    
+    <!-- 更新 -->
+    <update id="updateCategory" parameterType="com.cbh.domain.Category">
+    	UPDATE cb_category set 
+        	category_name = #{category_name},
+        	pid = #{pid}
+		where
+			id = #{id};
+    </update>
+    
+    <!-- 删除 -->
+    <delete id="delCategoryById" parameterType="java.lang.Integer">
+        DELETE FROM cb_category WHERE id = #{id};
+    </delete>
+    
+    <!-- 所有分类返回 -->
+    <select id="getCategoryWithLevel" resultMap="categorySingle, categorySingle">
+    	SELECT * FROM cb_category WHERE pid = 0;
+    	SELECT * FROM cb_category WHERE pid > 0;
     </select>
 </mapper>

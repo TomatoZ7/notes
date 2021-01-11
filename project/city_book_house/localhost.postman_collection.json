@@ -183,6 +183,94 @@
 						"url": ""
 					},
 					"response": []
+				},
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "first_cate",
+									"value": "美食",
+									"type": "text"
+								},
+								{
+									"key": "second_cate",
+									"value": "小食",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://localhost:8079/city_book/category/add"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_cate\" : \"测试\",\r\n    \"second_cate\" : \"测试3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8079/city_book/category/14?first_cate=test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"city_book",
+								"category",
+								"14"
+							],
+							"query": [
+								{
+									"key": "first_cate",
+									"value": "test"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8079/city_book/category/16"
+					},
+					"response": []
+				},
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8079/city_book/category/all"
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}

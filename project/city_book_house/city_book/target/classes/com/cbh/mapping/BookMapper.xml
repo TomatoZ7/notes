@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.cbh.dao.BookDao">
+ 	<resultMap id="book" type="com.cbh.domain.Book">
+ 		<result column="id" property="id"/>
+ 		<result column="book_name" property="book_name"/>
+ 		<result column="author" property="author"/>
+ 		<result column="first_category_id" property="first_category_id"/>
+ 		<result column="second_category_id" property="second_category_id"/>
+ 		<result column="stock" property="stock"/>
+ 		<result column="book_code" property="book_code"/>
+ 		<result column="status" property="status"/>
+ 		<result column="place" property="place"/>
+ 		<result column="introduction" property="introduction"/>
+ 		<result column="image" property="image"/>
+ 		<result column="create_time" property="create_time"/>
+ 		
+ 		<collection property="firstCate" ofType="com.cbh.domain.Category">
+        	<id column="fcid" property="id" />
+        	<result column="category_name" property="category_name"/>
+        </collection>
+        
+        <collection property="secondCate" ofType="com.cbh.domain.Category">
+        	<id column="scid" property="id" />
+        	<result column="category_name" property="category_name"/>
+        </collection>
+	</resultMap>
+
+    <resultMap id="bookCount" type="java.lang.Integer">
+        <result column="count"/>
+    </resultMap>
+	
+	<!-- 列表查询 -->
+	<select id="getBookList" parameterType="Map" resultMap="book, bookCount">
+        SELECT SQL_CALC_FOUND_ROWS 
+        	book.*,
+			fc.id as fcid, fc.category_name as category_name, 
+        	sc.id as scid, sc.category_name as category_name
+        FROM 
+        	cb_books AS book
+        	LEFT JOIN cb_category AS fc ON fc.id = book.first_category_id
+        	LEFT JOIN cb_category AS sc ON sc.id = book.second_category_id
+        ORDER BY 
+        	id DESC 
+        LIMIT #{limit} OFFSET #{offset};
+        
+        SELECT FOUND_ROWS() as count;
+    </select>
+ </mapper>

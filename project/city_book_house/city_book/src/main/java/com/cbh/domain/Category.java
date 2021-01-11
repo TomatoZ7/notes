@@ -1,7 +1,5 @@
 package com.cbh.domain;
 
-import java.util.List;
-
 public class Category {
 	private int id;
 	private String category_name;

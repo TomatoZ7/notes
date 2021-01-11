@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 08/01/2021 18:30:25
+ Date: 11/01/2021 19:01:21
 */
 
 SET NAMES utf8mb4;
@@ -84,6 +84,11 @@ INSERT INTO `cb_category` VALUES (6, 'MySQL', 1, '2021-01-08 16:43:49');
 INSERT INTO `cb_category` VALUES (7, '粤菜', 2, '2021-01-08 16:44:04');
 INSERT INTO `cb_category` VALUES (8, '川菜', 2, '2021-01-08 16:44:11');
 INSERT INTO `cb_category` VALUES (9, '湘菜', 2, '2021-01-08 16:44:18');
+INSERT INTO `cb_category` VALUES (10, '美食', 0, '2021-01-11 11:06:05');
+INSERT INTO `cb_category` VALUES (11, 'test2', 0, '2021-01-11 13:19:51');
+INSERT INTO `cb_category` VALUES (12, '测试', 0, '2021-01-11 13:31:22');
+INSERT INTO `cb_category` VALUES (13, '人工智能', 0, '2021-01-11 13:31:22');
+INSERT INTO `cb_category` VALUES (14, '测试3', 12, '2021-01-11 13:32:13');
 
 -- ----------------------------
 -- Table structure for cb_manager
@@ -113,6 +118,7 @@ INSERT INTO `cb_manager` VALUES (6, 'manager888', 'asd123asd', 'manager', 0, '18
 INSERT INTO `cb_manager` VALUES (7, 'manager888', 'asd123asd', 'manager', 0, '18819917710', 'test9572', 1, 1, '2021-01-05 12:10:59');
 INSERT INTO `cb_manager` VALUES (8, 'manager888', 'asd123asd', 'manager', 0, '18819917710', 'test9572', 1, 1, '2021-01-05 12:10:59');
 INSERT INTO `cb_manager` VALUES (9, 'ironman666', '123456', 'ironman', 1, '13515013510', '1234567890', 1, 2, '2021-01-06 12:06:06');
+INSERT INTO `cb_manager` VALUES (12, 'kobe9527', 'e10adc3949ba59abbe56e057f20f883e', 'kobe', 1, '13314415510', NULL, 0, 0, '2021-01-11 12:00:40');
 INSERT INTO `cb_manager` VALUES (11, 'kobe9527', 'e10adc3949ba59abbe56e057f20f883e', 'kobe', 1, '13314415510', 'adawadad', 0, 0, '2021-01-06 15:18:41');
 
 -- ----------------------------
