@@ -84,7 +84,7 @@
 								},
 								{
 									"key": "name",
-									"value": "kobe",
+									"value": "kobee",
 									"type": "text"
 								},
 								{
@@ -177,10 +177,39 @@
 			"item": [
 				{
 					"name": "list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": ""
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:8079/city_book/category/list?offset=0&limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"city_book",
+								"category",
+								"list"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -274,6 +303,206 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "book",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8079/city_book/book/list?offset=0&limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"city_book",
+								"book",
+								"list"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "first_category_id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "second_category_id",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "single",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8079/city_book/book/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"city_book",
+								"book",
+								"1"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "book_name",
+									"value": "添加03",
+									"type": "text"
+								},
+								{
+									"key": "author",
+									"value": "作者",
+									"type": "text"
+								},
+								{
+									"key": "first_category_id",
+									"value": "12",
+									"type": "text"
+								},
+								{
+									"key": "second_category_id",
+									"value": "14",
+									"type": "text"
+								},
+								{
+									"key": "total",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "book_code",
+									"value": "addtest03",
+									"type": "text"
+								},
+								{
+									"key": "place",
+									"value": "S3E2",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"value": "/upload/20210112/ef137204-f31c-47be-a140-b704a03926e8_2.jpg",
+									"type": "text"
+								},
+								{
+									"key": "introduction",
+									"value": "我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://localhost:8079/city_book/book/add"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"book_name\" : \"修改01\",\r\n    \"author\" : \"作者\",\r\n    \"first_category_id\" : 12,\r\n    \"second_category_id\" : 14,\r\n    \"total\" : 30,\r\n    \"book_code\" : \"upttest01\",\r\n    \"place\" : \"999\",\r\n    \"introduction\" : \"阿斯利康连打机发你奥斯丁adad\",\r\n    \"image\" : \"/src/s/s/s.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8079/city_book/book/6"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8079/city_book/book/99"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": ""
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "upload",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/12143/Desktop/img/2.jpg"
+						}
+					]
+				},
+				"url": "http://localhost:8079/city_book/upload/upload"
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}

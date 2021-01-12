@@ -3,6 +3,16 @@ package com.cbh.service;
 import java.util.List;
 import java.util.Map;
 
+import com.cbh.domain.Book;
+
 public interface BookService {
 	List<List<?>> getBookList(Map param);
+	
+	Book getBookById(int id);
+	
+	int insertBook(Book book);
+	
+	int updateBook(Book book);
+	
+	int delBookById(int id);
 }

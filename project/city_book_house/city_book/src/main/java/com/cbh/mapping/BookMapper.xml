@@ -20,12 +20,12 @@
  		
  		<collection property="firstCate" ofType="com.cbh.domain.Category">
         	<id column="fcid" property="id" />
-        	<result column="category_name" property="category_name"/>
+        	<result column="first_category_name" property="category_name"/>
         </collection>
         
         <collection property="secondCate" ofType="com.cbh.domain.Category">
         	<id column="scid" property="id" />
-        	<result column="category_name" property="category_name"/>
+        	<result column="second_category_name" property="category_name"/>
         </collection>
 	</resultMap>
 
@@ -37,16 +37,74 @@
 	<select id="getBookList" parameterType="Map" resultMap="book, bookCount">
         SELECT SQL_CALC_FOUND_ROWS 
         	book.*,
-			fc.id as fcid, fc.category_name as category_name, 
-        	sc.id as scid, sc.category_name as category_name
+			fc.id as fcid, fc.category_name as first_category_name, 
+        	sc.id as scid, sc.category_name as second_category_name
         FROM 
         	cb_books AS book
         	LEFT JOIN cb_category AS fc ON fc.id = book.first_category_id
         	LEFT JOIN cb_category AS sc ON sc.id = book.second_category_id
+        <where>
+        	<if test="first_category_id != null">
+                and first_category_id = #{first_category_id}
+            </if>
+        	<if test="second_category_id != null">
+                and second_category_id = #{second_category_id}
+            </if>
+        	<if test="book_name != null">
+                and book_name like "%"#{book_name}"%"
+            </if>
+        	<if test="status != null">
+                and status = #{status}
+            </if>
+        	<if test="content != null">
+                and (author like "%"#{content}"%" or book_code like "%"#{content}"%")
+            </if>
+        </where>
         ORDER BY 
         	id DESC 
         LIMIT #{limit} OFFSET #{offset};
         
         SELECT FOUND_ROWS() as count;
     </select>
+    
+    <!-- 单条记录 -->
+    <select id="getBookById" resultMap="book">
+        SELECT book.*,
+			fc.id as fcid, fc.category_name as first_category_name, 
+        	sc.id as scid, sc.category_name as second_category_name
+        FROM 
+        	cb_books AS book
+        	LEFT JOIN cb_category AS fc ON fc.id = book.first_category_id
+        	LEFT JOIN cb_category AS sc ON sc.id = book.second_category_id
+        WHERE
+        	book.id=#{id};
+    </select>
+    
+    <!-- 新增 -->
+    <insert id="insertBook" parameterType="com.cbh.domain.Book">
+        INSERT INTO
+        cb_books(book_name,author,first_category_id,second_category_id,total,book_code,place,image,introduction,create_time)
+        VALUES(#{book_name},#{author},#{first_category_id},#{second_category_id},#{total},#{book_code},#{place},#{image},#{introduction},#{create_time});
+    </insert>
+    
+    <!-- 更新 -->
+    <update id="updateBook" parameterType="com.cbh.domain.Book">
+    	UPDATE cb_books set 
+        	book_name = #{book_name},
+        	author = #{author},
+        	first_category_id = #{first_category_id},
+        	second_category_id = #{second_category_id},
+        	total = #{total},
+        	book_code = #{book_code},
+        	place = #{place},
+        	image = #{image},
+        	introduction = #{introduction}
+		where
+			id = #{id};
+    </update>
+    
+    <!-- 删除 -->
+    <delete id="delBookById" parameterType="java.lang.Integer">
+        DELETE FROM cb_books WHERE id = #{id};
+    </delete>
  </mapper>

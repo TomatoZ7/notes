@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="com.cbh.dao.UserDao">
+ 	<resultMap id="user" type="com.cbh.domain.User">
+        <result property="id" column="id"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="gender" property="gender"/>
+        <result column="phone" property="phone"/>
+        <result column="status" property="status"/>
+        <result column="auth" property="auth"/>
+        <result column="id_num" property="id_num"/>
+        <result column="apply_time" property="apply_time"/>
+        <result column="id_positive_img" property="id_positive_img"/>
+        <result column="id_negative_img" property="id_negative_img"/>
+        <result column="apply_status" property="apply_status"/>
+    </resultMap>
+    
+    <resultMap id="userCount" type="java.lang.Integer">
+        <result column="count"/>
+    </resultMap>
+ 
+ 	<!-- 列表查询 -->
+    <select id="getUserList" parameterType="Map" resultMap="user, userCount">
+        SELECT SQL_CALC_FOUND_ROWS 
+        	*
+        FROM cb_user 
+        <where>
+        	<if test="apply_status = 1">
+                apply_status = 1
+            </if>
+        	<if test="apply_status > 1">
+                apply_status > 1
+            </if>
+        	<if test="name != null">
+                and name like "%"#{content}"%"
+            </if>
+            <if test="phone != null">
+                and phone like "%"#{phone}"%"
+            </if>
+        	<if test="status != null">
+                and status = #{status}
+            </if>
+        	<if test="auth != null">
+                and auth = #{auth}
+            </if>
+        </where>
+        ORDER BY id DESC LIMIT #{limit} OFFSET #{offset};
+        SELECT FOUND_ROWS() as count;
+    </select>
+    
+    <!-- 单条记录 -->
+    <select id="getUserById" resultMap="user">
+		SELECT * FROM cb_user WHERE id = #{id}
+    </select>
+ </mapper>

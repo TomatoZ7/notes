@@ -1,11 +1,14 @@
 package com.cbh.domain;
 
+import java.util.List;
+
 public class Book {
 	private int id;
 	private String book_name;
 	private String author;
 	private int first_category_id;
 	private int second_category_id;
+	private int total;
 	private int stock;
 	private String book_code;
 	private int status;
@@ -16,6 +19,7 @@ public class Book {
 	
 	private Category firstCate;
 	private Category secondCate;
+	private List<BorrowRecord> borrowRecord;
 	
 	public Book(int id, String book_name, String author, int first_category_id, int second_category_id, int stock,
 			String book_code, int status, String place, String introduction, String image, String create_time) {
@@ -77,6 +81,14 @@ public class Book {
 
 	public void setSecond_category_id(int second_category_id) {
 		this.second_category_id = second_category_id;
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
 	}
 
 	public int getStock() {
@@ -149,5 +161,13 @@ public class Book {
 
 	public void setSecondCate(Category secondCate) {
 		this.secondCate = secondCate;
+	}
+
+	public List<BorrowRecord> getBorrowRecord() {
+		return borrowRecord;
+	}
+
+	public void setBorrowRecord(List<BorrowRecord> borrowRecord) {
+		this.borrowRecord = borrowRecord;
 	}
 }

@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.cbh.dao.BookDao;
+import com.cbh.domain.Book;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:applicationContext.xml"})
@@ -26,5 +27,11 @@ public class BookTest {
 		
 		List<List<?>> list = bookDao.getBookList(param);
 		System.out.println(list);
+	}
+	
+	@Test
+	public void testQueryBookSingle() {
+		Book book = bookDao.getBookById(2);
+		System.out.println(book);
 	}
 }

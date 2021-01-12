@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 11/01/2021 19:01:21
+ Date: 12/01/2021 18:59:26
 */
 
 SET NAMES utf8mb4;
@@ -27,6 +27,7 @@ CREATE TABLE `cb_books`  (
   `author` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '作者',
   `first_category_id` int(11) NOT NULL DEFAULT 0 COMMENT '一级分类ID',
   `second_category_id` int(11) NOT NULL DEFAULT 0 COMMENT '二级分类ID',
+  `total` int(11) NULL DEFAULT NULL COMMENT '总数',
   `stock` int(11) NOT NULL DEFAULT 0 COMMENT '库存/馆藏量',
   `book_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '编码',
   `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1正常 2下架',
@@ -37,7 +38,17 @@ CREATE TABLE `cb_books`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `first_category_id`(`first_category_id`) USING BTREE,
   INDEX `second_category_id`(`second_category_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cb_books
+-- ----------------------------
+INSERT INTO `cb_books` VALUES (1, '测试书籍1', '作者1', 1, 0, NULL, 10, 'test1', 1, '', '', '', '2021-01-12 11:10:58');
+INSERT INTO `cb_books` VALUES (2, '测试书籍2', '作者2', 2, 7, NULL, 20, 'test2', 1, '', '', '', '2021-01-12 11:11:21');
+INSERT INTO `cb_books` VALUES (3, '测试书籍3', '作者3', 1, 1, NULL, 30, 'test3', 1, '', '', '', '2021-01-12 11:11:21');
+INSERT INTO `cb_books` VALUES (4, '测试书籍4', '作者4', 10, 0, NULL, 40, 'test4', 2, '', '', '', '2021-01-12 11:11:21');
+INSERT INTO `cb_books` VALUES (5, '添加01', '作者', 12, 14, 50, 0, 'addtest01', 1, '999', '开场冰雹是因为昨天我这下冰雹了开场冰雹是因为昨天我这下冰雹了开场冰雹是因为昨天我这下冰雹了开场冰雹是因为昨天我这下冰雹了开场冰雹是因为昨天我这下冰雹了开场冰雹是因为昨天我这下冰雹了开场冰雹是因为昨天我这下冰雹了开场冰雹是因为昨天我这下冰雹了', '/src/s/s/s.jpg', '2021-01-12 12:52:37');
+INSERT INTO `cb_books` VALUES (7, '添加03', '作者', 12, 14, 5, 0, 'addtest03', 1, 'S3E2', '我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧', '/upload/20210112/ef137204-f31c-47be-a140-b704a03926e8_2.jpg', '2021-01-12 17:38:31');
 
 -- ----------------------------
 -- Table structure for cb_borrow_record
@@ -70,7 +81,7 @@ CREATE TABLE `cb_category`  (
   `pid` int(11) NOT NULL DEFAULT 0 COMMENT '0为一级分类',
   `create_time` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cb_category
@@ -103,10 +114,10 @@ CREATE TABLE `cb_manager`  (
   `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1正常 2禁用',
-  `has_rights` tinyint(4) NULL DEFAULT NULL COMMENT '1超管 2普管',
+  `has_rights` tinyint(4) NOT NULL DEFAULT 2 COMMENT '1超管 2普管',
   `create_time` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户申请表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户申请表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cb_manager
@@ -120,6 +131,28 @@ INSERT INTO `cb_manager` VALUES (8, 'manager888', 'asd123asd', 'manager', 0, '18
 INSERT INTO `cb_manager` VALUES (9, 'ironman666', '123456', 'ironman', 1, '13515013510', '1234567890', 1, 2, '2021-01-06 12:06:06');
 INSERT INTO `cb_manager` VALUES (12, 'kobe9527', 'e10adc3949ba59abbe56e057f20f883e', 'kobe', 1, '13314415510', NULL, 0, 0, '2021-01-11 12:00:40');
 INSERT INTO `cb_manager` VALUES (11, 'kobe9527', 'e10adc3949ba59abbe56e057f20f883e', 'kobe', 1, '13314415510', 'adawadad', 0, 0, '2021-01-06 15:18:41');
+INSERT INTO `cb_manager` VALUES (13, 'kobe9527', 'e10adc3949ba59abbe56e057f20f883e', 'kobee', 1, '13314415510', NULL, 0, 0, '2021-01-12 12:50:40');
+INSERT INTO `cb_manager` VALUES (14, 'kobe9527', 'e10adc3949ba59abbe56e057f20f883e', 'kobee', 1, '13314415510', NULL, 0, 0, '2021-01-12 12:51:44');
+
+-- ----------------------------
+-- Table structure for cb_user
+-- ----------------------------
+DROP TABLE IF EXISTS `cb_user`;
+CREATE TABLE `cb_user`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '编码',
+  `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `gender` tinyint(4) NULL DEFAULT NULL COMMENT '1男 2女 3未知',
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `status` tinyint(4) NULL DEFAULT NULL COMMENT '1正常 2禁用',
+  `auth` tinyint(4) NULL DEFAULT NULL COMMENT '1启用 2禁用',
+  `id_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '身份证号',
+  `apply_time` timestamp(0) NULL DEFAULT NULL COMMENT '申请时间',
+  `id_positive_img` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '身份证正面照',
+  `id_negative_img` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '身份证反面照',
+  `apply_status` tinyint(4) NULL DEFAULT NULL COMMENT '1通过 2未通过 3待审核',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '读者表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for cb_user_apply

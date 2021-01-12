@@ -56,4 +56,10 @@
     <bean class="org.mybatis.spring.SqlSessionTemplate"
         c:sqlSessionFactory-ref="sqlSessionFactory">
     </bean>
+    
+     <!-- 配置文件上传视图解析器 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="10485760"></property>
+		<property name="defaultEncoding" value="utf-8"></property>
+	</bean>
 </beans>
