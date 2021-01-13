@@ -39,4 +39,14 @@ public class BookServiceImpl implements BookService {
 	public int delBookById(int id) {
 		return bookDao.delBookById(id);
 	}
+	
+	@Override
+	public int countBook() {
+		return bookDao.countBook();
+	}
+	
+	@Override
+	public List<Object> countBookByCategory(){
+		return bookDao.countBookByCategory();
+	}
 }

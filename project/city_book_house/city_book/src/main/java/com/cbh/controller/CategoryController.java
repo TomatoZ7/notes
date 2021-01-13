@@ -31,10 +31,14 @@ public class CategoryController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public HashMap<?,?> index(
 			@RequestParam Integer offset,
-			@RequestParam Integer limit) {
+			@RequestParam Integer limit,
+			Integer first_category_id,
+			Integer second_category_id) {
 		Map<String,Object> param = new HashMap<>();
 		param.put("offset", offset);
 		param.put("limit", limit);
+		param.put("first_category_id", first_category_id);
+		param.put("second_category_id", second_category_id);
 		
 		List<List<?>> list = categoryService.getCategoryList(param);
 		

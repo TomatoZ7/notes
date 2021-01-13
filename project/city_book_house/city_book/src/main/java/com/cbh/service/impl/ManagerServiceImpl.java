@@ -39,4 +39,14 @@ public class ManagerServiceImpl implements ManagerService {
 	public int insertManager(Manager Manager) {
 		return managerDao.insertManager(Manager);
 	}
+	
+	@Override
+	public int countManager() {
+		return managerDao.countManager();
+	}
+	
+	@Override
+	public Manager getManagerByLogin(Manager manager) {
+		return managerDao.getManagerByLogin(manager);
+	}
 }

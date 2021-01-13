@@ -11,6 +11,17 @@
         <result column="start_time" property="start_time"/>
         <result column="end_time" property="end_time"/>
         <result column="create_time" property="create_time"/>
+        
+        <collection property="user" ofType="com.cbh.domain.User">
+        	<id column="userid" property="id" />
+        	<result column="name" property="name"/>
+        </collection>
+        
+        <collection property="book" ofType="com.cbh.domain.Book">
+        	<id column="bookid" property="id" />
+        	<result column="book_name" property="book_name"/>
+        </collection>
+        
     </resultMap>
     	
     <resultMap id="recordCount" type="java.lang.Integer">
@@ -21,9 +32,15 @@
     <select id="getBorrowRecordList" parameterType="Map" resultMap="list, recordCount">
     	<!-- 连表查询 -->
     	SELECT SQL_CALC_FOUND_ROWS 
-        	*
-        FROM cb_borrow_record
-        ORDER BY id DESC LIMIT #{limit} OFFSET #{offset};
+        	record.*,
+        	user.id AS userid, user.name,
+        	book.id AS bookid, book.book_name
+        FROM
+			cb_borrow_record AS record
+        	LEFT JOIN cb_user AS user ON user.id = record.user_id
+        	LEFT JOIN cb_books AS book ON book.id = record.book_id
+        ORDER BY 
+        	id DESC LIMIT #{limit} OFFSET #{offset};
         SELECT FOUND_ROWS() as count;
     </select>
  </mapper>

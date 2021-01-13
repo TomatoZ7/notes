@@ -15,4 +15,8 @@ public interface BookDao {
 	int updateBook(Book book);
 	
 	int delBookById(int id);
+	
+	int countBook();
+	
+	List<Object> countBookByCategory(); 
 }

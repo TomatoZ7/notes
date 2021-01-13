@@ -24,4 +24,14 @@ public class UserServiceImpl implements UserService{
 	public User getUserById(int id) {
 		return userDao.getUserById(id);
 	}
+	
+	@Override
+	public int verifyUser(Map param) {
+		return userDao.verifyUser(param);
+	}
+	
+	@Override
+	public int countUser() {
+		return userDao.countUser();
+	}
 }

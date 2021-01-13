@@ -40,4 +40,14 @@ public class ManagerDaoImpl implements ManagerDao {
 	public int insertManager(Manager Manager) {
 		return ssTemplate.getMapper(ManagerDao.class).insertManager(Manager);
 	}
+	
+	@Override
+	public int countManager() {
+		return ssTemplate.getMapper(ManagerDao.class).countManager();
+	}
+	
+	@Override
+	public Manager getManagerByLogin(Manager manager) {
+		return ssTemplate.getMapper(ManagerDao.class).getManagerByLogin(manager);
+	}
 }

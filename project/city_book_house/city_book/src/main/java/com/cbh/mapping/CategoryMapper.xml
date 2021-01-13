@@ -32,8 +32,17 @@
         FROM 
         	cb_category AS cate
         	LEFT JOIN cb_category AS c ON cate.pid = c.id
-        WHERE 
-        	cate.pid > 0
+        <where>
+        	<if test="second_category_id == null">
+                pid > 0
+            </if>
+        	<if test="second_category_id != null">
+                id = #{second_category_id}
+            </if>
+        	<if test="first_category_id != null">
+                and pid = #{first_category_id}
+            </if>
+        </where>
         ORDER BY 
         	id DESC 
         LIMIT #{limit} OFFSET #{offset};
@@ -85,5 +94,10 @@
     <select id="getCategoryWithLevel" resultMap="categorySingle, categorySingle">
     	SELECT * FROM cb_category WHERE pid = 0;
     	SELECT * FROM cb_category WHERE pid > 0;
+    </select>
+    
+    <!-- 统计 -->
+    <select id="countCategory" resultType="java.lang.Integer">
+    	SELECT COUNT(*) FROM cb_category WHERE pid > 0;
     </select>
 </mapper>

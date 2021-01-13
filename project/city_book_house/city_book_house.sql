@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 12/01/2021 18:59:26
+ Date: 13/01/2021 19:01:32
 */
 
 SET NAMES utf8mb4;
@@ -27,7 +27,7 @@ CREATE TABLE `cb_books`  (
   `author` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '作者',
   `first_category_id` int(11) NOT NULL DEFAULT 0 COMMENT '一级分类ID',
   `second_category_id` int(11) NOT NULL DEFAULT 0 COMMENT '二级分类ID',
-  `total` int(11) NULL DEFAULT NULL COMMENT '总数',
+  `total` int(11) NULL DEFAULT 0 COMMENT '总数',
   `stock` int(11) NOT NULL DEFAULT 0 COMMENT '库存/馆藏量',
   `book_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '编码',
   `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1正常 2下架',
@@ -38,15 +38,15 @@ CREATE TABLE `cb_books`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `first_category_id`(`first_category_id`) USING BTREE,
   INDEX `second_category_id`(`second_category_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cb_books
 -- ----------------------------
-INSERT INTO `cb_books` VALUES (1, '测试书籍1', '作者1', 1, 0, NULL, 10, 'test1', 1, '', '', '', '2021-01-12 11:10:58');
-INSERT INTO `cb_books` VALUES (2, '测试书籍2', '作者2', 2, 7, NULL, 20, 'test2', 1, '', '', '', '2021-01-12 11:11:21');
-INSERT INTO `cb_books` VALUES (3, '测试书籍3', '作者3', 1, 1, NULL, 30, 'test3', 1, '', '', '', '2021-01-12 11:11:21');
-INSERT INTO `cb_books` VALUES (4, '测试书籍4', '作者4', 10, 0, NULL, 40, 'test4', 2, '', '', '', '2021-01-12 11:11:21');
+INSERT INTO `cb_books` VALUES (1, '测试书籍1', '作者1', 1, 0, 10, 10, 'test1', 1, '', '', '', '2021-01-12 11:10:58');
+INSERT INTO `cb_books` VALUES (2, '测试书籍2', '作者2', 2, 7, 20, 20, 'test2', 1, '', '', '', '2021-01-12 11:11:21');
+INSERT INTO `cb_books` VALUES (3, '测试书籍3', '作者3', 1, 1, 30, 30, 'test3', 1, '', '', '', '2021-01-12 11:11:21');
+INSERT INTO `cb_books` VALUES (4, '测试书籍4', '作者4', 10, 0, 40, 40, 'test4', 2, '', '', '', '2021-01-12 11:11:21');
 INSERT INTO `cb_books` VALUES (5, '添加01', '作者', 12, 14, 50, 0, 'addtest01', 1, '999', '开场冰雹是因为昨天我这下冰雹了开场冰雹是因为昨天我这下冰雹了开场冰雹是因为昨天我这下冰雹了开场冰雹是因为昨天我这下冰雹了开场冰雹是因为昨天我这下冰雹了开场冰雹是因为昨天我这下冰雹了开场冰雹是因为昨天我这下冰雹了开场冰雹是因为昨天我这下冰雹了', '/src/s/s/s.jpg', '2021-01-12 12:52:37');
 INSERT INTO `cb_books` VALUES (7, '添加03', '作者', 12, 14, 5, 0, 'addtest03', 1, 'S3E2', '我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧我玩大保健  你玩盲僧', '/upload/20210112/ef137204-f31c-47be-a140-b704a03926e8_2.jpg', '2021-01-12 17:38:31');
 
@@ -117,7 +117,7 @@ CREATE TABLE `cb_manager`  (
   `has_rights` tinyint(4) NOT NULL DEFAULT 2 COMMENT '1超管 2普管',
   `create_time` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户申请表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户申请表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cb_manager
@@ -150,9 +150,20 @@ CREATE TABLE `cb_user`  (
   `apply_time` timestamp(0) NULL DEFAULT NULL COMMENT '申请时间',
   `id_positive_img` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '身份证正面照',
   `id_negative_img` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '身份证反面照',
-  `apply_status` tinyint(4) NULL DEFAULT NULL COMMENT '1通过 2未通过 3待审核',
+  `apply_status` tinyint(4) NULL DEFAULT 3 COMMENT '1通过 2未通过 3待审核',
+  `verify_remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '审核备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '读者表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '读者表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cb_user
+-- ----------------------------
+INSERT INTO `cb_user` VALUES (1, 'test9527', 'tz', 1, '13580135800', 3, 1, '952795279527', '2021-01-13 12:05:33', NULL, NULL, 1, '很好，通过');
+INSERT INTO `cb_user` VALUES (2, 'test9527', 'tz', 1, '13580135800', 3, 1, '952795279527', '2021-01-13 12:05:33', NULL, NULL, 1, '很好，通过');
+INSERT INTO `cb_user` VALUES (3, 'test9527', 'tz', 1, '13580135800', 3, 1, '952795279527', '2021-01-13 12:05:33', NULL, NULL, 1, '很好，通过');
+INSERT INTO `cb_user` VALUES (4, 'test9527', 'tz', 1, '13580135800', 3, 1, '952795279527', '2021-01-13 12:05:33', NULL, NULL, 1, '很好，通过');
+INSERT INTO `cb_user` VALUES (5, 'test9527', 'tz', 1, '13580135800', 3, 1, '952795279527', '2021-01-13 12:05:33', NULL, NULL, 1, '很好，通过');
+INSERT INTO `cb_user` VALUES (6, 'test9527', 'tz', 1, '13580135800', 3, 1, '952795279527', '2021-01-13 12:05:33', NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for cb_user_apply

@@ -13,9 +13,10 @@ public class User {
 	private String id_positive_img;
 	private String id_negative_img;
 	private int apply_status;
+	private String verify_remark;
 	
 	public User(int id, String code, String name, int gender, String phone, int status, int auth, String id_num,
-			String apply_time, String id_positive_img, String id_negative_img, int apply_status) {
+			String apply_time, String id_positive_img, String id_negative_img, int apply_status, String verify_remark) {
 		super();
 		this.id = id;
 		this.code = code;
@@ -29,6 +30,7 @@ public class User {
 		this.id_positive_img = id_positive_img;
 		this.id_negative_img = id_negative_img;
 		this.apply_status = apply_status;
+		this.verify_remark = verify_remark;
 	}
 
 	public User() {
@@ -130,5 +132,13 @@ public class User {
 
 	public void setApply_status(int apply_status) {
 		this.apply_status = apply_status;
+	}
+	
+	public String getVerify_remark() {
+		return verify_remark;
+	}
+
+	public void setVerify_remark(String verify_remark) {
+		this.verify_remark = verify_remark;
 	}
 }

@@ -6,12 +6,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cbh.domain.User;
 import com.cbh.service.UserService;
+import com.cbh.utils.Result;
 
 @RequestMapping(value = "/user")
 @RestController
@@ -48,4 +50,20 @@ public class UserController {
         }
         return user;
     }
+	
+	@RequestMapping(value = "/verify", method = RequestMethod.PUT)
+	public Result verifyUser(@RequestBody Map<String, Object> params) {
+//		System.out.println(params.get("id"));
+//		System.out.println(params.get("apply_status").getClass().toString());
+//		Map<String,Object> param = new HashMap<>();
+		
+		
+		int result = userService.verifyUser(params);
+//		int result = 1;
+		if (result == 0) {
+        	return new Result(403, "Ê§°Ü¡£");
+        }
+
+        return new Result(200, "³É¹¦¡£");
+	}
 }

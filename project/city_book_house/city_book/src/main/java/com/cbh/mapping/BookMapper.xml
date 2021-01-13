@@ -107,4 +107,23 @@
     <delete id="delBookById" parameterType="java.lang.Integer">
         DELETE FROM cb_books WHERE id = #{id};
     </delete>
+    
+    <select id="countBook" resultType="java.lang.Integer">
+    	SELECT COUNT(*) FROM cb_books;
+    </select>
+    
+    <select id="countBookByCategory" resultType="java.util.Map">
+    	SELECT
+			SUM( b.total ) AS book,
+			c.category_name 
+		FROM
+			cb_books AS b
+			LEFT JOIN cb_category AS c ON c.id = b.second_category_id 
+		WHERE
+			c.category_name IS NOT NULL 
+		GROUP BY
+			B.second_category_id 
+		ORDER BY
+			book DESC;
+    </select>
  </mapper>

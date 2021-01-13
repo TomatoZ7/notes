@@ -16,4 +16,8 @@ public interface ManagerDao {
     int updateManager(Manager Manager);
 
     int insertManager(Manager Manager);
+    
+    int countManager();
+    
+    Manager getManagerByLogin(Manager manager);
 }

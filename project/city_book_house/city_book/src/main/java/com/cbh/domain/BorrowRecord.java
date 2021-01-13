@@ -8,6 +8,9 @@ public class BorrowRecord {
 	private String start_time;
 	private String end_time;
 	private String create_time;
+	
+	private User user;
+	private Book book;
 
 	public BorrowRecord(int id, int user_id, int book_id, int status, String start_time, String end_time,
 			String create_time) {
@@ -80,5 +83,21 @@ public class BorrowRecord {
 
 	public void setCreate_time(String create_time) {
 		this.create_time = create_time;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Book getBook() {
+		return book;
+	}
+
+	public void setBook(Book book) {
+		this.book = book;
 	}
 }

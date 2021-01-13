@@ -56,4 +56,17 @@
     <select id="getUserById" resultMap="user">
 		SELECT * FROM cb_user WHERE id = #{id}
     </select>
+    
+    <!-- 审核 -->
+    <update id="verifyUser" parameterType="Map">
+    	UPDATE cb_user set apply_status = #{apply_status}, verify_remark = #{verify_remark}
+		WHERE
+			id IN
+		<foreach collection="id" item="name" index="index" open="(" close=")" separator=",">#{name}</foreach>
+    </update>
+    
+    <!-- 统计 -->
+    <select id="countUser" resultType="java.lang.Integer">
+    	SELECT COUNT(*) FROM cb_user;
+    </select>
  </mapper>

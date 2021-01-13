@@ -65,4 +65,12 @@
     <delete id="delManagerById" parameterType="java.lang.Integer">
         DELETE FROM cb_manager WHERE id = #{id};
     </delete>
+    
+    <select id="countManager" resultType="java.lang.Integer">
+    	SELECT COUNT(*) FROM cb_manager;
+    </select>
+    
+    <select id="getManagerByLogin" parameterType="com.cbh.domain.Manager" resultMap="list">
+    	SELECT id FROM cb_manager WHERE password = #{password} AND (account = #{account} OR phone = #{account}) LIMIT 1;
+    </select>
 </mapper>

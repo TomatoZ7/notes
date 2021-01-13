@@ -49,4 +49,9 @@ public class CategoryServiceImpl implements CategoryService{
 	public List<List<?>> getCategoryWithLevel(){
 		return categoryDao.getCategoryWithLevel();
 	}
+	
+	@Override
+	public int countCategory() {
+		return categoryDao.countCategory();
+	}
 }

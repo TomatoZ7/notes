@@ -25,6 +25,19 @@ public class ManagerController {
 	@Autowired
     ManagerService managerService;
 
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public Manager login(Manager manager) {
+		// º”√‹√‹¬Î
+    	String pwd = DigestUtils.md5DigestAsHex(manager.getPassword().getBytes());
+    	manager.setPassword(pwd);
+		
+		Manager login = managerService.getManagerByLogin(manager);
+		
+		if (login == null) {
+			return new Manager();
+        }
+		return login;
+	}
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public HashMap<?,?> index(

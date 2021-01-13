@@ -39,4 +39,14 @@ public class BookDaoImpl implements BookDao {
 	public int delBookById(int id) {
 		return ssTemplate.getMapper(BookDao.class).delBookById(id);
 	}
+	
+	@Override
+	public int countBook() {
+		return ssTemplate.getMapper(BookDao.class).countBook();
+	}
+	
+	@Override
+	public List<Object> countBookByCategory(){
+		return ssTemplate.getMapper(BookDao.class).countBookByCategory();
+	}
 }

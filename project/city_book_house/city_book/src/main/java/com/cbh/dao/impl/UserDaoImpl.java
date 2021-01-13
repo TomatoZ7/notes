@@ -24,4 +24,14 @@ public class UserDaoImpl implements UserDao {
 	public User getUserById(int id) {
 		return ssTemplate.getMapper(UserDao.class).getUserById(id);
 	}
+	
+	@Override
+	public int verifyUser(Map param) {
+		return ssTemplate.getMapper(UserDao.class).verifyUser(param);
+	}
+	
+	@Override
+	public int countUser() {
+		return ssTemplate.getMapper(UserDao.class).countUser();
+	}
 }

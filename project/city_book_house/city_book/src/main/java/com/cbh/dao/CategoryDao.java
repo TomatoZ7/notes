@@ -19,4 +19,6 @@ public interface CategoryDao {
 	int delCategoryById(int id);
 	
 	List<List<?>> getCategoryWithLevel();
+	
+	int countCategory();
 }

@@ -168,6 +168,46 @@
 						"url": "http://localhost:8079/city_book/manager/4"
 					},
 					"response": []
+				},
+				{
+					"name": "borrow_record",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8079/city_book/borrow_record/list?offset=0&limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"city_book",
+								"borrow_record",
+								"list"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": ""
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -478,7 +518,77 @@
 					"request": {
 						"method": "GET",
 						"header": [],
+						"url": {
+							"raw": "http://localhost:8079/city_book/user/list?offset=0&limit=10&apply_status=1&name&phone&status&auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8079",
+							"path": [
+								"city_book",
+								"user",
+								"list"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "apply_status",
+									"value": "1",
+									"description": "读者列表1，读者审核列表2"
+								},
+								{
+									"key": "name",
+									"value": null
+								},
+								{
+									"key": "phone",
+									"value": null
+								},
+								{
+									"key": "status",
+									"value": null
+								},
+								{
+									"key": "auth",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "single",
+					"request": {
+						"method": "GET",
+						"header": [],
 						"url": ""
+					},
+					"response": []
+				},
+				{
+					"name": "verify",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : [1,2,3,4,5],\r\n    \"apply_status\" : 1,\r\n    \"verify_remark\" : \"很好，通过\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8079/city_book/user/verify"
 					},
 					"response": []
 				}
@@ -501,6 +611,15 @@
 					]
 				},
 				"url": "http://localhost:8079/city_book/upload/upload"
+			},
+			"response": []
+		},
+		{
+			"name": "count",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8079/city_book/count/count"
 			},
 			"response": []
 		}

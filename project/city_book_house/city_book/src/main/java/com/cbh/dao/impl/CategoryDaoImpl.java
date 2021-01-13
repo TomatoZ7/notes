@@ -53,4 +53,9 @@ public class CategoryDaoImpl implements CategoryDao {
 	public List<List<?>> getCategoryWithLevel(){
 		return ssTemplate.getMapper(CategoryDao.class).getCategoryWithLevel();
 	}
+	
+	@Override
+	public int countCategory() {
+		return ssTemplate.getMapper(CategoryDao.class).countCategory();
+	}
 }

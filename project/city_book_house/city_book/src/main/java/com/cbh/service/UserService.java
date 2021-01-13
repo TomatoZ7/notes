@@ -9,4 +9,8 @@ public interface UserService {
 	List<List<?>> getUserList(Map param);
 	
 	User getUserById(int id);
+	
+	int verifyUser(Map param);
+	
+	int countUser();
 }
