@@ -175,7 +175,7 @@ List<List<?>> userList(Map<?,?> param);
 </select>
 ```
 
-### 连表查询1
+### 连表查询2
 首先在 `com.test.domain.User` 类下定义好映射关系(如果比较复杂建议重新生成一个类去定义相对应的映射关系):
 ```java
 // ...
