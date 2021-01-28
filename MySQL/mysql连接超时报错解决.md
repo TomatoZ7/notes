@@ -4,8 +4,12 @@
 2021-01-28 最近使用 ssm 框架进行开发时长时间无操作服务端会500：
 >   com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: The last packet successfully received from the server was 54,337,996 milliseconds ago.  The last packet sent successfully to the server was 54,337,997 milliseconds ago. is longer than the server configured value of 'wait_timeout'. You should consider either expiring and/or testing connection validity before use in your application, increasing the server configured values for client timeouts, or using the Connector/J connection property 'autoReconnect=true' to avoid this problem
 
+&emsp;
+
 ## 报错原因
 MySQL 服务器默认的 `wait_timeout` 是 28800 秒即 8 小时，意味着如果一个连接的空闲时间超过 8 小时，MySQL 将自动断开连接，而连接池却认为该连接还是有效的（因为并未校验连接的有效性），当应用申请使用该连接时，就会报上述错误。
+
+&emsp;
 
 ## 解决
 ### mysql5 以下的版本
