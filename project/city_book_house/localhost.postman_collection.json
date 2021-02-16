@@ -14,7 +14,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8079/city_book/manager/list?offset=0&limit=10&status=0&content=admin",
+							"raw": "http://localhost:8080/city_book/manager/list?offset=0&limit=10&status=0&content=admin",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -59,7 +59,7 @@
 							"mode": "urlencoded",
 							"urlencoded": []
 						},
-						"url": "http://localhost:8079/city_book/manager/9"
+						"url": "http://localhost:8080/city_book/manager/9"
 					},
 					"response": []
 				},
@@ -117,7 +117,7 @@
 								}
 							]
 						},
-						"url": "http://localhost:8079/city_book/manager/add"
+						"url": "http://localhost:8080/city_book/manager/add"
 					},
 					"response": []
 				},
@@ -156,7 +156,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8079/city_book/manager/10"
+						"url": "http://localhost:8080/city_book/manager/10"
 					},
 					"response": []
 				},
@@ -165,7 +165,7 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:8079/city_book/manager/4"
+						"url": "http://localhost:8080/city_book/manager/4"
 					},
 					"response": []
 				},
@@ -175,7 +175,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8079/city_book/borrow_record/list?offset=0&limit=10",
+							"raw": "http://localhost:8080/city_book/borrow_record/list?offset=0&limit=10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -228,7 +228,7 @@
 							"urlencoded": []
 						},
 						"url": {
-							"raw": "http://localhost:8079/city_book/category/list?offset=0&limit=10",
+							"raw": "http://localhost:8080/city_book/category/list?offset=0&limit=10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -273,7 +273,7 @@
 								}
 							]
 						},
-						"url": "http://localhost:8079/city_book/category/add"
+						"url": "http://localhost:8080/city_book/category/add"
 					},
 					"response": []
 				},
@@ -302,7 +302,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8079/city_book/category/14?first_cate=test",
+							"raw": "http://localhost:8080/city_book/category/14?first_cate=test",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -328,7 +328,7 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:8079/city_book/category/16"
+						"url": "http://localhost:8080/city_book/category/16"
 					},
 					"response": []
 				},
@@ -337,7 +337,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:8079/city_book/category/all"
+						"url": "http://localhost:8080/city_book/category/all"
 					},
 					"response": []
 				}
@@ -353,7 +353,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8079/city_book/book/list?offset=0&limit=10",
+							"raw": "http://localhost:8080/city_book/book/list?offset=0&limit=10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -394,7 +394,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8079/city_book/book/1",
+							"raw": "http://localhost:8080/city_book/book/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -476,7 +476,7 @@
 								}
 							]
 						},
-						"url": "http://localhost:8079/city_book/book/add"
+						"url": "http://localhost:8080/city_book/book/add"
 					},
 					"response": []
 				},
@@ -494,7 +494,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8079/city_book/book/6"
+						"url": "http://localhost:8080/city_book/book/6"
 					},
 					"response": []
 				},
@@ -503,7 +503,7 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:8079/city_book/book/99"
+						"url": "http://localhost:8080/city_book/book/99"
 					},
 					"response": []
 				}
@@ -519,7 +519,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8079/city_book/user/list?offset=0&limit=10&apply_status=1&name&phone&status&auth",
+							"raw": "http://localhost:8080/city_book/user/list?offset=0&limit=10&apply_status=1&name&phone&status&auth",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -588,7 +588,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8079/city_book/user/verify"
+						"url": "http://localhost:8080/city_book/user/verify"
 					},
 					"response": []
 				}
@@ -610,7 +610,7 @@
 						}
 					]
 				},
-				"url": "http://localhost:8079/city_book/upload/upload"
+				"url": "http://localhost:8080/city_book/upload/upload"
 			},
 			"response": []
 		},
@@ -619,7 +619,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "http://localhost:8079/city_book/count/count"
+				"url": "http://localhost:8080/city_book/count/count"
 			},
 			"response": []
 		}
