@@ -1,4 +1,4 @@
-# Java 遍历字符串的 3 中方式
+# Java 遍历字符串的 3 种方式
 
 ## 1) .length + charAt()
 ```java

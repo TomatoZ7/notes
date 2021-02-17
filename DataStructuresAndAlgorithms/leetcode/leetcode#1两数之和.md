@@ -24,7 +24,7 @@
 输出：[0,1]
 ```
 
-## 暴力枚举，双循环检索
+## 解法1：暴力枚举，双循环检索
 ```java
 public int[] twoSum(int[] nums, int target) {
     for (int i = 0;i < nums.length; i++){
@@ -42,7 +42,7 @@ public int[] twoSum(int[] nums, int target) {
 + 时间复杂度：O(N²)
 + 空间复杂度：O(1)
 
-## 借助哈希表，减少一次循环，以空间换时间
+## 解法2：借助哈希表，减少一次循环，以空间换时间
 ```java
 public int[] twoSum(int[] nums, int target) {
     Map<Integer, Integer> map = new HashMap<Integer, Integer>();
