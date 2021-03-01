@@ -87,5 +87,5 @@ public boolean isPalindrome(int x) {
 
 ## 复杂度分析
 
-+ 时间复杂度：O(logn)；
++ 时间复杂度：O(logn)；  
 + 空间复杂度：O(1)，我们只需要常数空间存放若干变量。

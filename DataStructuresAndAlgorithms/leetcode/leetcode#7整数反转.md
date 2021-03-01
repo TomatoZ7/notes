@@ -90,7 +90,7 @@ public int reverse(int x) {
 ```
 
 ## 复杂度分析
-时间复杂度：O(log(x)), x 中大约有 log10(x) 位数字。  
+时间复杂度：O(log(x)), 大概需要循环 log10(x) 次。  
 空间复杂度：O(1)
 
 ## 其他
