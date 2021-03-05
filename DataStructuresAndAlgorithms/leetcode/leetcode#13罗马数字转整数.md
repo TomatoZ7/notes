@@ -150,3 +150,59 @@ public int romanToInt(String s) {
 空间复杂度：O(1)
 
 相比解法1，运行时间少了，但内存损耗不变。
+
+## 解法3：在解法2的基础上，取消哈希表以及复杂的判断
+
+用 `switch case` 代替 `hashmap` ：
+
+同时我们再次根据特殊情况进行分析得知：
+
+只要判断当前字符小于后一个字符，那么对当前字符使用 **减法**
+
+其余情况以及最后一个字符均使用 **加法**
+
+```java
+class Solution {
+    public int romanToInt(String s) {
+        int res = 0;
+        int prev = getValue(s.charAt(0));
+        for (int i = 1; i < s.length(); ++i) {
+            int curr = getValue(s.charAt(i));
+            if (prev < curr) {
+                res -= prev;
+            }else{
+                res += prev;
+            }
+            prev = curr;
+        }
+        res += prev;
+        return res;
+    }
+
+    public int getValue(char ch) {
+        switch (ch) {
+            case 'I':
+                return 1;
+            case 'V':
+                return 5;
+            case 'X':
+                return 10;
+            case 'L':
+                return 50;
+            case 'C':
+                return 100;
+            case 'D':
+                return 500;
+            case 'M':
+                return 1000;
+            default:
+                return 0;
+        }
+    }
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)，在 leetcode 上的运行时间比解法2缩短了一倍 <br/>
+空间复杂度：O(1)
