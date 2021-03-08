@@ -237,7 +237,7 @@ echo $hero->name;   // IronMan
 ## 六、__set()，设置一个成员变量时调用
 1. __set() 方法的作用
 
-__set(property, value) 方法用来设置私有属性，给一个未定义的属性赋值时，此方法会被触发，传递的参数是被设置的属性名和值。
+`__set(property, value)` 方法用来设置私有属性，给一个未定义的属性赋值时，此方法会被触发，传递的参数是被设置的属性名和值。
 
 2. 范例
 
@@ -279,6 +279,57 @@ $hero->name = "Ironman";    //赋值成功。如果没有__set()，则出错。
 $hero->gender = 1;  // 赋值成功
 $hero->gender = 7;  // 赋值失败
 $hero->show();  // My name is Ironman, My gender is 1
+```
+
+## 七、__isset()，当对不可访问属性调用 isset() 或 empty() 时调用
+
+在看这个方法之前我们看一下 `isset()` 函数的应用，`isset()` 是测定变量是否设定用的函数，传入一个变量作为参数，如果传入的变量存在则传回 true，否则传回 false。
+
+那么如果在一个对象外使用 `isset()` 函数去测定对象里面的成员是否被设定可不可以使用它呢？
+
+分两种情况：
+
+如果对象里面成员是公有的，我们就可以使用这个函数来测定；
+
+如果是私有的，这个函数就不起作用了，原因是私有的被封装了，在外部不可见。
+
+那么在对象的外部如何测定私有成员属性呢？
+
+这里就要用到 `isset()` 方法了。
+
+1. isset() 方法的作用
+
+当对不可访问属性调用 `isset()` 或 `empty()` 时，`__isset()` 会被调用。
+
+2. 范例
+
+```php
+class Marvel
+{
+    public $name;
+    private $gender;
+    private $age;
+    
+    public function __construct($name = "", $gender = 1, $age = 22){
+        $this->name = $name;
+        $this->gender = $gender;
+        $this->age = $age;
+    }
+
+    /**
+     * @param $content
+     *
+     * @return bool
+     */
+    public function __isset($content) {
+        return isset($this->$content);
+    }
+}
+
+$hero = new Marvel("Ironman", 1);
+print_r(isset($hero->name));
+print_r(isset($hero->gender));
+print_r(isset($hero->age));
 ```
 
 [思否](https://segmentfault.com/a/1190000007250604)
