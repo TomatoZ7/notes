@@ -390,7 +390,7 @@ O:6:"Marvel":2:{s:4:"name";s:12:"SXJvbm1hbg==";s:11:"Marvelage";i:22;}
 
 ## 十、__wakeup()，执行 unserialize() 时，会先调用这个函数
 
-如果说 __sleep() 是白的，那么 __wakeup() 就是黑的了。
+如果说 `__sleep()` 是白的，那么 `__wakeup()` 就是黑的了。
 
 那么为什么呢？
 
@@ -456,6 +456,12 @@ object(Marvel)#2 (3) {
   int(17)
 }
 ```
+
+## 十一、__toString()，类被当成字符串时的回应方法
+
+1. __toString() 的作用
+
+
 
 
 [思否](https://segmentfault.com/a/1190000007250604)
