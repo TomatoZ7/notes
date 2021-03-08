@@ -297,7 +297,7 @@ $hero->show();  // My name is Ironman, My gender is 1
 
 这里就要用到 `isset()` 方法了。
 
-1. isset() 方法的作用
+1. __isset() 方法的作用
 
 当对不可访问属性调用 `isset()` 或 `empty()` 时，`__isset()` 会被调用。
 
@@ -331,5 +331,131 @@ print_r(isset($hero->name));
 print_r(isset($hero->gender));
 print_r(isset($hero->age));
 ```
+
+## 八、__unset()，当对不可访问属性调用 unset() 时调用
+
+在看这个方法之前我们看一下 `unset()` 函数的应用，`unset()` 是销毁指定的变量并返回 true，参数是要销毁的变量。
+
+具体功能与 `isset()` 非常相似，这里不再赘述。
+
+## 九、__sleep()，执行 serialize() 时会先调用这个函数
+
+`serialize()` 函数会检查类中是否存在一个魔术方法 `__sleep()`。如果存在，则该方法会优先被调用，然后才执行序列化操作。
+
+此功能可以用于清理对象，并返回一个包含对象中所有应被序列化的变量名称的数组。
+
+如果该方法未返回任何内容，则 NULL 被序列化，并产生一个 `E_NOTICE` 级别的错误。
+
+注意 ： `__sleep()` 不能返回父类的私有成员的名字。这样做会产生一个 E_NOTICE 级别的错误。可以用 `Serializable` 接口来替代。
+
+1. __sleep() 方法的作用
+
+`__sleep()` 方法常用于提交未提交的数据，或类似的清理操作。同时，如果有一些很大的对象，但不需要全部保存，这个功能就很好用。
+
+2. 范例
+
+```php
+class Marvel
+{
+    public $name;
+    private $gender;
+    private $age;
+    
+    public function __construct($name = "", $gender = 1, $age = 22){
+        $this->name = $name;
+        $this->gender = $gender;
+        $this->age = $age;
+    }
+
+    /**
+     * @return array
+     */
+    public function __sleep() {
+        echo "当在类外部使用serialize()时会调用这里的 __sleep() 方法<br>";
+        $this->name = base64_encode($this->name);
+        return array('name', 'age');
+    }
+}
+
+$hero = new Marvel("Ironman", 1);
+echo serialize($hero);
+```
+
+运行结果如下：
+
+```
+当在类外部使用serialize()时会调用这里的 __sleep() 方法
+O:6:"Marvel":2:{s:4:"name";s:12:"SXJvbm1hbg==";s:11:"Marvelage";i:22;}
+```
+
+## 十、__wakeup()，执行 unserialize() 时，会先调用这个函数
+
+如果说 __sleep() 是白的，那么 __wakeup() 就是黑的了。
+
+那么为什么呢？
+
+因为：
+
+与之相反，`unserialize()` 会检查是否存在一个 `__wakeup()` 方法。如果存在，则会先调用 `__wakeup()` 方法，预先准备对象需要的资源。
+
+1. __wakeup() 的作用
+
+`__wakeup()` 经常用在反序列化操作中，例如重新建立数据库连接，或执行其它初始化操作。
+
+2. 范例
+
+```php
+class Marvel
+{
+    public $name;
+    private $gender;
+    private $age;
+    
+    public function __construct($name = "", $gender = 1, $age = 22){
+        $this->name = $name;
+        $this->gender = $gender;
+        $this->age = $age;
+    }
+
+    /**
+     * @return array
+     */
+    public function __sleep() {
+        echo "当在类外部使用serialize()时会调用这里的 __sleep() 方法<br>";
+        $this->name = base64_encode($this->name);
+        return array('name', 'age');
+    }
+
+    /**
+     * __wakeup
+     */
+    public function __wakeup(){
+        echo "当在类外部使用unserialize()时会调用这里的__wakeup()方法<br>";
+        $this->name = "SpiderMan";
+        $this->age = 17;
+        // 这里不需要返回数组
+    }
+}
+
+$hero = new Marvel("Ironman", 1);
+var_dump(serialize($hero));
+var_dump(unserialize(serialize($hero)));
+```
+
+第二个 `var_dump()` 执行结果如下：
+
+```
+当在类外部使用serialize()时会调用这里的 __sleep() 方法
+当在类外部使用unserialize()时会调用这里的__wakeup()方法
+object(Marvel)#2 (3) {
+  ["name"]=>
+  string(9) "SpiderMan"
+  ["gender":"Marvel":private]=>
+  NULL
+  ["age":"Marvel":private]=>
+  int(17)
+}
+```
+
 
 [思否](https://segmentfault.com/a/1190000007250604)
