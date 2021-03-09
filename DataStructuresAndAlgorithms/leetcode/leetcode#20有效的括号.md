@@ -50,3 +50,41 @@
 如下图所示：
 
 ![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/leetcode%2320.gif)
+
+为了快速判断括号的类型，我们可以使用哈希表存储每一种括号。哈希表的键为右括号，值为相同类型的左括号。
+
+```java
+class Solution {
+    public boolean isValid(String s) {
+        int len = s.length();
+        if (len % 2 == 1) return false;
+
+        Map<String, String> mapTable = new HashMap<String, String>(){{
+            put(")", "(");
+            put("]", "[");
+            put("}", "{");
+        }};
+
+        Stack<String> stk = new Stack<String>();
+
+        for (int i = 0; i < len; i++) {
+            String str = s.substring(i, i+1);
+            if (mapTable.containsKey(str)) {
+                if ( stk.empty() || !stk.peek().equals(mapTable.get(str)) ) {
+                    return false;
+                }
+                stk.pop();
+            }else{
+                stk.push(str);
+            }
+        }
+
+        return stk.empty();
+    }
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(n)。
+空间复杂度：O(n)。
