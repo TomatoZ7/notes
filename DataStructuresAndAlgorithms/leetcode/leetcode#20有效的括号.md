@@ -43,5 +43,10 @@
 + `s` 仅由括号 `'()[]{}'` 组成
 
 
-## 思路
+## 解：利用栈stack
 
+我们只需遍历字符串，遇到 左括号 则压栈，遇到 右括号 则与栈顶元素比较是否能组合成一对括号，如果能则弹出栈顶元素，如果不能返回 false。
+
+如下图所示：
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/leetcode%2320.gif)
