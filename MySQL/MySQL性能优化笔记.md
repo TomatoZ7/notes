@@ -59,7 +59,7 @@ innodb_buffer_pool_size = 750M  // 在只运行MySQL的服务器下，一般可�
 
 ### 设计中间表
 
-一般用于统计分析功能，或者实时性不高的需求(OLTP、OLAP)。
+一般用于统计分析功能，或者实时性不高的需求([OLTP、OLAP](https://www.zhihu.com/question/24110442/answer/851671343))。
 
 ### 设计冗余字段
 
