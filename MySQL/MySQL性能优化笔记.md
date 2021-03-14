@@ -89,7 +89,31 @@ SQL 语句做性能优化，一般步骤如下：
 
 ### 开启慢查询日志，定位运行慢的 SQL 语句
 
+利用慢查询日志可以获取所有查询时间比较长的 SQL 语句。
+
+开启慢查询日志：
+
+```
+slow_query_log = ON
+
+long_query_time = 3
+
+slow_query_log_file = /var/lib/mysql/
+
+slow-log.log
+```
+
 ### 利用 explain 执行计划，查看 SQL 执行情况
+
+关注几个比较重要的参数：
+
+1. select_type：表示了查询的类型，常见的有：SIMPLE、PRIMARY、UNION、SUBQUERY等。
+
+2. type：数据库引擎查找表的方式，常见的有：all、index、range、ref、eq_ref、const 和 NULL。
+
+3. key_len：表示查询优化器使用了索引的字节数。
+
+4. extra：额外的信息，通常包括 Using Index、Using where、Using index condition、Using filesort、Using temporary。
 
 ### 关注索引使用情况：type
 
