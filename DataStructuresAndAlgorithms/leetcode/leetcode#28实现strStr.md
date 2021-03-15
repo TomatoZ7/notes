@@ -95,4 +95,4 @@ class Solution {
 
 ## 解法3：Rabin Karp - 常数复杂度 (来自 leetcode 官方)
 
-有一种最坏时间复杂度也为 O(N) 的算法。思路是这样的，先生成窗口内子串的哈希码，然后再跟 needle 字符串的哈希码做比较。
+[传送门](https://leetcode-cn.com/problems/implement-strstr/solution/shi-xian-strstr-by-leetcode/)
