@@ -43,8 +43,8 @@ binlog 的默认保持时间由参数 `expire_logs_days` 配置，也就是说�
 ### 对应的物理文件
 
 默认情况下，对应的物理文件位于数据库的 data 目录下的 ib_logfile1 & ib_logfile2。<br/>
-innodb_log_group_home_dir 指定日志文件组所在的路径，默认 ./，表示在数据库的数据目录下。<br/>
-innodb_log_files_in_group 指定 binlog 文件组中文件的数量，默认2。
+`innodb_log_group_home_dir` 指定日志文件组所在的路径，默认 ./，表示在数据库的数据目录下。<br/>
+`innodb_log_files_in_group` 指定 binlog 文件组中文件的数量，默认2。
 
 关于文件的大小和数量，由以下两个参数配置：<br/>
 `innodb_log_file_size` binlog 的大小<br/>
