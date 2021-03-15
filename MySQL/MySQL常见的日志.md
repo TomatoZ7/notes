@@ -24,6 +24,10 @@ binlog 记录数据库执行的写入性操作（不包括查询）信息，以�
 
 在使用 mysqlbinlog 解析 binlog 之后一切会真相大白。因此可以基于 binlog 做到类似于 oracle 的闪回功能，其实都是依赖于 binlog 中的日志记录。
 
+### binlog 日志格式
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/mysql_log2.png)
+
 ### 什么时候产生
 
 事务提交的时候，一次性将事务中的 sql 语句(一个事务可能对应多条 sql 语句)按照一定的格式记录到 binlog 中。
@@ -45,10 +49,6 @@ innodb_log_files_in_group 指定 binlog 文件组中文件的数量，默认2。
 关于文件的大小和数量，由以下两个参数配置：
 innodb_log_file_size binlog 的大小
 innodb_mirrored_log_groups 指定了日志镜像文件组的数量，默认1
-
-### binlog 日志格式
-
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/mysql_log2.png)
 
 ### 其他
 
