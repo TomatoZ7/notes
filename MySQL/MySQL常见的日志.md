@@ -46,6 +46,10 @@ innodb_log_files_in_group 指定 binlog 文件组中文件的数量，默认2。
 innodb_log_file_size binlog 的大小
 innodb_mirrored_log_groups 指定了日志镜像文件组的数量，默认1
 
+### binlog 日志格式
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/mysql_log2.png)
+
 ### 其他
 
 很重要的一点，redo log 是什么时候开始写盘的？前面说了是在事物开始之后逐步写盘的。
@@ -59,6 +63,8 @@ innodb_mirrored_log_groups 指定了日志镜像文件组的数量，默认1
 由此可以看出，binlog 通过不止一种方式写入到磁盘，尤其对于第 1 种方式，innodb_log_buffer 到 binlog 文件是 Master Thread 线程的定时任务。
 
 因此 binlog 的写盘，并不一定随着事务的提交才写入 binlog 文件，而是随着事务的开始，逐步开始的。
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/mysql_log1.png)
 
 引用 《MySQL技术内幕 Innodb 存储引擎》(page37) 上的原话：
 
