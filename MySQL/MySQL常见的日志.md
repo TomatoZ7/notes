@@ -47,8 +47,8 @@ innodb_log_group_home_dir 指定日志文件组所在的路径，默认 ./，表
 innodb_log_files_in_group 指定 binlog 文件组中文件的数量，默认2。
 
 关于文件的大小和数量，由以下两个参数配置：<br/>
-innodb_log_file_size binlog 的大小<br/>
-innodb_mirrored_log_groups 指定了日志镜像文件组的数量，默认1
+`innodb_log_file_size` binlog 的大小<br/>
+`innodb_mirrored_log_groups` 指定了日志镜像文件组的数量，默认1
 
 ### 其他
 
