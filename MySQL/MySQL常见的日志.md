@@ -14,8 +14,8 @@ MySQL 中有七种日志文件，分别是：
 
 ### 作用
 
-1. 用于复制，在主从复制中，从库利用主库上的 binlog 进行重播，实现主从同步。
-2. 用于数据库的基于时间点的还原。
+1. 复制：MySQL 主从复制在 Master 端开启 binlog，Master 把它的二进制日志传递给 slaves 并回放来达到 master-slave 数据一致的目的
+2. 数据恢复：通过 mysqlbinlog 工具恢复数据
 
 ### 内容
 
@@ -40,10 +40,10 @@ binlog 的默认保持时间由参数 `expire_logs_days` 配置，也就是说�
 
 默认情况下，对应的物理文件位于数据库的 data 目录下的 ib_logfile1 & ib_logfile2。
 innodb_log_group_home_dir 指定日志文件组所在的路径，默认 ./，表示在数据库的数据目录下。
-innodb_log_files_in_group 指定重做日志文件组中文件的数量，默认2。
+innodb_log_files_in_group 指定 binlog 文件组中文件的数量，默认2。
 
 关于文件的大小和数量，由以下两个参数配置：
-innodb_log_file_size 重做日志的大小
+innodb_log_file_size binlog 的大小
 innodb_mirrored_log_groups 指定了日志镜像文件组的数量，默认1
 
 ### 其他
