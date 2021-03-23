@@ -1,0 +1,126 @@
+# strtotime和date的使用
+
+## strtotime()
+
+### 定义
+`strtotime()` 函数将任何英文文本的日期或时间描述解析为 Unix 时间戳（自 January 1 1970 00:00:00 GMT 起的秒数）。
+
+注意：如果年份表示使用两位数格式，则值 0-69 会映射为 2000-2069，值 70-100 会映射为 1970-2000。
+
+### 语法
+```
+strtotime(time, now);
+```
+
++ time : 必需。规定日期/时间字符串。
++ now : 可选。规定用来计算返回值的时间戳。如果省略该参数，则使用当前时间。
+
+## date()
+
+### 定义
+PHP `date()` 函数把时间戳格式化为更易读的日期和时间。
+
+### 语法
+```
+date(format,timestamp);
+```
+
++ format : 必需，规定时间戳格式。
++ timestamp : 可选。规定时间戳。默认是当前时间和日期。
+
+下面是一些日常开发中常用的 format 格式：
+
+| format字符 | 说明 | 返回值例子 |
+| :-------: | :--: | :-------: |
+| d | 月份中的第几天，有前导零的 2 位数字 | 01 到 31 |
+| j | 月份中的第几天，没有前导零 | 1 到 31 |
+| D | 星期中的第几天，文本表示，3个字母 | Mon 到 Sun |
+| l | 星期几，完整的英文 | Sunday 到 Saturday |
+| w | 星期中的第几天，数字表示 | 0(表示星期天) 到 6(表示星期六) |
+| z | 年份中的第几天 | 0 到 365 |
+| F | 月份，完整的英文 | January 到 December |
+| m | 数字表示的月份，有前导零 | 01 到 12 |
+| M | 三个字母表示缩写的月份 | Jan 到 Dec |
+| n | 数字表示的月份，没有前导零 | 1 到 12 |
+| t | 给定月份应有的天数 | 28 到 31 |
+| Y | 4 位数字完整表示的年份 | 如 2021, 2022 |
+| y | 2 位数字表示的年份 | 如 21, 22 |
+| a | 小写的上午和下午值 | am 或 pm |
+| A | 大写的上午和下午值 | AM 或 PM |
+| g | 小时，12小时格式，没有前导零 | 1 到 12 |
+| G | 小时，24小时格式，没有前导零 | 0 到 23 |
+| h | 小时，12小时格式，有前导零 | 01 到 12 |
+| H | 小时，24小时格式，有前导零 | 00 到 23 |
+| i | 有前导零的分钟数 | 00 到 59 |
+| s | 秒数，有前导零 | 00 到 59 |
+
+## 开发中相关操作记录
+
+```php
+// 获取当前月的天数
+$month_now_days = date('t');
+
+// 获取某月的天数
+$month_certain_days = date('t', strtotime('2021-01-01'));
+
+// 获取下个月的今天的日期
+$next_month_now_date = date('Y-m-d', strtotime('next month'));
+
+// 获取上个月的今天的日期
+$last_month_now_date = date('Y-m-d', strtotime('last month'));
+
+// 获取当前月的第一天的日期
+$now_month_first_date = date('Y-m-01');
+
+// 获取当前月的最后一天的日期
+$now_month_last_date = date('Y-m-d', strtotime(date('Y-m-1', strtotime('next month')).'-1 day'));
+
+// 获取上个月的第一天的日期
+$last_month_first_date = date('Y-m-01', strtotime('last month'));
+
+// 获取上个月的最后一天的日期
+$last_month_last_date = date('Y-m-d', strtotime(date('Y-m-01').'-1 day'));
+
+// 获取下个月的第一天的日期
+$next_month_first_date = date('Y-m-01', strtotime('next month'));
+
+// 获取下个月的最后一天的日期
+$next_month_last_date = date('Y-m-d', strtotime(date('Y-m-01', strtotime('next month')).'+1 month -1 day'));
+```
+
+上面代码存在 `strtotime()` 增加/减少一个月的时候可能时间不准，接下来引用鸟哥的一篇 blog 进行解释。
+
+## 令人困惑的 strtotime
+
+例如，今天是 2020-07-31，执行代码：
+
+```php
+date('Y-m-d', strtotime('-1 month'));
+```
+
+怎么输出的是 2020-07-01?
+
+虽然这个问题看起来很迷惑，但从内部逻辑上来说，其实是"对"的：
+
+我们来模拟一下 date 内部的对于这种事情的处理逻辑：
+
+1. 先做 `-1 month`，那么当前是 `07-31`，减去之后得到 `06-31`。
+2. 再做日期规范化，因为 6 月没有 31 号，所以就好像 2 点 60 等于 3 点一样，6 月 31 就等于了 7 月 1。
+
+那怎么办呢？
+
+从 PHP5.3 开始，`date` 新增了一系列修正短语，来明确这个问题，那就是 `first day of` 和 `last day of`，也就是你可以限定好不要让 `date` 自动"规范化"：
+
+```php
+date('Y-m-d', strtotime('last day of -1 month', strtotime('2021-07-31')));
+// 输出 2021-06-30
+
+date('Y-m-d', strtotime('first day of +1 month', strtotime('2021-08-31')));
+// 输出 2021-09-01
+
+date('Y-m-d', strtotime('last day of next month', strtotime('2021-01-31')));
+// 输出 2021-02-28
+
+date('Y-m-d', strtotime('first day of last month', strtotime('2021-03-31')));
+// 输出 2021-02-01
+```
