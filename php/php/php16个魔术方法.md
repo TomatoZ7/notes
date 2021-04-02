@@ -461,7 +461,176 @@ object(Marvel)#2 (3) {
 
 1. __toString() 的作用
 
+`__toString()` 方法用于一个类被当成字符串时该怎么回应。例如 `echo $obj;` 应该显示什么。
 
+2. 注意
+
+此方法必须返回一个字符串，否则将发出一条 `E_RECOVERABLE_ERROR` 级别的致命错误。
+
+3. 警告
+
+不能在 `toString()` 方法中抛出异常。这么做会导致致命错误。
+
+4. 范例
+
+```php
+class Marvel
+{
+    public $name;
+    private $gender;
+    private $age;
+    
+    public function __construct($name = "", $gender = 1, $age = 22){
+        $this->name = $name;
+        $this->gender = $gender;
+        $this->age = $age;
+    }
+
+    public function __toString()
+    {
+        return 'go go go';
+    }
+}
+
+$hero = new Marvel("Ironman", 1);
+echo $hero;     // go go go
+```
+
+5. 反向范例
+
+如果类中没有 `__toString()` 这个魔术方法运行后会发生什么呢，让我们来试一试：
+
+```php
+class Marvel
+{
+    public $name;
+    private $gender;
+    private $age;
+    
+    public function __construct($name = "", $gender = 1, $age = 22){
+        $this->name = $name;
+        $this->gender = $gender;
+        $this->age = $age;
+    }
+}
+
+$hero = new Marvel("Ironman", 1);
+echo $hero;
+```
+
+结果：
+
+```
+Catchable fatal error: Object of class Person could not be converted to string in D:\phpStudy\WWW\test\index.php on line 15
+```
+
+很明显，页面报了一个致命错误，这是语法所不允许的。
+
+## 十二、__invoke()，调用函数的方式调用一个对象时的回应方法
+
+1. 作用
+
+当尝试以调用一个函数的方式调用对象时，`__invoke()` 方法会被自动调用。
+
+2. 注意
+
+本特性只在 PHP5.3.0 及以上版本有效。
+
+3. 范例
+
+```php
+class Marvel
+{
+    public $name;
+    private $gender;
+    private $age;
+    
+    public function __construct($name = "", $gender = 1, $age = 22){
+        $this->name = $name;
+        $this->gender = $gender;
+        $this->age = $age;
+    }
+
+    public function __invoke()
+    {
+        return '这可是一个对象哦';
+    }
+}
+
+$hero = new Marvel("Ironman", 1);
+$hero();     // 这可是一个对象哦
+```
+
+## 十三、 __set_state()，调用 var_export() 导出类时，此静态方法会被调用。
+
+1. 作用
+
+自 PHP 5.1.0 起，当调用 var_export() 导出类时，此静态方法会被自动调用。
+
+2. 参数
+
+本方法的唯一参数是一个数组，其中包含按 `array('property' => value, ...)` 格式排列的类属性。
+
+3. 没有 __set_state() 示例
+
+```php
+class Marvel
+{
+    public $name;
+    private $gender;
+    private $age;
+    
+    public function __construct($name = "", $gender = 1, $age = 22){
+        $this->name = $name;
+        $this->gender = $gender;
+        $this->age = $age;
+    }
+}
+
+$hero = new Marvel("Ironman", 1);
+var_export($hero);
+```
+
+结果：
+
+```php
+Marvel::__set_state(array('name'=>'Ironman', 'gender'=>1, 'age'=>22))
+```
+
+很明显，将对象的属性都打印出来了。
+
+4. 加上 __set_state()
+
+```php
+class Marvel
+{
+    public $name;
+    private $gender;
+    private $age;
+    
+    public function __construct($name = "", $gender = 1, $age = 22){
+        $this->name = $name;
+        $this->gender = $gender;
+        $this->age = $age;
+    }
+
+    public function __set_state($hero_array){
+        $h = new Marvel();
+        $h->name = $hero_array['name'];
+        return $h;
+    }
+}
+
+$hero = new Marvel("Ironman", 1);
+$hero->name = 'Spider man';
+var_export($hero);
+```
+
+结果：
+
+```php
+Marvel::__set_state(array('name'=>'Spider man', 'gender'=>1, 'age'=>22))
+```
 
 
 [思否](https://segmentfault.com/a/1190000007250604)
