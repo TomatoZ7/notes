@@ -123,9 +123,10 @@ class Marvel
          echo "goodbye, I'm" . $this->name;
      }
 }
-```
 
-当 `$ironman = new Marvel('钢铁侠')` 并 `unset($ironman)` 时，__destruct() 里的 `echo` 会执行。
+$ironman = new Marvel('钢铁侠');
+unset($ironman);    // 输出：goodbye, I'm 钢铁侠
+```
 
 ## 三、 __call()，在对象中调用一个不可访问方法时调用
 
