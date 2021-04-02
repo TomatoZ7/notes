@@ -278,5 +278,99 @@ ORDER BY
 ### 15、查询各科成绩最高分、最低分、平均分、及格率、中等率、优良率、优秀率
 
 ```sql
+SELECT
+	c.c_id,
+	c.c_name,
+	MAX( sc.score ),
+	MIN( sc.score ),
+	AVG( sc.score ),
+	SUM( CASE WHEN sc.score >= 60 THEN 1 ELSE 0 END ) / COUNT( * ) AS '及格率',
+	SUM( CASE WHEN sc.score BETWEEN 70 AND 80 THEN 1 ELSE 0 END ) / COUNT( * ) AS '中等率',
+	SUM( CASE WHEN sc.score BETWEEN 80 AND 90 THEN 1 ELSE 0 END ) / COUNT( * ) AS '优良率',
+	SUM( CASE WHEN sc.score >= 90 THEN 1 ELSE 0 END ) / COUNT( * ) AS '优秀率'
+FROM
+	score AS sc
+	INNER JOIN course AS c ON sc.c_id = c.c_id 
+GROUP BY
+	c.c_id
+```
+
+### 16、按平均成绩进行排序，显示总排名和各科排名，Score 重复时保留名次空缺
+
+```sql
+SELECT
+	st.s_id, st.s_name,
+	rank_01,
+	rank_02,
+	rank_03,
+	rank_total 
+FROM
+	student AS st
+	LEFT JOIN ( SELECT s_id, RANK() OVER ( PARTITION BY c_id ORDER BY score DESC ) AS rank_01 FROM score WHERE c_id = '01' ) AS s1 ON s1.s_id = st.s_id
+	LEFT JOIN ( SELECT s_id, RANK() OVER ( PARTITION BY c_id ORDER BY score DESC ) AS rank_02 FROM score WHERE c_id = '02' ) AS s2 ON s2.s_id = st.s_id
+	LEFT JOIN ( SELECT s_id, RANK() OVER ( PARTITION BY c_id ORDER BY score DESC ) AS rank_03 FROM score WHERE c_id = '03' ) AS s3 ON s3.s_id = st.s_id
+	LEFT JOIN ( SELECT s_id, RANK() OVER ( ORDER BY AVG( score ) DESC ) AS rank_total FROM score GROUP BY s_id ) AS s4 ON s4.s_id = st.s_id 
+ORDER BY
+	rank_total ASC
+```
+
+### 17、按各科成绩进行排序，并显示排名
+
+```sql
+SELECT
+	s1.c_id,
+	s1.s_id,
+	s1.score,
+	COUNT(s2.score)+1 AS rank_score 
+FROM
+	score AS s1
+	LEFT JOIN score AS s2 ON s1.score < s2.score AND s1.c_id = s2.c_id 
+GROUP BY
+	s1.c_id,
+	s1.s_id,
+	s1.score 
+ORDER BY
+	s1.c_id,
+	s1.score DESC
+```
+
+### 18、查询学生的总成绩并进行排名
+
+```sql
+SELECT
+	st.s_id,
+	st.s_name,
+	SUM( sc.score ) AS total_score,
+	RANK() OVER(ORDER BY SUM(sc.score) DESC) AS total_rank
+FROM
+	student AS st
+	INNER JOIN score AS sc ON st.s_id = sc.s_id 
+GROUP BY
+	st.s_id,
+	st.s_name 
+ORDER BY
+	total_score DESC
+```
+
+### 19、查询不同老师所教不同课程平均分从高到低显示
+
+```sql
+SELECT
+	t.t_id,
+	t.t_name,
+	AVG(sc.score) AS avg_score 
+FROM
+	teacher AS t
+	INNER JOIN course AS c ON c.t_id = t.t_id
+	INNER JOIN score AS sc ON sc.c_id = c.c_id 
+GROUP BY
+	t.t_id
+ORDER BY
+	avg_score DESC
+```
+
+### 20、查询所有课程的成绩第2名到第3名的学生信息及该课程成绩
+
+```sql
 
 ```
