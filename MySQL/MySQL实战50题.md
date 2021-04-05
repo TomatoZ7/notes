@@ -455,3 +455,17 @@ GROUP BY
 HAVING
 	count <= 2
 ```
+
+### 26、查询男生、女生人数
+
+```sql
+SELECT s_sex, COUNT(*) FROM student GROUP BY s_sex
+```
+
+### 27、查询名字中含有"风"字的学生信息
+
+```sql
+SELECT * FROM student WHERE s_name LIKE '%风%'
+```
+
+### 28、查询同名同姓学生名单，并统计同名人数
