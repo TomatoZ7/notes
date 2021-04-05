@@ -374,3 +374,84 @@ ORDER BY
 ```sql
 
 ```
+
+### 21、使用分段[100-85],[85-70],[70-60],[<60]来统计各科成绩，分别统计各分数段人数：课程ID和课程名称
+
+```sql
+SELECT
+	c.c_id,
+	c.c_name,
+	SUM( CASE WHEN sc.score < 60 THEN 1 ELSE 0 END ) AS '分段[<60]',
+	SUM( CASE WHEN sc.score BETWEEN 60 AND 70 THEN 1 ELSE 0 END ) AS '分段[70-60]',
+	SUM( CASE WHEN sc.score BETWEEN 70 AND 85 THEN 1 ELSE 0 END ) AS '分段[85-70]',
+	SUM( CASE WHEN sc.score BETWEEN 85 AND 100 THEN 1 ELSE 0 END ) AS '分段[100-85]'
+FROM
+	score AS sc
+	INNER JOIN course AS c ON sc.c_id = c.c_id 
+GROUP BY
+	c.c_id
+```
+
+### 22、查询学生平均成绩及其名次
+
+```sql
+SELECT
+	st.s_id,
+	st.s_name,
+	AVG( sc.score ),
+	RANK() OVER( ORDER BY AVG( sc.score ) DESC ) AS avg_rank 
+FROM
+	score AS sc
+	INNER JOIN student AS st ON sc.s_id = st.s_id 
+GROUP BY
+	st.s_id
+```
+
+### 23、查询各科成绩前三名的记录
+
+```sql
+--- 方法1
+SELECT
+	c_id, s_id, score 
+FROM
+	score AS sc1 
+WHERE
+	(SELECT COUNT( sc2.s_id ) FROM score AS sc2 
+		WHERE sc1.c_id = sc2.c_id AND sc1.score < sc2.score 
+	) < 3 
+GROUP BY
+	sc1.c_id,
+	sc1.s_id
+ORDER BY
+	sc1.c_id,
+	sc1.score DESC
+
+
+--- 方法2
+SELECT
+	c_id, s_id, score 
+FROM
+	( SELECT c_id, s_id, score, DENSE_RANK() OVER( PARTITION BY c_id ORDER BY score DESC ) AS score_rank FROM score ) AS sc 
+WHERE
+	sc.score_rank <= 3
+```
+
+### 24、查询每门课程被选修的学生数
+
+```sql
+SELECT c_id, COUNT(s_id) AS count FROM score GROUP BY c_id
+```
+
+### 25、查询出只有两门课程的全部学生的学号和姓名
+
+```sql
+SELECT
+	st.s_id, st.s_name, COUNT( c_id ) AS count 
+FROM
+	student AS st
+	INNER JOIN score AS sc ON st.s_id = sc.s_id 
+GROUP BY
+	sc.s_id
+HAVING
+	count <= 2
+```
