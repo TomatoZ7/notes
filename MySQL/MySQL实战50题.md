@@ -469,3 +469,33 @@ SELECT * FROM student WHERE s_name LIKE '%风%'
 ```
 
 ### 28、查询同名同姓学生名单，并统计同名人数
+
+```sql
+SELECT s_name, COUNT(s_id) - 1 AS num FROM student GROUP BY s_name
+```
+
+### 29、查询1990年出生的学生名单
+
+```sql
+-- 方法1
+SELECT * FROM student WHERE s_age LIKE '1990%'
+
+-- 方法2
+SELECT * FROM student WHERE YEAR(s_age) = '1990'
+```
+
+### 30、查询平均成绩大于等于85的所有学生的学号、姓名和平均成绩
+
+```sql
+SELECT
+	sc.s_id,
+	st.s_name,
+	AVG(sc.score) AS avg_score 
+FROM
+	score AS sc
+	INNER JOIN student AS st ON sc.s_id = st.s_id 
+GROUP BY
+	sc.s_id
+HAVING
+	avg_score >= 85
+```
