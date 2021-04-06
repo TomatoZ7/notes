@@ -488,9 +488,7 @@ SELECT * FROM student WHERE YEAR(s_age) = '1990'
 
 ```sql
 SELECT
-	sc.s_id,
-	st.s_name,
-	AVG(sc.score) AS avg_score 
+	sc.s_id, st.s_name, AVG(sc.score) AS avg_score 
 FROM
 	score AS sc
 	INNER JOIN student AS st ON sc.s_id = st.s_id 
@@ -499,3 +497,97 @@ GROUP BY
 HAVING
 	avg_score >= 85
 ```
+
+### 31、查询每门课程的平均成绩，结果按平均成绩升序排序，平均成绩相同时，按课程号降序排列
+
+```sql
+SELECT
+	c.c_id, c.c_name, AVG( sc.score ) AS avg_score 
+FROM
+	score AS sc
+	INNER JOIN course AS c ON sc.c_id = c.c_id 
+GROUP BY
+	c.c_id
+ORDER BY
+	avg_score,
+	c_id DESC
+```
+
+### 32、查询课程名称为"数学"，且分数低于60的学生姓名和分数
+
+```sql
+SELECT
+	st.s_name, c.c_name, sc.score 
+FROM
+	score AS sc
+	INNER JOIN course AS c ON c.c_id = sc.c_id 
+	INNER JOIN student AS st ON st.s_id = sc.s_id
+WHERE
+	c.c_name = '数学' 
+	AND sc.score < 60
+```
+
+### 33、查询所有学生的课程及分数情况
+
+```sql
+SELECT
+	st.s_id,
+	st.s_name,
+	SUM( CASE c.c_name WHEN '语文' THEN sc.score ELSE NULL END ) AS '语文成绩',
+	SUM( CASE c.c_name WHEN '数学' THEN sc.score ELSE NULL END ) AS '数学成绩',
+	SUM( CASE c.c_name WHEN '英语' THEN sc.score ELSE NULL END ) AS '英语成绩' 
+FROM
+	score AS sc
+	INNER JOIN student AS st ON st.s_id = sc.s_id
+	INNER JOIN course AS c ON c.c_id = sc.c_id 
+GROUP BY
+	st.s_id
+```
+
+### 34、查询任何一门课程成绩在70分以上的姓名、课程名称和分数
+
+```sql
+SELECT
+	st.s_name, c.c_name, sc.score 
+FROM
+	score AS sc
+	INNER JOIN student AS st ON st.s_id = sc.s_id
+	INNER JOIN course AS c ON c.c_id = sc.c_id 
+WHERE
+	sc.score > 70
+```
+
+### 35、查询不及格的课程并按课程号从大到小排列
+
+```sql
+SELECT
+	c.c_id, c.c_name, sc.score 
+FROM
+	score AS sc
+	INNER JOIN course AS c ON c.c_id = sc.c_id 
+WHERE
+	sc.score < 60 
+ORDER BY
+	c.c_id DESC
+```
+
+### 36、查询课程编号为03且课程成绩在80分以上的学生的学号和姓名
+
+```sql
+SELECT
+	st.s_id, st.s_name 
+FROM
+	student AS st
+	INNER JOIN score AS sc ON st.s_id = sc.s_id 
+WHERE
+	sc.score > 80 
+	AND sc.c_id = '03'
+```
+
+### 37、求每门课程的学生人数
+
+```sql
+SELECT c_id, COUNT(s_id) AS student_num FROM score GROUP BY c_id
+```
+
+### 38、成绩不重复，查询选修“张三”老师所授课程的学生中成绩最高的学生姓名及其成绩
