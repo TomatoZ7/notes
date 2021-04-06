@@ -124,3 +124,12 @@ date('Y-m-d', strtotime('last day of next month', strtotime('2021-01-31')));
 date('Y-m-d', strtotime('first day of last month', strtotime('2021-03-31')));
 // 输出 2021-02-01
 ```
+
+## 2021-04-06 补充
+
+```php
+strtotime('06/04/2021');    // 1622764800
+strtotime('6/4/2021');    // 1622764800
+strtotime('04/2021');   // false
+strtotime('4/2021')     // false
+```
