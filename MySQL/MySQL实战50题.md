@@ -694,9 +694,9 @@ SELECT s_id, s_name, (YEAR(NOW()) - YEAR(s_age)) AS age FROM student;
 
 ### 46、按照出生日期来算，当前月日 < 出生年月的月日，则年龄减一
 
-TIMESTAMPDIFF 函数，有参数设置，可以精确到天（DAY）、小时（HOUR），分钟（MINUTE）和秒（SECOND），使用起来比 datediff 函数更加灵活。对于比较的两个时间，时间小的放在前面，时间大的放在后面。
+TIMESTAMPDIFF : 有参数设置，可以精确到天（DAY）、小时（HOUR），分钟（MINUTE）和秒（SECOND），使用起来比 datediff 函数更加灵活。对于比较的两个时间，时间小的放在前面，时间大的放在后面。
 
-datediff函数，返回值是相差的天数，不能定位到小时、分钟和秒。
+datediff函数 : 返回值是相差的天数，不能定位到小时、分钟和秒。
 
 ```sql
 SELECT s_id, s_name, TIMESTAMPDIFF(YEAR, s_age, NOW()) AS age FROM student
@@ -704,6 +704,28 @@ SELECT s_id, s_name, TIMESTAMPDIFF(YEAR, s_age, NOW()) AS age FROM student
 
 ### 47、查询本周过生日的学生
 
-```sql
+week(时间) : 默认从0开始，星期天默认为第一天，国外的算法
 
+week(时间, 1) : 默认从0开始，星期一为第一天，国内算法
+
+```sql
+SELECT * FROM student WHERE WEEK(s_age) = WEEK(NOW(), 1)
+```
+
+### 48、查询下周过生日的学生
+
+```sql
+SELECT * FROM student WHERE WEEK(s_age) = WEEK(NOW(), 1) + 1
+```
+
+### 49、查询本月过生日的学生
+
+```sql
+SELECT * FROM student WHERE MONTH(s_age) = MONTH(NOW())
+```
+
+### 50、查询下个月过生日的学生
+
+```sql
+SELECT * FROM student WHERE MONTH(s_age) = MONTH(NOW()) + 1
 ```
