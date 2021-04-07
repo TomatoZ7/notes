@@ -591,3 +591,119 @@ SELECT c_id, COUNT(s_id) AS student_num FROM score GROUP BY c_id
 ```
 
 ### 38、成绩不重复，查询选修“张三”老师所授课程的学生中成绩最高的学生姓名及其成绩
+
+```sql
+SELECT
+	st.s_id, st.s_name, sc.score 
+FROM
+	student AS st
+	INNER JOIN score AS sc ON sc.s_id = st.s_id 
+	INNER JOIN course AS c ON c.c_id = sc.c_id
+	INNER JOIN teacher AS t ON t.t_id = c.c_id
+WHERE
+	t.t_name = '张三'
+ORDER BY 
+	score DESC 
+	LIMIT 1
+```
+
+
+### 39、成绩有重复的情况下，查询选修「张三」老师所授课程的学生中，成绩最高的学生信息及其成绩
+
+```sql
+SELECT * FROM
+(
+	SELECT
+		st.*, sc.score,
+		DENSE_RANK() OVER( ORDER BY score DESC ) AS score_rank 
+	FROM
+		score AS sc
+		INNER JOIN student AS st ON st.s_id = sc.s_id
+		INNER JOIN course AS c ON c.c_id = sc.c_id
+		INNER JOIN teacher AS t ON t.t_id = c.t_id
+	WHERE
+		t.t_name = '张三'
+) AS temp 
+WHERE 
+	temp.score_rank = 1
+```
+
+### 40、查询不同课程成绩相同的学生的学生编号、课程编号、学生成绩
+
+```sql
+SELECT
+	sc1.s_id, sc1.c_id, sc1.score,
+	sc2.c_id, sc2.score 
+FROM
+	score AS sc1
+	INNER JOIN score AS sc2 ON sc1.s_id = sc2.s_id 
+	AND sc1.score = sc2.score 
+	AND sc1.c_id <> sc2.c_id
+```
+
+
+### 41、查询每门功课成绩最好的前两名
+
+```sql
+(SELECT c_id, s_id, score FROM score WHERE c_id = '01' ORDER BY score DESC LIMIT 2)
+UNION
+(SELECT c_id, s_id, score FROM score WHERE c_id = '02' ORDER BY score DESC LIMIT 2)
+UNION
+(SELECT c_id, s_id, score FROM score WHERE c_id = '03' ORDER BY score DESC LIMIT 2)
+```
+
+### 42、统计每门课程的学生选修人数（超过5人的课程才统计）
+
+```sql
+SELECT c_id, COUNT(s_id) AS student_num FROM score GROUP BY c_id HAVING student_num > 5
+```
+
+### 43、检索至少选修两门课程的学生学号
+
+```sql
+SELECT
+	st.*, COUNT(sc.c_id) AS cnum
+FROM
+	student AS st
+	INNER JOIN score AS sc ON sc.s_id = st.s_id
+GROUP BY
+	st.s_id
+HAVING
+	cnum >= 2
+```
+
+### 44、查询选修了全部课程的学生信息
+
+```sql
+SELECT
+	st.*, COUNT(sc.c_id) AS cnum
+FROM
+	student AS st
+	INNER JOIN score AS sc ON sc.s_id = st.s_id
+GROUP BY
+	st.s_id, st.s_name, st.s_age, st.s_sex
+HAVING
+	cnum = (SELECT COUNT(*) FROM course)
+```
+
+### 45、查询各学生的年龄
+
+```sql
+SELECT s_id, s_name, (YEAR(NOW()) - YEAR(s_age)) AS age FROM student;
+```
+
+### 46、按照出生日期来算，当前月日 < 出生年月的月日，则年龄减一
+
+TIMESTAMPDIFF 函数，有参数设置，可以精确到天（DAY）、小时（HOUR），分钟（MINUTE）和秒（SECOND），使用起来比 datediff 函数更加灵活。对于比较的两个时间，时间小的放在前面，时间大的放在后面。
+
+datediff函数，返回值是相差的天数，不能定位到小时、分钟和秒。
+
+```sql
+SELECT s_id, s_name, TIMESTAMPDIFF(YEAR, s_age, NOW()) AS age FROM student
+```
+
+### 47、查询本周过生日的学生
+
+```sql
+
+```
