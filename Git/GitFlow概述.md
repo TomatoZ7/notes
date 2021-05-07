@@ -25,3 +25,11 @@ feature 功能分支完成，合并到 develop (不推送)。
 develop 拉取 release 分支，提测。
 
 release/hotfix 分支上线完毕，合并到 develop 并推送。
+
+### feature
+
+功能开发分支，基于 develop 分支克隆，主要用于新需求新功能的开发。
+
+功能开发完毕后合到 develop 分支(未正式上线之前不推送到远程中央仓库)。
+
+feature 分支可同时存在多个，用于团队多个功能同时开发，属于临时分支，功能完成后可选删除。
