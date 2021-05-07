@@ -7,3 +7,11 @@
 ![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/go_install1.jpg)
 
 下载好后双击运行，一路 next 直到 install 即可。(可根据个人情况修改安装路径，建议安装到比较好找的路径)
+
+## 安装成功验证
+
+安装完成后点击 finish。
+
+`win + r` 输入 `cmd` 打开小黑窗，输入 `go version`，出现响应的版本信息即安装成功。
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/go_install2.jpg)
