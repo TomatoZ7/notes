@@ -11,3 +11,17 @@
 另外所有在 master 分支的推送应该打标签做记录，方便追溯。
 
 例如 release 合并到 master，或 hotfix 合并到 master。
+
+### develop
+
+主开发分支，基于 master 分支克隆。
+
+包含所有要发布到下一个 release 的代码。
+
+该分支为只读唯一分支，只能从其他分支合并。
+
+feature 功能分支完成，合并到 develop (不推送)。
+
+develop 拉取 release 分支，提测。
+
+release/hotfix 分支上线完毕，合并到 develop 并推送。
