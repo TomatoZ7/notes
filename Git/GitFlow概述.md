@@ -51,3 +51,17 @@ feature 分支可同时存在多个，用于团队多个功能同时开发，属
 属于临时分支，补丁修复上线后可选删除。
 
 所有 hotfix 分支的修改会进入到下一个 release。
+
+## 主要工作流程
+
+1. 初始化项目为 gitflow，默认创建 master 分支，然后从 master 拉取第一个 develop 分支。
+
+2. 从 develop 分支进行编码开发(多个开发人员拉取多个 feature 同时进行开发，互不影响)。
+
+3. feature 分支完成后，合并到 develop (不推送，feature 功能完成还未提测，推送后会影响到其他功能分支的开发)。
+
+合并 feature 到 develop，可以选择删除当前 feature，也可以不删除。但当前 feature 分支就不可更改了，必须从 release 分支继续编码修改。
+
+4. 从 develop 拉取 release 分支进行提测，提测过程中在 release 分支上修改 bug。
+
+5. release 分支上线后，合并 release 分支到 develop/master 并推送。
