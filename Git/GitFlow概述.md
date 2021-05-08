@@ -65,3 +65,7 @@ feature 分支可同时存在多个，用于团队多个功能同时开发，属
 4. 从 develop 拉取 release 分支进行提测，提测过程中在 release 分支上修改 bug。
 
 5. release 分支上线后，合并 release 分支到 develop/master 并推送。
+
+合并之后，可选删除当前 release 分支，若不删除，则当前 release 不可修改。线上有问题也必须从 master 拉取 hotfix 分支进行修改。
+
+6. 上线之后若发现线上 bug，从 master 分支拉取 hotfix 进行 bug 修改。
