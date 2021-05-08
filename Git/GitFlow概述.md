@@ -84,6 +84,6 @@ feature 分支可同时存在多个，用于团队多个功能同时开发，属
 
 引用大神的 GitFlow 工作流程图：
 
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/GitFlow.jpg)
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/GitFlow.png)
 
 [传送门 : GitFlow详解教程](https://blog.csdn.net/xingbaozhen1210/article/details/81386269)
