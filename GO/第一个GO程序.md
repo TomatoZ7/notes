@@ -47,3 +47,17 @@ go build -o helloworld
 ## 执行
 
 在 hello 目录下执行 hello.exe 即可在终端看到 `Hello World`。
+
+## go run
+
+像执行脚本文件一样执行 GO 代码。
+
+## go install 
+
+go install 分为两步：
+
+1. 先执行 `go build` 生成可执行文件
+
+2. 接着复制可执行文件到 GOPATH/bin 下
+
+因为我们的环境变量中配置了 GOPATH 下的 bin 目录，所以我们就可以在任意地方直接执行可执行文件了。
