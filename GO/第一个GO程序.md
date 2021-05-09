@@ -41,3 +41,7 @@ go build -o helloworld
 ```
 
 > go build 出现：`go.mod file not found in current directory or any parent directory; see 'go help modules‘` 时，需要执行 `go mod init` 初始化项目。
+
+## 执行
+
+在 hello 目录下执行 hello.exe 即可在终端看到 `Hello World`。
