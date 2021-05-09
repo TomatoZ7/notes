@@ -28,7 +28,7 @@ func main(){    // main 函数，是程序执行的入口
 go build
 ```
 
-或者在其他目录下执行(以 GOPATH/src 为根目录)：
+或者在其他目录下执行(以 GOPATH/src 为根)：
 
 ```go
 go build hello
