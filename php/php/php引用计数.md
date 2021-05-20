@@ -23,9 +23,8 @@ php 官方手册介绍 php 的每个变量都是存在一个叫做 zval 的容�
 ### 查看内部结构
 
 ```php
-<?php
-    $name = 'TomatoZ777';
-    xdebug_debug_zval('name');
+$name = 'TomatoZ777';
+xdebug_debug_zval('name');
 ```
 
 会得到
@@ -37,10 +36,9 @@ name: (refcount=1, is_ref=0), string 'TomatoZ777' (length=10)
 ### 增加一个计数
 
 ```php
-<?php
-    $name = 'TomatoZ777';
-    $temp_name = $name;
-    xdebug_debug_zval('name');
+$name = 'TomatoZ777';
+$temp_name = $name;
+xdebug_debug_zval('name');
 ```
 
 会得到
@@ -54,10 +52,9 @@ name: (refcount=2, is_ref=0), string 'TomatoZ777' (length=10)
 ### 引用赋值
 
 ```php
-<?php
-    $name = 'TomatoZ777';
-    $temp_name = &$name;
-    xdebug_debug_zval('name');
+$name = 'TomatoZ777';
+$temp_name = &$name;
+xdebug_debug_zval('name');
 ```
 
 会得到
@@ -71,12 +68,11 @@ name: (refcount=2, is_ref=1), string 'TomatoZ777' (length=10)
 ### 销毁变量
 
 ```php
-<?php
-    $name = 'TomatoZ777';
-    $temp_name = $name;
-    xdebug_debug_zval('name');
-    unset($temp_name);
-    xdebug_debug_zval('name');
+$name = 'TomatoZ777';
+$temp_name = $name;
+xdebug_debug_zval('name');
+unset($temp_name);
+xdebug_debug_zval('name');
 ```
 
 会得到
@@ -91,12 +87,11 @@ name: (refcount=1, is_ref=0), string 'TomatoZ777' (length=10)
 ### 数组型变量
 
 ```php
-<?php
-    $name = [
-        'a' => 'Tomato',
-        'b' => 'Z777'
-    ];
-    xdebug_debug_zval('name');
+$name = [
+    'a' => 'Tomato',
+    'b' => 'Z777'
+];
+xdebug_debug_zval('name');
 ```
 
 会得到
@@ -116,13 +111,12 @@ array (size=2)
 来自官方示例
 
 ```php
-<?php
-    $a = [
-        'meaning' => 'life',
-        'number' => 42
-    ];
-    $a['life'] = $a['meaning'];
-    xdebug_debug_zval('name');
+$a = [
+    'meaning' => 'life',
+    'number' => 42
+];
+$a['life'] = $a['meaning'];
+xdebug_debug_zval('name');
 ```
 
 会得到
@@ -142,10 +136,9 @@ key 为 meaning 和 life 的值指向同一个 zval 容器，refcount = 2。
 ### 往数组里添加自身的引用
 
 ```php
-<?php
-    $a = ['one'];
-    $a[] = &$a;
-    xdebug_debug_zval('a');
+$a = ['one'];
+$a[] = &$a;
+xdebug_debug_zval('a');
 ```
 
 会得到
