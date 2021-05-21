@@ -283,3 +283,26 @@ y: (refcount=2, is_ref=0)='test1621580318'
 ![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/php_ref8.png)
 
 因而引用计数为 2。
+
+### 数组的引用计数
+
+#### 不可变数组
+
+php7中引入了不可变数组（immutable array）的概念。一个不可变数组，是由不可变元素构成的，这些元素在编译阶段就可完全解析确定，比如 string, integer, float 等等。引入这种类型主要是为了优化内存。对于不可变数组，规定其初始引用计数为 2。
+
+```php
+$a = [1,2.1,'x'];
+xdebug_debug_zval('a');
+
+$b = $a;
+xdebug_debug_zval('a');
+xdebug_debug_zval('b');
+```
+
+输出
+
+```s
+a: (refcount=2, is_ref=0)=array (0 => (refcount=0, is_ref=0)=1, 1 => (refcount=0, is_ref=0)=2.1, 2 => (refcount=1, is_ref=0)='x')
+a: (refcount=3, is_ref=0)=array (0 => (refcount=0, is_ref=0)=1, 1 => (refcount=0, is_ref=0)=2.1, 2 => (refcount=1, is_ref=0)='x')
+b: (refcount=3, is_ref=0)=array (0 => (refcount=0, is_ref=0)=1, 1 => (refcount=0, is_ref=0)=2.1, 2 => (refcount=1, is_ref=0)='x')
+```
