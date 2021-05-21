@@ -220,7 +220,7 @@ b: (refcount=2, is_ref=1)=6.2
 
 `$a`, `$b` 都变为**引用类型**，**引用类型**结构如下：
 
-```c
+```c++
 typedef struct _zend_reference  zend_reference;
 struct _zend_reference {
     zend_refcounted_h gc;   // 与垃圾回收相关
@@ -232,3 +232,54 @@ struct _zend_reference {
 
 ![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/php_ref6.png)
 
+### 字符串的引用计数
+
+```php
+$h = 'test';
+$i = $h;
+xdebug_debug_zval('h');
+xdebug_debug_zval('i');
+
+$x = 'test' . time();
+$y = $x;
+xdebug_debug_zval('x');
+xdebug_debug_zval('y');
+```
+
+输出
+
+```
+h: (refcount=0, is_ref=0)='test'
+i: (refcount=0, is_ref=0)='test'
+x: (refcount=2, is_ref=0)='test1621580318'
+y: (refcount=2, is_ref=0)='test1621580318'
+```
+
+为什么同样是字符串，有的计算引用计数，而有的却计算了呢？
+
+#### 字符串的类型
+
+`zend_types.h` 中做了如下定义，注意，这个类型并不是记录在 `zval.u1.v.type` 中的，而是记录在 `zval.value->gc.u.flags` 中，主要服务于垃圾回收的。
+
+```c++
+/* string flags (zval.value->gc.u.flags) */
+#define IS_STR_INTERNED             GC_IMMUTABLE  /* interned string */
+#define IS_STR_PERSISTENT           GC_PERSISTENT /* allocated using malloc */
+#define IS_STR_PERMANENT            (1<<8)        /* relives request boundary */
+```
+
+具体的字串类别见下图(参考《php7底层设计与源码实现》4.3.2 字符串的类别)
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/php_ref7.png)
+
+其中，内部字串和已知字串，都会存在于php运行的整个周期，不涉及垃圾回收问题，自然也不需要引用计数。
+
+临时字串，只能在虚拟机执行 opcode 时计算出来并动态分配内存存储，需要引用计数。
+
+#### 上述例子解析
+
+由于 `time()` 只能在运行时计算，所以 `'test'.time()` 属于临时子串，赋值后存储情况如下图：
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/php_ref8.png)
+
+因而引用计数为 2。
