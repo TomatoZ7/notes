@@ -168,15 +168,15 @@ a: (refcount=2, is_ref=1)=array (
 
 从 PHP7 的 NTS 版本开始，普通的赋值将不再计算 `refcount` 的值。
 
-具体分类如下：
+具体如下：
 
-1. 对于 null，bool，int 和 double 的类型变量，`refcount` 永远不会计数。
+1. 对于 null，bool，int 和 double 的类型变量，`refcount` **永远不会计数**。
 
 2. 对于对象、资源类型，`refcount` 计数和 PHP5 一致。
 
-3. 对于字符串，未被引用的变量被称为**实际字符串**。而那些被引用的字符串被重复删除(即只有一个带有特定内容的被插入的字符串)并保证在请求的持续时间内存在，所以不需要为它们使用引用计数；如果使用了 opcache，这些字符串将存在于共享内存中，在这种情况下，不能使用引用计数(因为引用计数是非原子的)。
+3. 对于字符串，如果是临时字串，在赋值时会用到引用计数，但如果变量是字符常量，则不会计数。
 
-4. 对于数组，未引用的变量被称为`不可变数组`。其数组本身计数与 PHP5 一致，但是数组里面的每个键值对的计数，则按前面三条的规则(即如果是字符串也不在计数)；如果使用 opcache，则代码中的常量数组文字将被转换为不可变数组。再次，这些生活在共享内存，因此不能使用 `refcount`。
+4. 变量是普通的数组， 赋值时会用到引用计数，变量是 IS_ARRAY_IMMUTABLE 时，赋值不使用引用计数。
 
 ### 简单类型的引用计数
 
@@ -305,4 +305,93 @@ xdebug_debug_zval('b');
 a: (refcount=2, is_ref=0)=array (0 => (refcount=0, is_ref=0)=1, 1 => (refcount=0, is_ref=0)=2.1, 2 => (refcount=1, is_ref=0)='x')
 a: (refcount=3, is_ref=0)=array (0 => (refcount=0, is_ref=0)=1, 1 => (refcount=0, is_ref=0)=2.1, 2 => (refcount=1, is_ref=0)='x')
 b: (refcount=3, is_ref=0)=array (0 => (refcount=0, is_ref=0)=1, 1 => (refcount=0, is_ref=0)=2.1, 2 => (refcount=1, is_ref=0)='x')
+```
+
+解析：
+
++ `$a` 为不可变数组，所以引用计数为 2
++ `b=a` 赋值后，两者的 `zval.value.arr` 指向同一个 `zend_array`, 引用计数 +1, 所以 a, b 的引用计数都为 3。
+
+#### 普通数组
+
+如何生成一个普通数组呢？
+
+* 动态生成数组
+* 对不可变数组做任何改变(增减元素，改变元素值)
+
+```php
+$c = range(1,2);
+xdebug_debug_zval('c');
+
+$j = $c;
+xdebug_debug_zval('j');
+xdebug_debug_zval('c');
+```
+
+输出
+
+```s
+c: (refcount=1, is_ref=0)=array (0 => (refcount=0, is_ref=0)=1, 1 => (refcount=0, is_ref=0)=2)
+j: (refcount=2, is_ref=0)=array (0 => (refcount=0, is_ref=0)=1, 1 => (refcount=0, is_ref=0)=2)
+c: (refcount=2, is_ref=0)=array (0 => (refcount=0, is_ref=0)=1, 1 => (refcount=0, is_ref=0)=2)
+```
+
+解析：
+
++ `$c` 是普通数组，所以引用计数为 1
++ `j=c` 赋值后，引用计数 +1, 所以 c, j 的引用计数都为 2。
+
+#### 修改不可变数组元素
+
+```php
+$a = ['y', 'x'];
+xdebug_debug_zval('a');
+
+print("after b=a\n");
+$b = $a;
+xdebug_debug_zval('a');
+xdebug_debug_zval('b');
+
+print("after change a[0]\n");
+$a[0] = 'b';
+xdebug_debug_zval('a');
+xdebug_debug_zval('b');
+```
+
+输出
+
+```s
+a: (refcount=2, is_ref=0)=array (0 => (refcount=1, is_ref=0)='y', 1 => (refcount=1, is_ref=0)='x')
+after b=a
+a: (refcount=3, is_ref=0)=array (0 => (refcount=1, is_ref=0)='y', 1 => (refcount=1, is_ref=0)='x')
+b: (refcount=3, is_ref=0)=array (0 => (refcount=1, is_ref=0)='y', 1 => (refcount=1, is_ref=0)='x')
+after change a[0]
+a: (refcount=1, is_ref=0)=array (0 => (refcount=1, is_ref=0)='b', 1 => (refcount=2, is_ref=0)='x')
+b: (refcount=2, is_ref=0)=array (0 => (refcount=1, is_ref=0)='y', 1 => (refcount=2, is_ref=0)='x')
+```
+
+解析：
+
++ 起始 `$a` 是不可变数组，引用计数为 2。
++ `b=a`后，引用计数 +1。
++ 改变 `$a[0]` 后(这里发生了写时拷贝，即 `$a` 完全复制之前的数组，再修改第 0 个元素)，`$a` 成为普通数组，引用计数 -1。`$b` 指向原有的不可变数组，引用计数为 2。
+
+### 类的引用计数
+
+```php
+class Demo{
+    public $name = "ball";
+}
+
+$a = new Demo();
+$b = $a;
+xdebug_debug_zval('a');
+xdebug_debug_zval('b');
+```
+
+输出
+
+```s
+a: (refcount=2, is_ref=0)=class Demo { public $name = (refcount=2, is_ref=0)='ball' }
+b: (refcount=2, is_ref=0)=class Demo { public $name = (refcount=2, is_ref=0)='ball' }
 ```
