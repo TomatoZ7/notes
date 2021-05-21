@@ -168,8 +168,6 @@ a: (refcount=2, is_ref=1)=array (
 
 从 PHP7 的 NTS 版本开始，普通的赋值将不再计算 `refcount` 的值。
 
-如 `$a = $b = $c` 之后 `$c` 的引用计数也是 1。
-
 具体分类如下：
 
 1. 对于 null，bool，int 和 double 的类型变量，`refcount` 永远不会计数。
@@ -179,3 +177,58 @@ a: (refcount=2, is_ref=1)=array (
 3. 对于字符串，未被引用的变量被称为**实际字符串**。而那些被引用的字符串被重复删除(即只有一个带有特定内容的被插入的字符串)并保证在请求的持续时间内存在，所以不需要为它们使用引用计数；如果使用了 opcache，这些字符串将存在于共享内存中，在这种情况下，不能使用引用计数(因为引用计数是非原子的)。
 
 4. 对于数组，未引用的变量被称为`不可变数组`。其数组本身计数与 PHP5 一致，但是数组里面的每个键值对的计数，则按前面三条的规则(即如果是字符串也不在计数)；如果使用 opcache，则代码中的常量数组文字将被转换为不可变数组。再次，这些生活在共享内存，因此不能使用 `refcount`。
+
+### 简单类型的引用计数
+
+我们说的简单类型是指：bool(true/false), null, long, double
+
+#### 赋值
+
+```php
+$a = 777;
+$b = $a;
+xdebug_debug_zval('a');
+xdebug_debug_zval('b');
+```
+
+输出
+
+```
+a: (refcount=0, is_ref=0)=777
+b: (refcount=0, is_ref=0)=777
+```
+
+赋值后，`$a`, `$b` 是两个独立的 zval 结构，如下：
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/php_ref5.png)
+
+#### 引用
+
+```php
+$a = 777;
+$b = &$a;
+xdebug_debug_zval('a');
+xdebug_debug_zval('b');
+```
+
+输出
+
+```
+a: (refcount=2, is_ref=1)=777
+b: (refcount=2, is_ref=1)=777
+```
+
+`$a`, `$b` 都变为**引用类型**，**引用类型**结构如下：
+
+```c
+typedef struct _zend_reference  zend_reference;
+struct _zend_reference {
+    zend_refcounted_h gc;   // 与垃圾回收相关
+    zval              val;  // 一个 zval 结构
+};
+```
+
+在该例子中，php 创建了一个引用类型的结构体，`$a`, `$b` 的 `value.ref` 均指向它：
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/php_ref6.png)
+
