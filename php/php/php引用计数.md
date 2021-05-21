@@ -395,3 +395,9 @@ xdebug_debug_zval('b');
 a: (refcount=2, is_ref=0)=class Demo { public $name = (refcount=2, is_ref=0)='ball' }
 b: (refcount=2, is_ref=0)=class Demo { public $name = (refcount=2, is_ref=0)='ball' }
 ```
+
+## 参考资料
+
+[php7引用计数](https://www.jianshu.com/p/ba99748f0730)
+[一看就懂系列之 由浅入深聊一聊php的垃圾回收机制](https://blog.csdn.net/u011957758/article/details/76864400)
+[深入理解 PHP7 中全新的 zval 容器和引用计数机制](https://www.jb51.net/article/148865.htm)
