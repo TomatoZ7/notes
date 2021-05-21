@@ -185,7 +185,7 @@ a: (refcount=2, is_ref=1)=array (
 #### 赋值
 
 ```php
-$a = 777;
+$a = 6.2;
 $b = $a;
 xdebug_debug_zval('a');
 xdebug_debug_zval('b');
@@ -194,8 +194,8 @@ xdebug_debug_zval('b');
 输出
 
 ```
-a: (refcount=0, is_ref=0)=777
-b: (refcount=0, is_ref=0)=777
+a: (refcount=0, is_ref=0)=6.2
+b: (refcount=0, is_ref=0)=6.2
 ```
 
 赋值后，`$a`, `$b` 是两个独立的 zval 结构，如下：
@@ -205,7 +205,7 @@ b: (refcount=0, is_ref=0)=777
 #### 引用
 
 ```php
-$a = 777;
+$a = 6.2;
 $b = &$a;
 xdebug_debug_zval('a');
 xdebug_debug_zval('b');
@@ -214,8 +214,8 @@ xdebug_debug_zval('b');
 输出
 
 ```
-a: (refcount=2, is_ref=1)=777
-b: (refcount=2, is_ref=1)=777
+a: (refcount=2, is_ref=1)=6.2
+b: (refcount=2, is_ref=1)=6.2
 ```
 
 `$a`, `$b` 都变为**引用类型**，**引用类型**结构如下：
