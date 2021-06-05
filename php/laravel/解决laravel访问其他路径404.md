@@ -2,7 +2,7 @@
 
 ## 问题阐述
 
-项目环境：windows 平台, nginx 服务
+项目环境：nginx 服务
 
 在 routes/web.php 下新建一个路由后：
 
