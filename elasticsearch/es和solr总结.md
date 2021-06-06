@@ -2,7 +2,11 @@
 
 ## Elasticsearch 和 Solr 比较
 
+!(images)[https://github.com/TomatoZ7/notes-of-tz/blob/master/images/es%26solr1.png]
 
+!(images)[https://github.com/TomatoZ7/notes-of-tz/blob/master/images/es%26solr2.png]
+
+!(images)[https://github.com/TomatoZ7/notes-of-tz/blob/master/images/es%26solr3.png]
 
 ## Elasticsearch vs Solr
 
