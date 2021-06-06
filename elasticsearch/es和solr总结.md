@@ -8,7 +8,7 @@
 
 ![images](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/es%26solr3.png)
 
-## Elasticsearch vs Solr
+## Elasticsearch vs Solr 总结
 
 1. es 基本是开箱即用(解压就可以用)，非常简单，Solr 安装略微复杂；
 
