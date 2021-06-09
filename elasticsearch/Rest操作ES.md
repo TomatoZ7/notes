@@ -57,3 +57,7 @@ POST /test1/type1/1/_update
 ```
 DELETE /test1/{type1}/{ID}
 ```
+
+## 总结
+
+![images](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/ESrest2.jpg)
