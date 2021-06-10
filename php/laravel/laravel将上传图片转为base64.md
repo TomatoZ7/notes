@@ -4,6 +4,7 @@
 
 ```php
 $file = request()->file("file");
+$file = file_get_contents($file);
 $file_base64 = chunk_split(base64_encode($file));
 
 $file = 'data:image/jpg/png/gif;base64,' . $file_base64;
