@@ -64,7 +64,7 @@ sudo systemctl list-unit-files --state = enabled
 
 `top` 命令将资源使用最高的进程排在上面。正如下面截图所见，你可以看清楚哪个进程/应用程序在滥用 CPU，必要时使用 `kill` 命令终止它。
 
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/linux_optimize4.png)
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/linux_optimize4.jpg)
 
 ### 解决方案
 
@@ -112,11 +112,11 @@ sudo yum install iotop
 
 正常的闲置系统其值基本上是零，只是在数据写入时有几个小的尖峰，如下截图所示：
 
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/linux_optimize5.png)
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/linux_optimize5.jpg)
 
 然后，如果你运行 `find` 之类的磁盘密集型实用程序，可以看到 iotop 清楚列出的名称和吞吐量。
 
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/linux_optimize6.png)
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/linux_optimize6.jpg)
 
 现在你可以轻松了解哪个程序在使用 I/O、谁运行它、数据读取速度等更多信息。
 
