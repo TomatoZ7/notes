@@ -92,24 +92,24 @@ kill -WINCH PID /kill -WINCH`cat /usr/local/nginx/logs/nginx.pid`
 
 -V:打印版本号信息和配置信息并退出
 
--t:测试nginx的配置文件语法是否正确并退出
+-t:测试 nginx 的配置文件语法是否正确并退出
 
--T:测试nginx的配置文件语法是否正确并列出用到的配置文件信息然后退出
+-T:测试 nginx 的配置文件语法是否正确并列出用到的配置文件信息然后退出
 
 -q:在配置测试期间禁止显示非错误消息
 
--s:signal信号，后面可以跟 ：
+-s:signal 信号，后面可以跟 ：
 
-    stop[快速关闭，类似于TERM/INT信号的作用]
+    stop[快速关闭，类似于 TERM/INT 信号的作用]
 
-    quit[优雅的关闭，类似于QUIT信号的作用] 
+    quit[优雅的关闭，类似于 QUIT 信号的作用] 
 
-    reopen[重新打开日志文件类似于USR1信号的作用] 
+    reopen[重新打开日志文件类似于 USR1 信号的作用] 
 
-    reload[类似于HUP信号的作用]
+    reload[类似于 HUP 信号的作用]
 
--p:prefix，指定Nginx的prefix路径，(默认为: /usr/local/nginx/)
+-p:prefix，指定 Nginx 的 prefix 路径(默认为: /usr/local/nginx/)
 
--c:filename,指定Nginx的配置文件路径,(默认为: conf/nginx.conf)
+-c:filename,指定 Nginx 的配置文件路径(默认为: conf/nginx.conf)
 
--g:用来补充Nginx配置文件，向Nginx服务指定启动时应用全局的配置
+-g:用来补充 Nginx 配置文件，向 Nginx 服务指定启动时应用全局的配置
