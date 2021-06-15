@@ -119,3 +119,71 @@ no_etag - 启用压缩，如果 header 头中不包含 `ETag` 头信息
 auth - 启用压缩，如果 header 头中包含 `Authorization` 头信息
 
 any - 无条件启用压缩
+
+## Gzip 和 sendfile 共存问题
+
+开启 `sendfile` 以后，在读取磁盘上的静态资源文件的时候，可以减少拷贝的次数，可以不经过用户进程将静态文件通过网络设备发送出去。
+
+但是 Gzip 要想对资源压缩，是需要经过用户进程进行操作的。
+
+可以使用 ngx_http_gzip_static_module 模块的 `gzip_static` 指令来解决两个设置的共存问题。
+
+### Nginx 添加 ngx_http_gzip_static_module 模块
+
+#### 1、查询当前Nginx的配置参数
+
+```sh
+nginx -V
+```
+
+#### 2、将 nginx 安装目录下 sbin 目录中的 nginx 二进制文件进行更名
+
+```sh
+cd /usr/local/nginx/sbin
+mv nginx nginxold
+```
+
+#### 3、进入 Nginx 的安装目录
+
+```sh
+cd /root/nginx/core/nginx-1.16.1
+```
+
+#### 4、执行 `make clean` 清空之前编译的内容
+
+```sh
+make clean
+```
+
+#### 5、使用 configure 来配置参数
+
+这里需要加上第一步的参数 xxx
+
+```sh
+./configure xxx --with-http_gzip_static_module
+```
+
+#### 6、使用 make 命令进行编译
+
+```sh
+make
+```
+
+#### 7、将 objs 目录下的 nginx 二进制执行文件移动到 nginx 安装目录下的 sbin 目录中
+
+```sh
+mv objs/nginx /usr/local/nginx/sbin
+```
+
+#### 8、执行更新命令
+
+```sh
+make upgrade
+```
+
+### gzip_static : 检查与访问资源同名的 .gz 文件时，response 中以 gzip 相关的 header 返回 .gz 文件的内容。
+
+| 语法   | **gzip_static** on \| off \| always; |
+| ------ | ------------------------------------ |
+| 默认值 | gzip_static off;                     |
+| 位置   | http、server、location               |
