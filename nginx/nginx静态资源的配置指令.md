@@ -230,3 +230,141 @@ server {
 ```
 
 ### ^~ : 用于不包含正则表达式的 uri 前，功能和不加符号的一致，唯一不同的是，如果模式匹配，那么就停止搜索其他模式了
+
+
+## root/alias : 设置请求资源的目录
+
+### root：设置请求的根目录
+
+| 语法   | root path;             |
+| ------ | ---------------------- |
+| 默认值 | root html;             |
+| 位置   | http、server、location |
+
+path 为 Nginx 服务器接收到请求以后查找资源的根目录路径。
+
+### alias : 用来更改 location 的 uri
+
+| 语法   | alias path; |
+| ------ | ----------- |
+| 默认值 | —           |
+| 位置   | location    |
+
+path 为修改后的根路径。
+
+### 两者的区别
+
+存放一张图片 mv.png 于 `/usr/local/nginx/html/images`。
+
+#### root
+
+```
+location /images {
+	root /usr/local/nginx/html;
+}
+```
+
+访问图片的路径为:
+
+```
+http://192.168.200.133/images/mv.png
+```
+
+#### alias
+
+```
+location /images {
+	alias /usr/local/nginx/html;
+}
+```
+
+访问 `http://192.168.200.133/images/mv.png` 会 404，这是因为:
+
+```
+root 的处理结果是 : root 路径 + location 路径
+/usr/local/nginx/html/images/mv.png
+
+alias 的处理结果是 : 使用 alias 路径替换 location 路径
+/usr/local/nginx/html
+```
+
+需要在 `alias` 后面路径改为
+
+```
+location /images {
+	alias /usr/local/nginx/html/images;
+}
+```
+
+#### 小结
+
+1. `root` 的处理结果是: root 路径 + location 路径。
+
+2. `alias` 的处理结果是:使用 alias 路径替换 location 路径。
+
+3. `alias` 是一个目录别名的定义，`root` 则是最上层目录的含义。
+
+4. 如果 `location` 路径是以 `/` 结尾,则 `alias` 也必须是以 `/` 结尾，`root` 没有要求。
+
+
+## index : 设置网站的默认首页
+
+| 语法   | index file ...;        |
+| ------ | ---------------------- |
+| 默认值 | index index.html;      |
+| 位置   | http、server、location |
+
+`index` 后面可以跟多个设置，如果访问的时候没有指定具体访问的资源，则会依次进行查找，找到第一个为止。
+
+
+## error_page : 设置网站的错误页面
+
+| 语法   | error_page code ... [=[response]] uri; |
+| ------ | -------------------------------------- |
+| 默认值 | —                                      |
+| 位置   | http、server、location......           |
+
+当出现对应的响应 code 后，如何来处理。
+
+#### 1、可以指定具体跳转的地址
+
+```
+server {
+	error_page 404 http://www.baidu.com;
+}
+```
+
+#### 2、可以指定重定向地址
+
+```
+server{
+	error_page 404 /50x.html;
+	error_page 500 502 503 504 /50x.html;
+	location =/50x.html{
+		root html;
+	}
+}
+```
+
+#### 3、使用 location 的 @ 符合完成错误信息展示
+
+```
+server{
+	error_page 404 @jump_to_error;
+	location @jump_to_error {
+		default_type text/plain;
+		return 404 'Not Found Page...';
+	}
+}
+```
+
+#### 4、可选项 `=[response]` : 更改 code
+
+```
+server{
+	error_page 404 =200 /50x.html;
+	location =/50x.html{
+		root html;
+	}
+}
+```
