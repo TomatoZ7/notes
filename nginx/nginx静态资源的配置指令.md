@@ -38,6 +38,8 @@ server{
 	return 444 'This is a error request';
 }
 ```
+
+
 ## server_name : 用来设置虚拟主机服务名称
 
 | 语法   | server_name  name ...;<br/>name可以提供多个中间用空格分隔 |
@@ -143,3 +145,88 @@ No4 : 正则表达式匹配 server_name 成功 (regex_success)
 
 No5 : 被默认的 default_server 处理，如果没有指定默认找第一个 server (default_server)
 ```
+
+
+## location : 用来设置请求的URI
+
+| 语法   | location [  =  \|   ~  \|  ~*   \|   ^~   \|@ ] uri{...} |
+| ------ | -------------------------------------------------------- |
+| 默认值 | —                                                        |
+| 位置   | server,location                                          |
+
+uri 变量是待匹配的请求字符串，nginx 服务器在搜索匹配 `location` 的时候，先使用不包含正则表达式进行匹配，找到一个匹配度最高的一个，然后在通过包含正则表达式的进行匹配，如果能匹配到直接访问，匹配不到，就使用刚才匹配度最高的那个location来处理请求。
+
+### 不带符号，要求必须以指定模式开始
+
+```
+server {
+	listen 80;
+	server_name 127.0.0.1;
+	location /abc{
+		default_type text/plain;
+		return 200 "access success";
+	}
+}
+```
+
+以下访问都是正确的
+
+http://192.168.200.133/abc
+
+http://192.168.200.133/abc?p1=TOM
+
+http://192.168.200.133/abc/
+
+http://192.168.200.133/abcdef
+
+### = : 用于不包含正则表达式的 uri 前，必须与指定的模式精确匹配
+
+```
+server {
+	listen 80;
+	server_name 127.0.0.1;
+	location =/abc{
+		default_type text/plain;
+		return 200 "access success";
+	}
+}
+```
+
+可以匹配到
+
+http://192.168.200.133/abc
+
+http://192.168.200.133/abc?p1=TOM
+
+匹配不到
+
+http://192.168.200.133/abc/
+
+http://192.168.200.133/abcdef
+
+### ~ : 用于表示当前 uri 中包含了正则表达式，并且区分大小写
+
+### ~* : 用于表示当前 uri 中包含了正则表达式，并且不区分大小写
+
+换句话说，如果uri包含了正则表达式，需要用上述两个符合来标识
+
+```
+server {
+	listen 80;
+	server_name 127.0.0.1;
+	location ~^/abc\w${
+		default_type text/plain;
+		return 200 "access success";
+	}
+}
+server {
+	listen 80;
+	server_name 127.0.0.1;
+	location ~*^/abc\w${
+		default_type text/plain;
+		return 200 "access success";
+	}
+}
+```
+
+### ^~ : 用于不包含正则表达式的 uri 前，功能和不加符号的一致，唯一不同的是，如果模式匹配，那么就停止搜索其他模式了
