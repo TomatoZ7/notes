@@ -52,6 +52,5 @@ location /images {
         # rewrite ^/ http://www.web.com/images/forbidden.png;
     }
     root /usr/local/nginx/html;
-
 }
 ```
