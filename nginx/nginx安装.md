@@ -35,6 +35,12 @@ tar -xzf nginx-1.16.1.tar.gz
 ./configure
 ```
 
+configure 文件是 Nginx 的自动脚本程序。运行 configure 自动脚本一般会完成两项工作：
+
+1. 检查环境，根据环境检查结果生成 C 代码；
+
+2. 生成编译代码需要的 Makefile 文件。
+
 ### 5、编译
 
 ```sh
