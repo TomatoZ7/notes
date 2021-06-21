@@ -327,7 +327,7 @@ make
 
 在 Nginx 的源码中 `src/http/ngx_http_upstream.h`，找到`ngx_http_upstream_srv_conf_s`，在模块中添加添加 `default_port` 属性。
 
-```
+```c
 in_port_t	   default_port
 ```
 
