@@ -151,9 +151,9 @@ Nginx 的 upstream 支持如下六种方式的分配算法，分别是:
 | ---------- | ---------------- |
 | 轮询       | 默认方式         |
 | weight     | 权重方式         |
-| ip_hash    | 依据ip分配方式   |
+| ip_hash    | 依据 ip 分配方式   |
 | least_conn | 依据最少连接方式 |
-| url_hash   | 依据URL分配方式  |
+| url_hash   | 依据 URL 分配方式  |
 | fair       | 依据响应时间方式 |
 
 ### 轮询
