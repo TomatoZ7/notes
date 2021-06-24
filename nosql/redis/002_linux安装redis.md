@@ -56,7 +56,13 @@ redis-server myredisconf/redis.conf
 
 ![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/redis_inst5.jpg)
 
-10、退出
+10、进入 cli 模式
+
+```sh
+redis-cli
+```
+
+11、退出
 
 ```sh
 shutdown
