@@ -236,3 +236,10 @@ ZCOUNT key min max  # 返回有序集 key 中，score 值在 min 和 max 之间(
 使用场景：
 
 班级成绩表、工资表、带权重信息
+
+
+## redis 官方命令中心
+
+[命令中心(中文)](http://redis.cn/commands.html)
+
+[命令中心](https://redis.io/commands)
