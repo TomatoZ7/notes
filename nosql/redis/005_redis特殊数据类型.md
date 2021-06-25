@@ -75,3 +75,45 @@ GEORADIUSBYMEMBER china:city beijing 500 km
 127.0.0.1:6379> ZREM china:city beijing
 (integer) 1
 ```
+
+## Hyperloglog
+
+Redis 2.8.9 版本就更新了 Hyperloglog 数据结构。
+
+Redis Hyperloglog 是基数统计的算法。
+
+场景分析：
+
+统计 UV，传统来说可以使用 set 统计，将用户 id 放到 set 里面，保证不重复。但是如果是用户 id 是 uuid 等字符串形式，会占据比较大的内存空间。这时候就可以考虑使用 Hyperloglog 了。
+
+优点：占用的内存是固定的，可以存储 2^64 个不同的元素，只需要占 12kb 的内存。从内存优化的角度来比较，Hyperloglog 首选。
+
+官方表示有 0.81% 的错误率。
+
+### PFADD key element [element ...]
+
+### PFCOUNT key [key ...]
+
+### PFMERGE destkey sourcekey [sourcekey ...]
+
+将多个 HyperLogLog 合并（merge）为一个 HyperLogLog ， 合并后的 HyperLogLog 的基数接近于所有输入 HyperLogLog 的可见集合（observed set）的并集.
+
+合并得出的 HyperLogLog 会被储存在目标变量（第一个参数）里面， 如果该键并不存在， 那么命令在执行之前， 会先为该键创建一个空的.
+
+## Bitmaps
+
+位存储
+
+场景：记录用户打卡，由于只可以存 0 和 1，所以有局限性。
+
+### SETBIT key offset value
+
+设置或者清空 key 的 value (字符串)在 offset 处的 bit 值。
+
+### GETBIT key offset
+
+返回 key 对应的 string 在 offset 处的 bit 值。
+
+BITCOUNT key [start end]
+
+统计字符串被设置为 1 的 bit 数.
