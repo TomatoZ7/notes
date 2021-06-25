@@ -2,6 +2,8 @@
 
 ## AOF(Append Only File)
 
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/redis_aof1.png)
+
 以日志的形式来记录每个写操作，将 Redis 执行过的所有指令记录下来(读操作不记录)，只许追加文件但不可以改写文件，redis 启动之初会读取该文件重新构建数据，换言之，redis 重启的话就根据日志文件的内容讲写指令从前到后执行过一次以完成数据的恢复工作。
 
 AOF 保存的是 appendonly.aof 文件
