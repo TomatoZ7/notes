@@ -69,6 +69,8 @@ dir ./      # rdb 文件保存的目录
 
 ```conf
 ################################# REPLICATION #################################
+
+replicaof <masterip> <masterport>
 ```
 
 ## 安全

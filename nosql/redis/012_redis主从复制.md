@@ -16,7 +16,6 @@
 
 4、高可用基石 : 除了上述作用以外，主从复制还是哨兵和集群能够实施的基础，因此说主从复制是 Redis 高可用的基础。
 
-
 一般来说，要将 Redis 运用于工程项目中，只使用一台 Redis 是万万不能的(宕机)，原因如下:
 
 1、从结构上，单个 Redis 服务器会发生单点故障，并月一台服务器需要处理所有的请求负载，压力较大；
@@ -29,7 +28,7 @@
 ![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/redis_master1.png)
 
 
-## 环境配置
+## 环境配置实例
 
 只配置从库，不用配置主库！
 
@@ -112,3 +111,6 @@ repl_backlog_size:1048576
 repl_backlog_first_byte_offset:1
 repl_backlog_histlen:56
 ```
+
+> 真实的主从配置应该是在配置文件中配置的，这样的话是永久的。我们这里使用命令的方式是暂时的。
+
