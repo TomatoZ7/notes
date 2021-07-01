@@ -80,7 +80,7 @@ GEORADIUSBYMEMBER china:city beijing 500 km
 
 Redis 2.8.9 版本就更新了 Hyperloglog 数据结构。
 
-Redis Hyperloglog 是基数统计的算法。
+Redis Hyperloglog 是基数（一个集合内不重复的元素个数）统计的算法。
 
 场景分析：
 
