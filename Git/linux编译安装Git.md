@@ -59,3 +59,17 @@ source /etc/profile
 ```bash
 git --version
 ```
+
+## 10、配置 git
+
+```bash
+git config --global user.name "xxxxx@gmail.com"
+git config --global user.email "xxxxx"
+
+ssh-keygen -t rsa -C "xxxxx@gmail.com"
+cat ~/.ssh/id_rsa.pub
+
+# 登录 github，把密钥写入即可
+
+ssh -T git@github.com
+```
