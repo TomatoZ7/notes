@@ -71,5 +71,6 @@ cat ~/.ssh/id_rsa.pub
 
 # 登录 github，把密钥写入即可
 
+# 测试
 ssh -T git@github.com
 ```
