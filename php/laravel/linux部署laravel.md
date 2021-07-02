@@ -39,7 +39,7 @@ composer install --ignore-platform-reqs
 composer update --ignore-platform-reqs
 ```
 
-6、只能访问主路径不能访问其他路径
+6、访问其他路径404
 
 在 nginx 配置文件加上
 
