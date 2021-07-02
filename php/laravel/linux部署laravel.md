@@ -25,3 +25,16 @@
 4、 出现 `No application encryption key has been specified.`
 
 在 laravel 下执行命令 `php artisan key:generate`
+
+5、 `composer update` 时报错 `Your requirements could not be resolved to an installable set of packages.`
+
+原因 : 不匹配composer.json要求的版本。
+
+解决方案：
+
+composer 可以设置忽略版本匹配，
+
+```bash
+composer install --ignore-platform-reqs
+composer update --ignore-platform-reqs
+```
