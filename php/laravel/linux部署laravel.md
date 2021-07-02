@@ -38,3 +38,15 @@ composer 可以设置忽略版本匹配，
 composer install --ignore-platform-reqs
 composer update --ignore-platform-reqs
 ```
+
+6、只能访问主路径不能访问其他路径
+
+在 nginx 配置文件加上
+
+```conf
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}
+```
+
+所有的请求将会引导至 index.php 前端控制器。
