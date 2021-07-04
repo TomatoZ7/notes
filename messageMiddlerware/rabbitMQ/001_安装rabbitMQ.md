@@ -92,7 +92,9 @@ rabbitmqctl set_user_tags admin administrator
 
 + policymaker 策略制定者 登录控制台、制定策略
 
-+ managment 普通管理员 登录控制台、
++ managment 普通管理员 登录控制台
+
++ none 不能访问 management plugin
 
 3) 为用户添加资源权限
 
