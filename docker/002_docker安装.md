@@ -101,6 +101,25 @@ sudo rm -rf /var/lib/containerd
 
 ## 配置阿里云镜像加速
 
+如果有阿里云的话还可以配置镜像加速
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/docker6.png)
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/docker7.png)
+
+```shell
+sudo mkdir -p /etc/docker
+
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["https://h2hghvkk.mirror.aliyuncs.com"]
+}
+EOF
+
+sudo systemctl daemon-reload
+
+sudo systemctl restart docker
+```
 
 ## docker run hello-world 流程图
 
