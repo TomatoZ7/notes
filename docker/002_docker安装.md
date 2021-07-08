@@ -98,3 +98,28 @@ sudo yum remove docker-ce docker-ce-cli containerd.io
 sudo rm -rf /var/lib/docker
 sudo rm -rf /var/lib/containerd
 ```
+
+## 配置阿里云镜像加速
+
+
+## docker run hello-world 流程图
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/docker4.png)
+
+
+## docker 的工作原理
+
+docker 是一个 Client-Server 结构的系统，Docker 的守护进程运行在主机上。通过 Socker 从客户端访问。
+
+docker-server 接收到 docker-client 的指令，就会执行这个命令。
+
+
+## docker 为什么比 VM 快
+
+1. docker 有着比虚拟机更少的抽象层。
+
+2. docker 利用的是宿主机的内核，而 VM 需要的是 Guest OS。
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/docker4.png)
+
+所以，新建一个 docker 容器时，不需要像虚拟机一样重新加载一个操作系统内核，避免引导。虚拟机是加载 Guest OS，分钟级别的，而 docker 是利用宿主机的操作系统，秒级。
