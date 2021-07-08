@@ -88,9 +88,74 @@ docker.io/library/mysql:lates   # 真实地址
 
 ### docker rmi
 
-`docker pull 镜像ID [...镜像ID]` 删除镜像
+`docker rmi 镜像ID [...镜像ID]` 删除镜像
 
 ```shell
-[root@iZuf61wwjib0gi7cyckz02Z ~]# docker rmi 容器ID         # 删除一个或多个镜像
-[root@iZuf61wwjib0gi7cyckz02Z ~]# docker rmi -f $(docker images -aq)    # 删除所有的镜像
+[root@tz7 ~]# docker rmi 容器ID         # 删除一个或多个镜像
+[root@tz7 ~]# docker rmi -f $(docker images -aq)    # 删除所有的镜像
+```
+
+
+## 容器命令
+
+说明 : 有了镜像才可以构建容器
+
+### 新建容器并启动
+
+`docker run [可选项] image`
+
+| 可选项 | 描述 |
+| :--------: | :--------: |
+| --name | 容器名称，可以用来区分相同镜像构建不同容器 |
+| -d | 后台方式运行 |
+| -it | 使用交互方式运行，进入容器查看内容 |
+| -p | 指定端口，有四种方式指定：<br/>`-p 主机ip:主机端口:容器端口`<br/>`-p 主机端口:容器端口`(常用)<br/>`-p 容器端口`<br/>`容器端口` |
+| -P | 随机指定端口 |
+
+#### 案例
+
+```shell
+# 启动并进入容器
+[root@tz7 ~]# docker run -it centos /bin/bash
+[root@f2565f205a2d /]# ls
+bin  dev  etc  home  lib  lib64  lost+found  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@f2565f205a2d /]# exit
+exit
+[root@tz7 ~]# 
+```
+
+
+### 列出所有运行中的容器
+
+`docker ps [可选项]`
+
+| 可选项 | 描述 |
+| :--------: | :--------: |
+| -a | 当前运行的容器 + 历史运行过的容器 |
+| -n=num | 最近创建的 num 个容器 |
+| -q | 只显示容器的编号 |
+
+### 退出容器
+
+`exit` : 退出容器并停止运行
+
+`Ctrl` + `P` + `Q` : 仅退出容器
+
+### 删除容器
+
+`docker rm 容器ID [...容器ID]` 删除容器
+
+```shell
+[root@tz7 ~]# docker rm 容器ID         # 删除一个或多个容器，在运行中的无法删除
+[root@tz7 ~]# docker rm -f $(docker ps -aq)         # 删除所有容器
+[root@tz7 ~]# docker ps -aq|xargs docker rm         # 删除所有容器
+```
+
+### 启动/停止容器
+
+```shell
+[root@tz7 ~]# docker start 容器ID
+[root@tz7 ~]# docker restart 容器ID
+[root@tz7 ~]# docker stop 容器ID
+[root@tz7 ~]# docker kill 容器ID
 ```
