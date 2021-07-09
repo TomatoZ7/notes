@@ -159,3 +159,34 @@ exit
 [root@tz7 ~]# docker stop 容器ID
 [root@tz7 ~]# docker kill 容器ID
 ```
+
+
+## 其他命令
+
+### 后台启动容器
+
+`docker run -d 容器名`
+
+> 这里有一个坑需要注意：当我们后台启动后 `docker ps` 发现容器停止了，这是因为 docker 发现容器没有提供服务，就会立刻停止。一般来说 docker 后台启动必须要有一个前台进程。
+
+### 查看日志
+
+`docker logs -f -t --tail 10 容器ID`
+
+-tf : 显示日志
+
+--tail number : 显示最后的日志行数
+
+### 查看容器中进程信息 ps
+
+`docker top 容器ID`
+
+### 查看容器详细信息
+
+`docker inspect 容器ID`
+
+### 进入当前正在运行的容器
+
+`docker exec -it 容器ID bashShell` 进入容器后开启一个新的终端。
+
+`docker attach 容器ID` 进入容器正在执行的终端，不会启动新的进程。
