@@ -177,7 +177,7 @@ exit
 
 --tail number : 显示最后的日志行数
 
-### 查看容器中进程信息 ps
+### 查看容器中进程信息
 
 `docker top 容器ID`
 
