@@ -56,7 +56,7 @@ rootfs(root file system)在 bootfs 之上。包含的就是典型 Linux 系统�
 
 ![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/docker_image3.png)
 
-在添加额外的镜像层的同时，竞相始终保持是当前所有镜像的组合。下图举了一个简单的例子，每个镜像层包含 3 个文件，而镜像包含了来自两个镜像层的 6 个文件。
+在添加额外的镜像层的同时，镜像始终保持是当前所有镜像的组合。下图举了一个简单的例子，每个镜像层包含 3 个文件，而镜像包含了来自两个镜像层的 6 个文件。
 
 ![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/docker_image5.png)
 
@@ -83,3 +83,23 @@ Docker 在 Windows 上仅支持 windowsflter 一种存储引擎，该引擎基�
 docker 镜像都是只读的，当容器启动时，一个新的可写层被加载到镜像的顶部。
 
 这一层就是我们通常说的容器层，容器之下都叫镜像层。
+
+
+## commit 镜像
+
+该命令跟 git 类似。
+
+`docker commit -m="提交的描述信息" -a="作者" 容器ID 目标镜像名:[TAG]`
+
+### 案例
+
+我们在 [docker 部署 tomcat](005_docker部署tomcat.md) 中曾修改过 webapps 下的内容，如果想要保持容器状态，就可以通过 commit 来获取一个新的镜像：
+
+```bash
+[root@tz7 ~]# docker commit -m="add webapps" -a="tz7" ef2e0e12ed22 tomcat02
+sha256:efa1191063648b065ca932629b6c7819592b4cb11b29b3f6f636f28434ed4ce5
+[root@tz7 ~]# docker images
+REPOSITORY            TAG       IMAGE ID       CREATED          SIZE
+tomcat02              latest    efa119106364   12 seconds ago   672MB
+tomcat                latest    36ef696ea43d   7 days ago       667MB
+```
