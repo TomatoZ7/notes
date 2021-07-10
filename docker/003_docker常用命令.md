@@ -181,7 +181,7 @@ exit
 
 `docker top 容器ID`
 
-### 查看容器详细信息
+### 查看容器元数据
 
 `docker inspect 容器ID`
 
@@ -190,3 +190,15 @@ exit
 `docker exec -it 容器ID bashShell` 进入容器后开启一个新的终端。
 
 `docker attach 容器ID` 进入容器正在执行的终端，不会启动新的进程。
+
+### 从容器内拷贝文件到主机上
+
+首先要进入 docker 容器内部
+
+```bash
+docker cp 容器ID:容器内路径 主机路径
+```
+
+## docker 命令小结
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/docker8.png)
