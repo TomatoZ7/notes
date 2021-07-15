@@ -39,7 +39,7 @@ PING 172.18.0.2 (172.18.0.2) 56(84) bytes of data.
 
 ![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/docker_network2.png)
 
-发现这些容器的网卡，都是成对的，就是使用到了 veth-pair 技术。
+发现这些容器的网卡，都是成对的，使用到了 veth-pair 技术。
 
 veth-pair 就是一对虚拟设备接口，它们都是成对出现的，一端连着协议，一端彼此相连。
 
