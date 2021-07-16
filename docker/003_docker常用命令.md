@@ -205,6 +205,17 @@ docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
 | --user | -u | string | docker 用户名或 ID |
 | --workdir | -w | string | 指定容器内的工作目录 |
 
+#### 注意
+
++ 执行的 COMMAND 只会在容器默认的工作目录运行，如果基础镜像中有一个使用了 `WORKDIR` 指定自定义工作目录，则会在该目录下执行 COMMAND。
+
++ COMMAND 必须是一个可执行的命令，使用链接和引号命令将不会被执行。举个例子：
+
+```bash
+docker exec -it my_container "echo a && echo b"   # 这个命令不会执行
+docker exec -ti my_container sh -c "echo a && echo b"   # 这个命令执行
+```
+
 `docker attach 容器ID` 进入容器正在执行的终端，不会启动新的进程。
 
 ### 从容器内拷贝文件到主机上
