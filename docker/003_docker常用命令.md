@@ -193,9 +193,17 @@ docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
 
 其中 `[OPTIONS]` 参数如下：
 
-| 参数名 | 简写 | 描述 |
-| :---: | :-: | :-: |
-| --detach | -d | 分离模式：后台运行 |
+| 参数名 | 简写 | 后接数据类型 | 描述 |
+| :---: | :-: | :--------: | :-: |
+| --detach | -d | / | 分离模式：后台运行 |
+| --detach-keys | / | string | 重写分离容器的键序列 |
+| --env | -e | list | 设置环境变量 |
+| --env-file | / | list | 通过一个文件设置环境变量 |
+| --interactive | -i | 即使没有了解，也保持 STDIN 开启 |
+| --privileged | / | / | 赋予命令扩展特权 |
+| --tty | -t | / | 分配一个伪 TTY |
+| --user | -u | string | docker 用户名或 ID |
+| --workdir | -w | string | 指定容器内的工作目录 |
 
 `docker attach 容器ID` 进入容器正在执行的终端，不会启动新的进程。
 
