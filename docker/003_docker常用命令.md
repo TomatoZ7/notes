@@ -187,7 +187,15 @@ exit
 
 ### 进入当前正在运行的容器
 
-`docker exec -it 容器ID bashShell` 进入容器后开启一个新的终端。
+```bash
+docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+```
+
+其中 `[OPTIONS]` 参数如下：
+
+| 参数名 | 简写 | 描述 |
+| :---: | :-: | :-: |
+| --detach | -d | 分离模式：后台运行 |
 
 `docker attach 容器ID` 进入容器正在执行的终端，不会启动新的进程。
 
