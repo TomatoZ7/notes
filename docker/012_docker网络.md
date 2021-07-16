@@ -39,7 +39,7 @@ PING 172.18.0.2 (172.18.0.2) 56(84) bytes of data.
 
 ![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/docker_network2.png)
 
-发现这些容器的网卡，都是成对的，就是使用到了 veth-pair 技术。
+发现这些容器的网卡，都是成对的，使用到了 veth-pair 技术。
 
 veth-pair 就是一对虚拟设备接口，它们都是成对出现的，一端连着协议，一端彼此相连。
 
@@ -169,3 +169,12 @@ docker exec -it tomcat-net-1 ping 196.168.0.3
 ```
 
 由此可见自定义网络 docker 都已经帮我们维护好了对应关系，推荐使用。
+
+
+## 网络连通
+
+将容器放入指定网络下，实现一个容器两个 ip。
+
+```bash
+docker network connect [OPTIONS] NETWORK CONTAINER
+```
