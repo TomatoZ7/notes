@@ -165,3 +165,25 @@ docker-compose up
 NETWORK ID     NAME                  DRIVER    SCOPE
 d4d36e76eb2b   composetest_default   bridge    local
 ```
+
+## yaml 规则
+
+```bash
+# 3 层
+
+version : '' # 版本
+services :  # 服务
+  服务1 : web
+    # 服务配置
+    images
+    build
+    network
+    ......
+  服务2 : redis
+    ......
+  服务3 : redis
+# 其他配置 网络/卷、全局规则
+volumes :
+network :
+configs :
+```
