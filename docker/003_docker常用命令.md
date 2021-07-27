@@ -61,7 +61,14 @@ mariadb   MariaDB Server is a high performing open sou…   4203      [OK]
 
 ### docker pull
 
-`docker pull 镜像名[:tag]` 下载镜像
+`docker pull [Registry]/[Repository]/[Image][:Tag]` 下载镜像
+
+| 可选项 | 描述 |
+| :---: | :--: |
+| Registry | 注册服务器，Docker 默认会从 docker.io 拉取镜像，如果你有自己的镜像仓库，可以把 Registry 替换为自己的注册服务器。 |
+| Reponsitory | 镜像仓库，通常把一组相关联的镜像归为一个镜像仓库，library 为 Docker 默认的镜像仓库。 |
+| Image | 镜像名称 |
+| Tag | 版本号，默认为 latest |
 
 ```shell
 [root@iZuf61wwjib0gi7cyckz02Z ~]# docker pull mysql
@@ -95,6 +102,13 @@ docker.io/library/mysql:lates   # 真实地址
 [root@tz7 ~]# docker rmi -f $(docker images -aq)    # 删除所有的镜像
 ```
 
+### docker tag
+
+`docker tag [SOURCE_IMAGE][:TAG] [TARGET_IMAGE][:TAG]` 重命名镜像
+
+```shell
+[root@tz7 ~]# docker tag busybox:latest mybusybox:latest         # 通过此命令我们会看到两个镜像的 IMAGE ID 完全一样，是因为它们指向了同一个镜像文件。
+```
 
 ## 容器命令
 
