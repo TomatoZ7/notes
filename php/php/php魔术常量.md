@@ -1,4 +1,4 @@
-# PHP 魔术常量
+# PHP 8 个魔术常量
 
 PHP 向它运行的任何脚本提供了大量的预定义常量。
 
@@ -6,7 +6,7 @@ PHP 向它运行的任何脚本提供了大量的预定义常量。
 
 有八个魔术常量它们的值随着它们在代码中的位置改变而改变。
 
-### __LINE__
+### \_\_LINE\_\_
 
 文件中的当前行号。
 
@@ -14,7 +14,7 @@ PHP 向它运行的任何脚本提供了大量的预定义常量。
 echo '这是第' . __LINE__ . '行';    // 这是第1行
 ```
 
-### __FILE__
+### \_\_FILE\_\_
 
 文件的完整路径和文件名。如果用在被包含文件中，则返回被包含的文件名。
 
@@ -32,14 +32,14 @@ echo __FILE__;      // /var/www/phpunit/main.php
 echo $test_file;    // /var/www/phpunit/test.php
 ```
 
-### __DIR__
+### \_\_DIR\_\_
 
 ```php
 // main.php
 echo __DIR__;       // /var/www/phpunit
 ```
 
-### __FUNCTION__
+### \_\_FUNCTION\_\_
 
 返回函数被定义时的名字，区分大小写。
 
@@ -50,7 +50,7 @@ function test() {
 test();             // 函数名为：test
 ```
 
-### __CLASS__
+### \_\_CLASS\_\_
 
 返回类被定义时的名字，类名包括其被声明的作用区域，如 `Foo\Bar`。
 
@@ -68,12 +68,12 @@ $test = new Test();
 echo $test->class_name;     // PHPUnit\Test
 ```
 
-### __TRAIT__
+### \_\_TRAIT\_\_
 
 与上述类似，返回 trait 定义时的名字，包括作用区域。
 
 
-### __METHOD__
+### \_\_METHOD\_\_
 
 类的方法名，包括作用区域和类名(区分大小写)。
 
@@ -99,7 +99,7 @@ echo PHP_EOL;
 $test->functionTest();      // functionTest
 ```
 
-### __NAMESPACE__
+### \_\_NAMESPACE\_\_
 
 返回命名空间的名称(区分大小写)。
 
