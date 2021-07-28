@@ -15,8 +15,24 @@ $clone_user->save();
 ```
 
 
+
 ## 删
 
+1 自定义软删除字段
+
+```php
+class User extends Model
+{
+    user SoftDeletes;
+
+    const DELETED_AT = "delete_time";
+    // 或者
+    public function getDeletedAtColumn()
+    {
+        return 'delete_time';
+    }
+}
+```
 
 
 
@@ -172,22 +188,4 @@ $user->name;                    // apple
 $updated_user = $user->fresh();
 $user->name;                    // apple
 $updated_user->name;            // tomato
-```
-
-## 定义
-
-1 自定义软删除字段
-
-```php
-class User extends Model
-{
-    user SoftDeletes;
-
-    const DELETED_AT = "delete_time";
-    // 或者
-    public function getDeletedAtColumn()
-    {
-        return 'delete_time';
-    }
-}
 ```
