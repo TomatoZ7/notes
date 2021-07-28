@@ -14,6 +14,25 @@ $clone_user = $user->replicate();
 $clone_user->save();
 ```
 
+### 2 创建模型
+
+创建 `user` 模型类：
+
+```bash
+php artisan make:model Models\\User
+```
+
+创建 `user` 模型类的同时生成相关文件：
+
+```bash
+# -m : 创建一个 migration 文件
+# -c : 创建一个 controller 文件
+# -r : 创建一个资源控制器，测试之后发现与 -c 一致
+php artisan make:model Models\\User -mcr
+```
+
+
+
 
 
 ## 删
@@ -108,6 +127,9 @@ $user->getOriginal();       // original user record
 ```
 
 
+
+
+
 ## 查
 
 ### 1 find
@@ -188,4 +210,61 @@ $user->name;                    // apple
 $updated_user = $user->fresh();
 $user->name;                    // apple
 $updated_user->name;            // tomato
+```
+
+### 4 whereColumn
+
+```php
+$user = User::where('name', 'tomato')->first();
+
+// 使用 whereColumn 可以将上述写法改写为：
+$user = User::whereName('tomato')->first();
+```
+
+另外，在 `Eloquent` 里也有些和时间相关的预定义方法：
+
+```php
+// 根据日期查询
+User::whereDate('created_at', date('Y-m-d'));
+User::whereDay('created_at', date('d'));     
+User::whereMonth('created_at', date('m'));
+User::whereYear('created_at', date('Y'));
+```
+
+### 5 withDefault
+
+`belongsTo` 关联允许定义默认模型，这适应于当关联结果返回的是 `null` 的情况。这种设计模式通常称为 [空对象模式](https://en.wikipedia.org/wiki/Null_object_pattern)，为您免去了额外的条件判断代码。在下面的例子中，`user` 关联如果没有找到文章的作者，就会返回一个空的 `App\User` 模型。
+
+```php
+/**
+ * 获得此文章的作者。
+ */
+public function user()
+{
+    return $this->belongsTo('App\User')->withDefault();
+}
+```
+
+您也可以通过传递数组或者使用闭包的形式，填充默认模型的属性：
+
+```php
+/**
+ * 获得此文章的作者。
+ */
+public function user()
+{
+    return $this->belongsTo('App\User')->withDefault([
+        'name' => '游客',
+    ]);
+}
+
+/**
+ * 获得此文章的作者。
+ */
+public function user()
+{
+    return $this->belongsTo('App\User')->withDefault(function ($user) {
+        $user->name = '游客';
+    });
+}
 ```
