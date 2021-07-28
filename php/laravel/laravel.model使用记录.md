@@ -167,7 +167,7 @@ $user->is($same_user);          // true
 $user->is($diff_user);          // false
 ```
 
-### 3 refresh/fresh
+### 3 refresh / fresh
 
 #### 3.1 refresh
 
