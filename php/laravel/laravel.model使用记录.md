@@ -143,7 +143,7 @@ $user = User::findOrFail($id, ['name', 'email']);
 
 ```php
 /**
- * is 可以判断两个 model 的主键和所属数据表是否一致
+ * is 可以判断两个 model 的主键、所属数据表和数据库是否一致
  * 
  * Determine if two models have the same ID and belong to the same table.
  *
@@ -163,8 +163,8 @@ public function is($model)
 $user = User::find(1);
 $same_user = User::find(1);
 $diff_user = User::find(2);
-$user->is($same_user);
-$user->is($diff_user);
+$user->is($same_user);          // true
+$user->is($diff_user);          // false
 ```
 
 ### 3 refresh/fresh
