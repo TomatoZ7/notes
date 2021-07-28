@@ -28,7 +28,8 @@ php artisan make:model Models\\User
 # -m : 创建一个 migration 文件
 # -c : 创建一个 controller 文件
 # -r : 创建一个资源控制器，测试之后发现与 -c 一致
-php artisan make:model Models\\User -mcr
+
+php artisan make:model Models\User -mcr
 ```
 
 
