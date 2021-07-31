@@ -22,3 +22,21 @@
     </div>
 </template>
 ```
+
+## 具名插槽
+
+当组件中包含多个 `slot` 插槽时，我们无法准确替换其中某一个，这时候就使用具名插槽。
+
+```html
+<div id="app">
+    <cpn><span slot="center">具名插槽</span></cpn>
+</div>
+
+<template id="cpn">
+    <div>
+        <slot name="left"><span>左边</span></slot>
+        <slot name="center"><span>中间</span></slot>
+        <slot name="right"><span>右边</span></slot>
+    </div>
+</template>
+```
