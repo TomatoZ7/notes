@@ -201,3 +201,27 @@ module.exports = {
     }
 }
 ```
+
+### 7.3 其他 loader
+
+![less-loader](https://www.webpackjs.com/loaders/less-loader/)
+
+![sass-loader](https://www.webpackjs.com/loaders/sass-loader/)
+
+![图片处理 url-loader](https://www.webpackjs.com/loaders/url-loader/)
+
+![ES6 转 ES5](https://www.webpackjs.com/loaders/babel-loader/)
+
+## 8 引入 vue.js
+
+### 8.1 安装
+
+```shell
+$ npm install vue --save
+```
+
+### 引入 vue 依赖
+
+```js
+import vue from 'vue'
+```
