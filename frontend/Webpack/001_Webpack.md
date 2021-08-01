@@ -220,7 +220,7 @@ module.exports = {
 $ npm install vue --save
 ```
 
-### 引入 vue 依赖
+### 8.2 引入 vue 依赖
 
 ```js
 import vue from 'vue'
