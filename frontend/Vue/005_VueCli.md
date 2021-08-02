@@ -34,7 +34,7 @@ npm install -g @vue/cli
 npm install @vue/cli-init -g
 ```
 
-### 初始化项目
+### 3.3 初始化项目
 
 CLI2 : `vue init webpack my-project`
 
