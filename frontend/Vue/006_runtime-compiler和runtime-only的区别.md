@@ -67,3 +67,43 @@ new Vue({
 ```
 
 ![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/frontend/images/runtime-only1.jpg)
+
+`createElement` 也可以直接传入组件对象：
+
+```js
+import Vue from 'vue'
+import App from './App'
+
+Vue.config.productionTip = false
+
+const cpn = {
+  template: '<div>{{message}}</div>',
+  data() {
+    return {
+      message: '我是组件'
+    }
+  }
+}
+
+new Vue({
+  el: '#app',
+  render: function(createElement) {
+    return createElement(cpn)
+    
+    // 既然可以传递组件对象，那么我们也可以把 APP 传进去，如此一来，就跟 runtime-only 是一样的了
+    return createElement(App)
+  }
+})
+```
+
+### 4.2 template 是怎么处理的
+
+是由 `vue-template-compiler` 将 `template` 转成 `render` 函数。
+
+```json
+// package.json
+"devDependencies": {
+  ...
+  "vue-template-compiler": "^2.5.2",
+}
+```
