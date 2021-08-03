@@ -114,7 +114,7 @@ webpack ./src/main.js ./dist/bundle.js
 
 ### 3.7 访问 index.html 文件
 
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/front/images/webpack.png)
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/frontend/images/webpack.png)
 
 ## 4 webpack.config.js 配置
 
