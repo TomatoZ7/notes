@@ -132,11 +132,11 @@ $page = $_GET['page'] ?? $_POST['page'] ?? 0;
 在 PHP7 之前是无法通过 `define` 来定义一个常量数组的，PHP7 支持了这个操作。
 
 ```php
-define('person', [
+define('PERSON', [
     'man', 'woman', 'kid'
 ]);
 
-var_dump(person);   
+var_dump(PERSON);   
 /*
     array(3) {
         [0]=>
