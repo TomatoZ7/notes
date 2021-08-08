@@ -270,3 +270,40 @@ const Home = () => import('../components/User')
 ```html
 <router-link :to="{path: '/profile', query: {name: 'tz', age:18}}">档案</router-link>
 ```
+
+## 12 守卫
+
+### 12.1 全局守卫
+
+```js
+// 前置守卫，路由跳转前做的一些操作
+router.beforeEach((to, from, next) => {
+    // 从 from 跳转到 to
+    console.log(to)
+    document.title = to.matched[0].meta.title
+    next()
+})
+
+// 后置守卫
+router.afterEach(to, from) => {
+    // 不需要主动调用 next 函数
+}
+```
+
+### 12.2 路由独享守卫
+
+可以在路由配置上直接定义 `beforeEnter` 守卫：
+
+```js
+const router = new VueRouter({
+    routes: [
+        {
+            path: '/foo',
+            component: Foo,
+            beforeEnter: (to, from, next) => {
+                // ...
+            }
+        }
+    ]
+})
+```
