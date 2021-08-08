@@ -24,11 +24,94 @@
 $ npm install vue-router --save
 ```
 
-### 3.2 在模块化工程中使用
+### 3.2 使用
 
 #### 3.2.1 导入路由对象，调用 Vue.use(VueRouter)
 
+```js
+// src/router/index.js
+import Router from 'vue-router'
+
+Vue.use(Router)
+```
+
 #### 3.2.2 创建路由实例，并传入路由映射配置
+
+```js
+// src/router/index.js
+import Home from '../component/Home'
+import About from '../component/About'
+
+const routes = [
+    {
+        path: '/home',
+        component: Home
+    },
+    {
+        path: '/about',
+        component: About
+    }
+]
+const router = new Router({
+    // 配置路径和组件之间的映射关系
+    routes 
+})
+
+export default router
+```
 
 #### 3.2.3 在 Vue 实例中挂载创建的路由实例
 
+```js
+// src/main.js
+import router from './router'
+
+new Vue({
+    el: '#app',
+    router,
+    render: h => h(App)
+})
+```
+
+```vue
+<!-- src/App.vue -->
+<template>
+    <div id="app">
+        <router-link to="/home">首页</router-link>
+        <router-link to="/about">关于</router-link>
+        <router-view></router-view>
+    </div>
+</template>
+
+<script>
+export default {
+    name: 'App'
+}
+</script>
+```
+
+### 4 路由的默认配置
+
+默认情况下，我们希望一进来便显示 `Home` 页面，但是上述示例中并没有配置默认首页，这时可以通过 `redirect` 来配置：
+
+```js
+// src/router/index.js
+const router = [
+    {
+        path: '',
+        redirect: '/home'
+    }
+    ...
+]
+```
+
+### 5 HTML5 的 history 模式
+
+默认的 `router` 配置是哈希模式，可以改为 `history` 模式：
+
+```js
+const router = new Router({
+    routes,
+    mode: 'history'
+})
+```
