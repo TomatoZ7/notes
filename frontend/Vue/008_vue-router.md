@@ -307,3 +307,23 @@ const router = new VueRouter({
     ]
 })
 ```
+
+## 13 keep-alive
+
+`keep-alive` 是 `Vue` 内置的一个组件，可以使被包含的组件保留状态，或避免重新渲染。
+
+`router-view` 也是一个组件，如果直接被包在 `keep-alive` 里面，所有路径匹配到的视图组件都会被缓存。
+
+```html
+<keep-alive>
+    <router-view/>
+</keep-alive>
+```
+
+### 13.1 include 属性
+
+字符串或正则表达式，只有匹配的组件会被缓存
+
+### 13.2 exclude 属性
+
+字符串或正则表达式，任何匹配的组件都不会被缓存
