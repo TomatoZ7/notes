@@ -22,4 +22,112 @@
 
 ## 2 管理什么状态
 
-有什么状态需要在多个组件间进行共享？如：用户的登录状态、用户名称、头像等信息，收藏的商品、购物车中的商品等。
+有什么状态需要在多个组件间进行共享？如：用户的登录状态、用户名称、头像等信息，收藏的商品、购物车中的商品等。`
+
+## 3 使用
+
+### 3.1 安装
+
+```shell
+npm install vuex --save
+```
+
+### 3.2 开始使用
+
+#### 3.2.1 新建文件导入 Vuex
+
+`src/store/index.js` : 
+
+```js
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+// 1. 安装插件
+Vue.use(Vuex)
+
+// 2. 创建对象
+const store = new Vuex.Store({
+    state: {
+        counter: 100      // 保存状态
+    },
+    mutations: {
+
+    },
+    actions: {
+
+    },
+    getters: {
+
+    },
+    modules: {
+        
+    }
+})
+
+// 3. 导出
+export default store
+```
+
+#### 3.2.2 main.js
+
+```js
+import Vue from 'vue'
+import App from './App'
+import store from './store'         // 导入
+
+Vue.config.productionTip = false
+
+new Vue({
+  el: '#app',
+  store,                // 挂载
+  render: h => h(App)
+})
+```
+
+#### 3.2.3 使用保存的状态
+
+`src/components/Hello/Hello.vue` :
+
+```html
+<template>
+    <div>
+        <h2>{{$store.state.counter}}</h2>
+    </div>
+</template>
+
+<script>
+export default({
+    name: 'Hello'
+})
+</script>
+```
+
+`App.vue` :
+
+```html
+<template>
+  <div id="app">
+    <h2>{{$store.state.counter}}</h2>
+    <button @click="counter++">+</button>
+    <button @click="counter--">-</button>
+    
+    <hello></hello>
+  </div>
+</template>
+
+<script>
+import Hello from './components/Hello/Hello'
+
+export default {
+  name: 'App',
+  components: {
+    Hello
+  },
+  data() {
+    return {
+      message: 'Hello World'
+    }
+  }
+}
+</script>
+```
