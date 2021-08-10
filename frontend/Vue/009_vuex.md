@@ -131,3 +131,7 @@ export default {
 }
 </script>
 ```
+
+## 4 Vuex 状态管理图例
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/frontend/images/vuex1.jpg)
