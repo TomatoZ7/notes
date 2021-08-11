@@ -32,9 +32,9 @@
 npm install vuex --save
 ```
 
-### 3.2 开始使用
+### 3.2 示例
 
-#### 3.2.1 新建文件导入 Vuex
+#### 3.2.1 新建文件并导入 Vuex
 
 `src/store/index.js` : 
 
@@ -108,8 +108,8 @@ export default({
 <template>
   <div id="app">
     <h2>{{$store.state.counter}}</h2>
-    <button @click="counter++">+</button>
-    <button @click="counter--">-</button>
+    <button @click="$store.state.counter++">+</button>
+    <button @click="$store.state.counter--">-</button>
     
     <hello></hello>
   </div>
@@ -132,6 +132,86 @@ export default {
 </script>
 ```
 
-## 4 Vuex 状态管理图例
+## 4 Vuex 状态管理
 
 ![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/frontend/images/vuex1.jpg)
+
+上述直接使用了 `$store.state.counter++` 对变量 `counter` 进行操作，但是 `Vuex` 并不推荐我们这样做，不利于 `Vuex` 跟踪状态的变化。
+
+此外，`state` 是实时更新的，`mutations` 是无法进行异步操作的。
+
+而直接修改 `state` 这一操作是可以异步的。这就会导致当你异步操作 `state` 时，很有可能其他程序已经修改了 `state` 的问题出现。
+
+所以，`state` 要通过 `mutations` 进行同步操作。
+
+### 4.1 示例改进
+
+`src/store/index.js` :
+
+```js
+const store = new Vuex.Store({
+    state: {
+        counter: 100
+    },
+    mutations: {
+        increment(state) {
+            state.counter++
+        },
+        decrement(state) {
+            state.counter--
+        }
+    },
+    actions: {
+
+    },
+    getters: {
+
+    },
+    modules: {
+
+    }
+})
+```
+
+`App.vue` :
+
+```html
+<template>
+  <div id="app">
+    <h2>{{$store.state.counter}}</h2>
+    <button @click="addition">+</button>
+    <button @click="subtraction">-</button>
+    
+    <hello></hello>
+  </div>
+</template>
+
+<script>
+import Hello from './components/Hello/Hello'
+
+export default {
+  name: 'App',
+  components: {
+    Hello
+  },
+  data() {
+    return {
+      message: 'Hello World'
+    }
+  },
+  methods: {
+    // 新增方法
+    addition() {
+      this.$store.commit('increment')
+    },
+    subtraction() {
+      this.$store.commit('subtraction')
+    }
+  }
+}
+</script>
+```
+
+### 4.2 devtools 辅助监控
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/frontend/images/vuex2.jpg)
