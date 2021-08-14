@@ -177,3 +177,14 @@ methods: {
 </script>
 
 参数被称为 `mutation` 的载荷(Payload)，当参数很多的时候，`payload` 也可以是一个对象。
+
+### 3.2 特殊的提交风格
+
+```js
+this.$store.commit({
+    type: 'addNum',
+    count
+})
+```
+
+此时 `addNum(state, num) {...}` 里的 `num` 将会接收传过去的对象，此时应该叫 `payload` 更加合适。
