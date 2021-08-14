@@ -137,3 +137,43 @@ const store = new Vuex.Store({
 </template>
 ```
 
+## 3 Mutation 状态更新
+
+`Vuex` 的 `store` 状态的更新唯一方式：提交 `Mutation`。
+
+`Mutation` 主要包括两部分：
+
++ 字符串的**事件类型(type)**
+
++ 一个回调函数(handler)，该回调函数的第一个参数就是 `state`
+
+### 3.1 往 Mutation 里传递参数
+
+`src/store/index.js` :
+
+```js
+mutations: {
+    ...
+    addNum(state, num) {
+        state.counter += num
+    }
+},
+```
+
+`src/App.vue` :
+
+```html
+<button @click="increNum(5)">+5</button>
+<button @click="increNum(10)">+10</button>
+
+<script>
+methods: {
+    ...
+    increNum(num) {
+      this.$store.commit('addNum', num)
+    }
+  }
+```
+</script>
+
+参数被称为 `mutation` 的载荷(Payload)，当参数很多的时候，`payload` 也可以是一个对象。
