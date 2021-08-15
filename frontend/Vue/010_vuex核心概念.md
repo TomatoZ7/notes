@@ -137,19 +137,19 @@ const store = new Vuex.Store({
 </template>
 ```
 
-## 3 Mutation
+## 3 Mutations
 
 ### 3.1 状态更新
 
-`Vuex` 的 `store` 状态的更新唯一方式：提交 `Mutation`。
+`Vuex` 的 `store` 状态的更新唯一方式：提交 `Mutations`。
 
-`Mutation` 主要包括两部分：
+`Mutations` 主要包括两部分：
 
 + 字符串的**事件类型(type)**
 
 + 一个回调函数(handler)，该回调函数的第一个参数就是 `state`
 
-#### 3.1.1 往 Mutation 里传递参数
+#### 3.1.1 往 Mutations 里传递参数
 
 `src/store/index.js` :
 
@@ -178,7 +178,7 @@ methods: {
 ```
 </script>
 
-参数被称为 `mutation` 的载荷(Payload)，当参数很多的时候，`payload` 也可以是一个对象。
+参数被称为 `mutations` 的载荷(Payload)，当参数很多的时候，`payload` 也可以是一个对象。
 
 #### 3.1.2 特殊的提交风格
 
@@ -259,7 +259,7 @@ mutations: {
 
 ### 3.4 同步函数
 
-通常情况下，`Vuex` 要求我们 `Mutation` 中的方法必须是同步方法。主要的原因是当我们使用 `devtools` 时，可以帮助我们捕捉 `mutation` 的快照。但是如果是异步操作，那么 `devtools` 将不能很好的追踪这个操作什么时候会被完成。
+通常情况下，`Vuex` 要求我们 `Mutations` 中的方法必须是同步方法。主要的原因是当我们使用 `devtools` 时，可以帮助我们捕捉 `mutations` 的快照。但是如果是异步操作，那么 `devtools` 将不能很好的追踪这个操作什么时候会被完成。
 
 如果真的需要异步操作，这个时候就需要 `Action` 的登场了。
 
@@ -320,6 +320,89 @@ export default {
     updateInfo() {
       // this.$store.commit('updateAuthor')
       this.$store.dispatch('updateAuthorAction')    // 使用 dispatch
+    }
+  }
+}
+</script>
+```
+
+### 4.2 参数传递
+
+与 `mutations` 参数传递一致。
+
+## 5 Module
+
+### 5.1 认识 Module
+
+`Vue` 使用单一状态树，意味着很多状态都会交给 `Vuex` 来管理。当应用变得非常复杂时，`store` 对象就有可能变得相当臃肿。
+
+为了解决这一问题，`Vuex` 允许我们将 `store` 分割成模块(Module)，而每个模块拥有自己的 `state`、`mutations`、`action`、`getters` 等。
+
+### 5.2 基本使用
+
+`src/store/index.js` :
+
+```js
+const moduleA = {
+    state: {
+        'name': 'tz777-moduleA'
+    },
+    mutations: {
+        updateName(state, payload) {
+            state.name = payload
+        }
+    },
+    actions: {
+        // 此时的 context 仅表示 moduleA，commit 时只会 commit 到自己的 mutations 里
+        updateNameAction(context) {
+            setTimeout(() => {
+                context.commit('updateName', 'Tomato')
+            }, 1500)
+        }
+    },
+    getters: {
+        getRootAuthor(state, payload, rootState) {
+            return rootState.author
+        }
+    }
+}
+
+const store = new Vuex.Store({
+    state: {...},
+    mutations: {...},
+    actions: {...},
+    getters: {...},
+    modules: {
+        a: moduleA
+    }
+})
+```
+
+`src/App.vue` : 
+
+```html
+<template>
+  <div id="app">
+    <h2>{{$store.state.a.name}}</h2>
+    <!-- getters -->
+    <h2>{{$store.getters.getRootAuthor}}</h2>
+    <button @click="updateModuleName">修改名字</button>
+    <button @click="asyncUpdateModuleName">异步修改名字</button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'App',
+  data() {...},
+  methods: {
+    updateModuleName() {
+      // mutations
+      this.$store.commit('updateName', 'Tomato')
+    },
+    asyncUpdateModuleName() {
+      // actions
+      this.$store.dispatch('updateNameAction')
     }
   }
 }
