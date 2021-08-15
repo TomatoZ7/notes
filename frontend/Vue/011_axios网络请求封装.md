@@ -108,3 +108,120 @@ auth: {uname: '',pwd: '12'}
 // 响应的数据格式 json/blob/document/arraybuffer/text/stream
 responseType: 'json'
 ```
+
+## 5 axios 实例
+
+如果有个别配置与公共配置不同，则可以自己创建一个 `axios` 实例：
+
+```js
+const instance = axios.create({
+  baseURL: 'http://xxx.xxx.x.xx:8000',
+  timeout: 100000
+})
+
+instance({
+  url: '/home/data',
+  params: {
+    type: 'pop',
+    page: 1
+  }
+})
+.then(res => {
+  console.log(res)
+})
+```
+
+## 6 axios 封装
+
+封装是为了更好的管理和解耦，如果每一个 `js` 文件都依赖了 `axios` 框架，如果哪一天需要对网络请求框架做出调整，那么就需要到每一个文件中去改动，这是不现实的。
+
+创建目录和文件： `src/network/request.js`
+
+### 6.1 封装方式一
+
+```js
+import axios from 'axios'
+
+export function request(config, success, failure) {
+  const instance = axios.create({
+    baseURL: 'http://123.207.32.32:8000',
+    timeout: 5000
+  })
+
+  // 发送网络请求
+  instance(config)
+    .then(res => {
+      success(res)
+    })
+    .catch(err => {
+      failure(err)
+    })
+}
+```
+
+调用：
+
+```js
+import {request} from './network/request'
+
+request({
+  url: '/home/multidata'
+}, res => {
+  console.log(res)
+}, err => {
+  console.log(err)
+})
+```
+
+### 6.2 封装方式二 通过 Promise
+
+```js
+import axios from 'axios'
+
+export function request(config) {
+  return new Promise((resolve, reject) => {
+    const instance = axios.create({
+      baseURL: 'http://123.207.32.32:8000',
+      timeout: 5000
+    })
+
+    // 发送网络请求
+    instance(config)
+      .then(res => {
+        resolve(res)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+```
+
+调用：
+
+```js
+import {request} from './network/request'
+
+request({
+  url: '/home/multidata'
+}).then(res => {
+  console.log(res)
+}.catch(err => {
+  console.log(err)
+}))
+```
+
+### 6.3 封装方式三
+
+```js
+import axios from 'axios'
+
+export function request(config) {
+  const instance = axios.create({
+    baseURL: 'http://123.207.32.32:8000',
+    timeout: 5000
+  })
+
+  return instance(config) // 本身返回的就是 Promise，无须再封装
+}
+```
