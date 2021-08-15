@@ -137,7 +137,9 @@ const store = new Vuex.Store({
 </template>
 ```
 
-## 3 Mutation 状态更新
+## 3 Mutation
+
+### 3.1 状态更新
 
 `Vuex` 的 `store` 状态的更新唯一方式：提交 `Mutation`。
 
@@ -147,7 +149,7 @@ const store = new Vuex.Store({
 
 + 一个回调函数(handler)，该回调函数的第一个参数就是 `state`
 
-### 3.1 往 Mutation 里传递参数
+#### 3.1.1 往 Mutation 里传递参数
 
 `src/store/index.js` :
 
@@ -178,13 +180,148 @@ methods: {
 
 参数被称为 `mutation` 的载荷(Payload)，当参数很多的时候，`payload` 也可以是一个对象。
 
-### 3.2 特殊的提交风格
+#### 3.1.2 特殊的提交风格
 
 ```js
 this.$store.commit({
     type: 'addNum',
-    count
+    num
 })
 ```
 
 此时 `addNum(state, num) {...}` 里的 `num` 将会接收传过去的对象，此时应该叫 `payload` 更加合适。
+
+```js
+mutations: {
+    ...
+    addNum(state, payload) {
+        state.counter += payload.num
+    }
+},
+```
+
+### 3.2 响应规则
+
+`Vuex` 的 `store` 中的 `state` 是响应式的，当 `state` 中的数据发生改变时，`Vue` 组件会自动更新。
+
+这就要求我们必须遵守一些 `Vuex` 对应的规则：
+
++ 提前在 `store` 中初始化好所需的属性
+
+当对一个对象新增未被初始化的属性时，如 `obj[addr] = 'github'`，响应式系统是不会显示出新增属性值的。
+
++ 当给 `state` 中的对象添加新属性时，使用下面的方式：
+
+    1. 使用 `Vue.set(obj, 'addr', 'github')`
+
+    2. 用新对象给旧对象重新赋值
+
+
+### 3.3 常量类型
+
+新建一个定义常量的文件 `src/store/mutations-types.js` :
+
+```js
+export const ADDNUM = 'addNum'
+```
+
+在文件里使用常量：
+
+`src/App.vue` : 
+
+```js
+import {ADDNUM} from './store/mutations-types'
+
+...
+
+methods: {
+    ...
+    addNum(num) {
+      this.$store.commit(ADDNUM, num)
+    }
+}
+```
+
+`src/store/index.js` : 
+
+```js
+import { ADDNUM } from './mutations-types.js'
+
+...
+
+mutations: {
+    ...
+    [ADDNUM](state, num) {
+        state.counter += num
+    }
+},
+```
+
+### 3.4 同步函数
+
+通常情况下，`Vuex` 要求我们 `Mutation` 中的方法必须是同步方法。主要的原因是当我们使用 `devtools` 时，可以帮助我们捕捉 `mutation` 的快照。但是如果是异步操作，那么 `devtools` 将不能很好的追踪这个操作什么时候会被完成。
+
+如果真的需要异步操作，这个时候就需要 `Action` 的登场了。
+
+## 4 Action
+
+### 4.1 异步操作
+
+`src/store/index.js` :
+
+```js
+const store = new Vuex.Store({
+    state: {
+        ...
+        author: {
+            name: 'tz7',
+            age: 18,
+            gender: 'man'
+        }
+    },
+    mutations: {
+        ...
+        updateAuthor(state) {
+            state.author.age = 81
+        }
+    },
+    actions: {
+        // 可以暂时认为 context 就是 store 对象
+        updateAuthorAction(context) {
+            setTimeout(() => {
+                context.commit('updateAuthor')
+            }, 2000)
+        }
+    },
+    getters: {...},
+    modules: {...}
+})
+
+export default store
+```
+
+`src/App.vue` :
+
+```html
+<template>
+  <div id="app">
+    <h2>{{$store.state.author}}</h2>
+    <button @click="updateInfo">修改信息</button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'App',
+  components: {...},
+  data() {...},
+  methods: {
+      ...
+    updateInfo() {
+      // this.$store.commit('updateAuthor')
+      this.$store.dispatch('updateAuthorAction')    // 使用 dispatch
+    }
+  }
+}
+</script>
+```
