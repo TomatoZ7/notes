@@ -408,3 +408,7 @@ export default {
 }
 </script>
 ```
+
+## 6 目录结构
+
+`Vuex` 推荐我们把 `store` 里的核心属性抽离出去，分别组成单独的文件，如 `mutations.js`。
