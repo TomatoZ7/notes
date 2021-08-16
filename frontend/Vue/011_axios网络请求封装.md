@@ -225,3 +225,43 @@ export function request(config) {
   return instance(config) // 本身返回的就是 Promise，无须再封装
 }
 ```
+
+## 7 拦截器
+
+### 7.1 请求拦截
+
+```js
+import axios from 'axios'
+
+export function request(config) {
+  const instance = axios.create({
+    baseURL: 'http://123.207.32.32:8000',
+    timeout: 5000
+  })
+
+  // 拦截器
+  instance.interceptors.request.use(config => {
+    console.log(config)
+    // 1、可以在这里对 config 进行调整
+    // 2、每次发送网络请求时，可以在界面中显示一个请求的 loading
+    // 3、统一携带 token
+    return config
+  }, err => {
+    console.log(err)
+  })
+
+  return instance(config)
+}
+```
+
+### 7.2 响应拦截
+
+```js
+// 响应拦截
+instance.interceptors.request.use(res => {
+  console.log(res)
+  return res.data
+}, err => {
+  console.log(err)
+})
+```
