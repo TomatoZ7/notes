@@ -74,3 +74,15 @@ cat ~/.ssh/id_rsa.pub
 # 测试
 ssh -T git@github.com
 ```
+
+## 11、查看配置
+
+```
+git config --list
+
+# 仅查看系统配置
+git config --system --list
+
+# 仅查看自定义配置
+git config --global --list
+```
