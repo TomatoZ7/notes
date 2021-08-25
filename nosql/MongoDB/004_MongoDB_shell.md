@@ -68,7 +68,7 @@ foobar
 WriteResult({ "nInserted" : 1 })
 ```
 
-### 2.2 读取
+### 3.2 读取
 
 查看 `blog` 集合，可以调用 `find` 方法：
 
@@ -94,7 +94,7 @@ WriteResult({ "nInserted" : 1 })
 }
 ```
 
-### 2.3 更新
+### 3.3 更新
 
 使用 `update` 修改文档。`update` 至少接受 2 个参数：第一个是限定条件，用于匹配待更新的文档，第二个是新的文档。
 
@@ -122,11 +122,39 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 }
 ```
 
-### 2.4 删除
+### 3.4 删除
 
 使用 `remove` 方法可将文档从数据库中永久删除。如果没有使用任何参数，它会将集合内的所有文档全部删除。它可以接受一个作为限定条件的文档作为参数。
 
 ```js
 > db.blog.remove({"title": "Here's my blog post."})
 WriteResult({ "nRemoved" : 1 })
+```
+
+
+## 3 shell 定制和高级功能
+
+在上面例子中，我们只是连接到了一个本地的 `mongod` 实例。事实上，可以将 `shell` 连接到任何 `MongoDB` 实例。在启动时指定机器名和端口，就可以连接到一台不同的机器(或端口)：
+
+```shell
+> mongo target-host:30000/myDB
+MongoDB shell version： 2.4.0
+connecting to: target-host:30000/myDB
+>
+```
+
+通过 `--nodb` 参数启动 `shell`，启动时就不会连接到任何数据库。
+
+```shell
+> mongo --nodb
+MongoDB shell version v5.0.2
+> db
+uncaught exception: ReferenceError: db is not defined :
+@(shell):1:1
+```
+
+启动之后，需要运行 `Mongo(hostname)` 命令就可以连接到想要的 `mongod` 了：
+
+```shell
+
 ```
