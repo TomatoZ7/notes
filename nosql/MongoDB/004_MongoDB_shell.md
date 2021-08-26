@@ -156,5 +156,47 @@ uncaught exception: ReferenceError: db is not defined :
 启动之后，需要运行 `Mongo(hostname)` 命令就可以连接到想要的 `mongod` 了：
 
 ```shell
-
+> conn = new Mongo("127.0.0.1:27017")
+connection to 127.0.0.1:27017
+> db = conn.getDB("test")
+test
 ```
+
+### 3.1 shell 小贴士
+
+使用 `help` 可以查看帮助文档。使用 `db.help()` 查看数据库级别的帮助文档。使用 `db.foo.help()` 查看集合级别的帮助文档。
+
+如果想知道一个函数的用处，可以直接在 `shell` 输入函数名，不用带小括号，这样就可以看到响应函数的 `JavaScript` 实现代码。
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/nosql/MongoDB/images/mongo_shell_3.jpg)
+
+### 3.2 使用 shell 执行脚本
+
+如果希望传递 `JavaScript` 文件给 `shell`，可以这么做：
+
+```shell
+$ mongo script1.js  script2.js script3.js
+MongoDB shell version: 2.4.0
+connecting to: test
+I am script1.js
+I am script2.js
+I am script3.js
+```
+
+`mongo shell` 会依次执行传入的脚本，然后退出。
+
+如果希望使用指定的主机/端口上的 `mongod` 运行脚本，需要先指定地址，然后再跟上脚本文件的名称：
+
+```shell
+$ mongo --quiet target-server:30000/foo script1.js  script2.js script3.js
+```
+
+这样可以将 `db` 指向 `target-server` 上的 `foo` 数据库，然后执行这三个脚本。
+
+也可以使用 `load()` 函数，从交互式 `shell` 中运行脚本。
+
+在脚本中可以访问 `db` 变量，以及其他全局变量。然而，`shell` 辅助函数如 `use db` 和 `show collections` 不可以在文件中使用。这些辅助函数都有对应的 `JavaScript` 函数：
+
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/nosql/MongoDB/images/mongo_shell_4.jpg)
+
+<!-- 95 -->
