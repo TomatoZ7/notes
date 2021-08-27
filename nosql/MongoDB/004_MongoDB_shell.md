@@ -172,6 +172,8 @@ test
 
 ### 3.2 使用 shell 执行脚本
 
+#### 3.2.1 脚本文件
+
 如果希望传递 `JavaScript` 文件给 `shell`，可以这么做：
 
 ```shell
@@ -199,4 +201,26 @@ $ mongo --quiet target-server:30000/foo script1.js  script2.js script3.js
 
 ![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/nosql/MongoDB/images/mongo_shell_4.jpg)
 
-<!-- 95 -->
+#### 3.2.2 变量
+
+可以使用脚本将变量注入到 `shell`。例如，可以再脚本中简单地初始化一些常用的辅助函数。下面脚本定义了一个 `connectTo()` 函数，它连接到指定端口处的一个本地数据库，并且将 `db` 指向这个连接。
+
+```js
+// define ConnectTo.js
+var connectTo = function (port, dbname) {
+    if (!port) {
+        port = 27017;
+    }
+
+    if (!dbname) {
+        dbname = "test";
+    }
+
+    db = connect("location:" + port + "/" + dbname);
+    return db;
+}
+```
+
+如果在 `shell` 中加载这个脚本，`connectTo` 函数就可以使用了。
+
+<!-- 97 -->
