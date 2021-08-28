@@ -235,3 +235,9 @@ function
 默认情况下，`shell` 会在运行 `shell` 时所处的目录查找脚本(可以使用 `run("pwd")` 查看)。如果脚本不在当前目录中，可以为 `shell` 指定一个相对路径或者绝对路径，如 `load("/home/myUser/myScripts/defineConnectTo.js")` 命令来加载 `defineConnectTo.js`。
 
 > 注意： `load` 函数无法解析 `~` 符号。
+
+也可以在 `shell`  中使用 `run()` 函数来执行命令行程序。可以在函数参数列表中指定程序所需的参数：
+
+```shell
+> run('ls', "-l", "/home/myUser/myScripts/")
+```
