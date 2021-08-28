@@ -206,7 +206,7 @@ $ mongo --quiet target-server:30000/foo script1.js  script2.js script3.js
 可以使用脚本将变量注入到 `shell`。例如，可以再脚本中简单地初始化一些常用的辅助函数。下面脚本定义了一个 `connectTo()` 函数，它连接到指定端口处的一个本地数据库，并且将 `db` 指向这个连接。
 
 ```js
-// define ConnectTo.js
+// defineConnectTo.js
 var connectTo = function (port, dbname) {
     if (!port) {
         port = 27017;
@@ -223,4 +223,15 @@ var connectTo = function (port, dbname) {
 
 如果在 `shell` 中加载这个脚本，`connectTo` 函数就可以使用了。
 
-<!-- 97 -->
+```js
+> load('defineConnectTo.js')
+true
+> typeof connectTo
+function
+```
+
+#### 3.2.3 路径问题
+
+默认情况下，`shell` 会在运行 `shell` 时所处的目录查找脚本(可以使用 `run("pwd")` 查看)。如果脚本不在当前目录中，可以为 `shell` 指定一个相对路径或者绝对路径，如 `load("/home/myUser/myScripts/defineConnectTo.js")` 命令来加载 `defineConnectTo.js`。
+
+> 注意： `load` 函数无法解析 `~` 符号。
