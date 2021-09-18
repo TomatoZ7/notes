@@ -114,3 +114,11 @@
 ```js
 {"x": function() { /* ... */ }}
 ```
+
+## 2 通过 _id 截取时间戳
+
+```php
+$_id = '61447a8eb15ec00d68326c8c';
+
+$timestamp = hexdec(substr($_id, 0, 8));
+```
