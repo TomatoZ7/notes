@@ -12,4 +12,4 @@ PHPExcel
 
 提取视频的语音
 
-MongoDB _id 拆出时间戳
+字幕生成语音
