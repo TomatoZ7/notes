@@ -11,5 +11,3 @@ PHPExcel
 把一个数随机分成 n 份
 
 提取视频的语音
-
-MongoDB _id 拆出时间戳
