@@ -73,8 +73,6 @@ class TestController extends Controller
 {
     public function test()
     {
-        // echo "<h1>Hello Laravel</h1>";
-
         $count = Test::query()->count();
 
         var_dump($count);
