@@ -22,7 +22,7 @@
 Jenssegers\Mongodb\MongodbServiceProvider::class,
 ```
 
-在 `config/database.php` 里的 `connections` 添加先关配置：
+在 `config/database.php` 里的 `connections` 添加相关配置：
 
 ```shell
 'mongodb' => [
@@ -79,3 +79,7 @@ class TestController extends Controller
     }
 }
 ```
+
+## 5 参考资料
+
+[https://github.com/jenssegers/laravel-mongodb#belongstomany-and-pivots](https://github.com/jenssegers/laravel-mongodb#belongstomany-and-pivots)
