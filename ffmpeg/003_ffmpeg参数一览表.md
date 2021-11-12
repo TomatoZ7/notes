@@ -22,7 +22,9 @@
 | -target type | 设置目标文件类型(`vcd`, `svcd`, `dvd`, `dv`, `dv50`, `pal-vcd`, `ntsc-svcd`, ...) |
 | -dframes number | 设置要记录的帧数 |
 
+## 2 
 
+| -b bitrate | 设置比特率，默认 200kb/s |
 
 
 
