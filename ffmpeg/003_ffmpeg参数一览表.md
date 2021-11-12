@@ -3,6 +3,16 @@
 ## 1 基本选项
 
 | 参数 | 说明 |
-| :--: | :--: |
+| :--- | :--- |
 | -formats | 输出所有可用格式 |
 | --f fmt | 指定格式（音频或视频格式） |
+| -i filename | 指定输入文件名(linux 下可指定屏幕录制或摄像头) |
+| -y | 覆盖已有文件 |
+| -t duration | 记录时长为 t |
+| -fs limit_size | 设置文件上限大小 |
+| -ss time_off | 从指定的时间(s)开始， [-]hh:mm:ss[.xxx]的格式也支持 |
+| -itsoffset time_off | 设置时间偏移（s），该选项影响所有后面的输入文件。该偏移被加到输入文件的时戳，定义一个正偏移意味着相应的流被延迟了 offset 秒。 [-]hh:mm:ss[.xxx]的格式也支持 |
+| -title string | 标题 |
+| -timestamp time | 时间戳 |
+| -author string | 作者 |
+| -copyright string | 版权信息 |
