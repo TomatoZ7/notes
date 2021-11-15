@@ -1,17 +1,8 @@
 # ffmpeg 参数一览表
 
-<style>
-table th:first-of-type {
-    width: 30%;
-}
-table th:nth-of-type(2) {
-    width: 70%;
-}
-</style>
-
 ## 1 基本选项
 
-| 参数 | 说明 |
+| <div style="300pt">参数</div> | 说明 |
 | :--- | :--- |
 | -formats | 输出所有可用格式 |
 | --f fmt | 指定格式（音频或视频格式） |
