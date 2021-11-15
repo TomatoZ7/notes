@@ -4,13 +4,13 @@
 
 ```php
 /**
- * @param $video_path 如果是本地地址效率比较高
+ * @param $video_path 视频路径，如果是本地地址效率比较高
  */
 function getVideoInfo(string $video_path)
 {
     try {
 
-        // 初始化参数，根据实际情况进行修改
+        // 初始化参数，根据实际情况自定义
         $cmd = 'ffmpeg -i "%s" 2>&1';
         $data = [];
 
@@ -42,6 +42,50 @@ function getVideoInfo(string $video_path)
         }
 
         return $data;
+
+    } catch (\Exception $e) {
+        // 处理异常
+    }
+}
+```
+
+## 2 视频转 GIF
+
+```php
+/**
+ * @param $video_path 视频路径
+ */
+function getVideoInfo(string $video_path)
+{
+	try {
+
+        // 初始化参数，根据实际情况自定义
+		$crop_start_time = '00:00:00.000'; // 裁剪开始时间，格式 hh:mm:ss[.xxx]
+		$crop_length = '119.99999999999997'; // 裁剪时间
+		$fps = 8; // 帧数
+		$crop_width = '986.5365853658536'; // 裁剪宽度
+		$crop_height = '561.9512195121952'; // 裁剪高度
+		$crop_top = '999.0243902439024'; // 裁剪框与顶部距离
+		$crop_left = '97.30081300813008'; // 裁剪框与左侧距离
+		$play_rate = '1'; // 播放倍速
+		$output_path = md5($video_path) . '.gif'; // 输出
+
+		// 视频过滤器
+		$crop_filter = "{$crop_width}:{$crop_height}:{$crop_left}:{$crop_top},setpts=PTS/{$play_rate}";
+
+		/**
+		 * -y : 覆盖已有文件
+		 * -ss : 从指定的时间开始
+		 * -t : 是否记录视频时长，1是0否
+		 * -i : 输入文件名
+		 * -r : 帧数
+		 * -vf : 视频过滤器
+		 */
+		$command = "ffmpeg -y -ss {$crop_start_time} -t {$crop_length} -i {$video_path} -r {$fps} -vf crop={$crop_filter} {$output_path}";
+
+		exec($command, $output, $code);
+
+		// 业务处理
 
     } catch (\Exception $e) {
         // 处理异常
