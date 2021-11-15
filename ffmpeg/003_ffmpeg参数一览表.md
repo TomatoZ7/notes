@@ -24,9 +24,16 @@
 
 ## 2 
 
+| 参数<div style="width:150px"> | 说明 |
+| :--- | :--- |
 | -b bitrate | 设置比特率，默认 200kb/s |
-
-
+| -r fps | 设置帧数 默认 25 |
+| -s size | 设置分辨率，默认 160*128 |
+| -aspect aspect | 视频长宽比，4:3, 16:9 或 1.3333, 1.7777 |
+| -croptop size | 顶部切除尺寸，单位像素 |
+| -cropbottom size | 底部切除尺寸，单位像素 |
+| -cropleft size | 左侧切除尺寸，单位像素 |
+| -cropright size | 右侧切除尺寸，单位像素 |
 
 ## 资料
 
