@@ -2,7 +2,7 @@
 
 ## 1 基本选项
 
-| 参数<div style="width:150px"> | 说明 |
+| 参数<div style="width:200px"> | 说明 |
 | :--- | :--- |
 | -formats | 输出所有可用格式 |
 | --f fmt | 指定格式（音频或视频格式） |
@@ -24,7 +24,7 @@
 
 ## 2 
 
-| 参数<div style="width:150px"> | 说明 |
+| 参数<div style="width:200px"> | 说明 |
 | :--- | :--- |
 | -b bitrate | 设置比特率，默认 200kb/s |
 | -r fps | 设置帧数 默认 25 |
