@@ -22,7 +22,7 @@
 | -target type | 设置目标文件类型(`vcd`, `svcd`, `dvd`, `dv`, `dv50`, `pal-vcd`, `ntsc-svcd`, ...) |
 | -dframes number | 设置要记录的帧数 |
 
-## 2 
+## 2 视频选项
 
 | 参数 | 说明 |
 | :--- | :--- |
@@ -38,6 +38,16 @@
 | -padbottom size | 底部补齐尺寸，单位像素 |
 | -padleft size | 左补齐 |
 | -padright size | 右补齐 |
+| -vn | 取消视频 |
+| -vcodec codec | 强制使用 `codec` 编解码方式 |
+| -sameq | 使用同样视频质量作为源 |
+| -pass n | 选择处理遍数（1或者2）。两遍编码非常有用。第一遍生成统计信息，第二遍生成精确的请求的码率 |
+| -passlogfile file	| 选择两遍的纪录文件名为 `file` |
+| -newvideo | 在现在的视频流后面加入新的视频流 |
+
+## 3 高级视频选项
+
+
 
 
 ## 资料
