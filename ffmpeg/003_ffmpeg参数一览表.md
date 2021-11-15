@@ -1,8 +1,17 @@
 # ffmpeg 参数一览表
 
+<style>
+table th:first-of-type {
+    width: 30%;
+}
+table th:nth-of-type(2) {
+    width: 70%;
+}
+</style>
+
 ## 1 基本选项
 
-| 参数<div style="width:600px"> | 说明 |
+| 参数 | 说明 |
 | :--- | :--- |
 | -formats | 输出所有可用格式 |
 | --f fmt | 指定格式（音频或视频格式） |
@@ -24,7 +33,7 @@
 
 ## 2 
 
-| 参数<div style="width:600px"> | 说明 |
+| 参数 | 说明 |
 | :--- | :--- |
 | -b bitrate | 设置比特率，默认 200kb/s |
 | -r fps | 设置帧数 默认 25 |
