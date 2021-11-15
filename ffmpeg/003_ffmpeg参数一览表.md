@@ -11,7 +11,7 @@
 | -t duration | 记录时长为 t |
 | -fs limit_size | 设置文件上限大小 |
 | -ss time_off | 从指定的时间(s)开始， [-]hh:mm:ss[.xxx] 的格式也支持 |
-| -itsoffset time_off | 设置时间偏移（s），该选项影响所有后面的输入文件。该偏移被加到输入文件的时戳，定义一个正偏移意味着相应的流被延迟了 offset 秒。 [-]hh:mm:ss[.xxx] 的格式也支持 |
+| -itsoffset time_off | 设置时间偏移（s），该选项影响所有后面的输入文件。<br />该偏移被加到输入文件的时戳，定义一个正偏移意味着相应的流被延迟了 offset 秒。 [-]hh:mm:ss[.xxx] 的格式也支持 |
 | -title string | 标题 |
 | -timestamp time | 时间戳 |
 | -author string | 作者 |
@@ -34,6 +34,11 @@
 | -cropbottom size | 底部切除尺寸，单位像素 |
 | -cropleft size | 左侧切除尺寸，单位像素 |
 | -cropright size | 右侧切除尺寸，单位像素 |
+| -padtop size | 顶部补齐尺寸，单位像素 |
+| -padbottom size | 底部补齐尺寸，单位像素 |
+| -padleft size | 左补齐 |
+| -padright size | 右补齐 |
+
 
 ## 资料
 
