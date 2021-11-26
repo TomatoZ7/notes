@@ -1,8 +1,6 @@
 # php 文件读写
 
-## 1 fopen & fread & fwrite & fclose
-
-### 1.1 fopen 打开文件
+## 1 fopen 打开文件
 
 ```php
 fopen(filename,mode,include_path,context)
@@ -20,7 +18,42 @@ fopen(filename,mode,include_path,context)
 
 | 描述 | r+ | w+ | a+ |
 | :-- | :-- | :-- | :-- |
-| 写入方式 | 从文件头部开始覆盖，其他内容不变 | 从文件尾部追加，其他内容保留 | 清空文件并写入 |
+| 写入方式 | 从文件头部开始覆盖，其他内容不变 | 清空文件并写入 | 从文件尾部追加，其他内容保留 |
 | 文件不存在 | 报错 | 创建 | 创建 |
 
 > 注意：Windows 下文件路径是 `\`，应该使用 `/`。
+
+## 2 fwrite 写入文件
+
+```php
+fwrite(file,string,length)
+```
+
+| 参数 | 描述 |
+| :-- | :-- |
+| file | 必需。规定要打开的文件 |
+| string | 必需。规定要写入文件的字符串 |
+| length | 可选。规定要写入的最大字节数 |
+
+## 3 读取文件
+
+### 3.1 fgetc : 一次读取一个字节
+
+```php
+$f = fopen('t.txt');
+$content = fgetc($f);
+fclose($f);
+```
+
+### 3.2 fread : 一次读取多个字节
+
+```php
+fread(resource $handle, int $length)
+```
+
+```php
+$f = fopen('t.txt');
+echo fread($file, 3);
+fclose($f);
+```
+
