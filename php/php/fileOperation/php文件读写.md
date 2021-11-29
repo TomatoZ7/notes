@@ -99,3 +99,38 @@ file(path, include_path, context)
 是否打开文件后一定要关闭？
 
 即使不手写 `fclose`，在 `php` 脚本执行结束后，也会**自动关闭文件**。但在一个长时间执行的脚本中，如果不写 `fclose`，在文件加锁的情况下会造成阻塞，所以，写 `fclose` 是一个好习惯。
+
+## 5 其他
+
+### 5.1 file_exists : 检查文件或目录是否存在
+
+```php
+file_exists(path): bool
+```
+
+### 5.2 filesize : 返回指定文件的大小
+
+```php
+filesize(filename): int|bool
+```
+
+### 5.3 unlink : 删除一个文件
+
+```php
+unlink(filename): bool
+```
+
+### 5.4 feof : 判断文件指针已到达文件末尾
+
+```php
+feof(filename): bool
+```
+
+### 5.5 \r & \n
+
+`\r` 和 `\n` 各占一个字节。
+
+### 5.6 file_get_contents & file_put_contents
+
+
+[资料来源](https://www.runoob.com/php/php-ref-filesystem.html)
