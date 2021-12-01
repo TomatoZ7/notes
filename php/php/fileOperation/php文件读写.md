@@ -132,5 +132,31 @@ feof(filename): bool
 
 ### 5.6 file_get_contents & file_put_contents
 
+`file_get_contents()` 把整个文件读入一个字符串中。
+
+```php
+file_get_contents(path, include_path, context, start, max_length)
+```
+
+| 参数 | 描述 |
+| :-- | :-- |
+| path | 必需。规定要读取的文件 |
+| include_path | 可选。如果您还想在 `include_path` 中搜索文件的话，设为 `1` |
+| context | 可选。规定文件句柄环境，设为 `null` 则忽略 |
+| start | 可选。规定文件开始读取位置 |
+| max_length | 可选。规定读取的字节数 |
+
+`file_put_contents()` 把一个字符串写入文件中，如不存在，则创建之。
+
+```php
+file_put_contents(string $filename, mixed $data, int $flags = 0, resource $context)
+```
+
+| 参数 | 描述 |
+| :-- | :-- |
+| file | 必需。规定要写入的文件 |
+| data | 必需。规定要写入文件的数据，可以是字符串、数组或数据流 |
+| mode | 可选。规定如何打开文件：<br/> FILE_USE_INCLUDE_PATH <br/> FILE_APPEND <br/> LOCK_EX |
+| context | 可选。规定文件句柄的环境 |
 
 [资料来源](https://www.runoob.com/php/php-ref-filesystem.html)
