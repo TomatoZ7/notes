@@ -24,9 +24,10 @@ bcmod(string $num1, string $num2, ?int $scale = null): string
 
 #### 参数
 
+| :-- | :-- |
 | num1 | 被除数，`string` 类型 |
 | num2 | 除数，`string` 类型 |
-| scale | php7.2 引入，控制返回的小数位，默认 0，可使用 `bcscale(1)` 全局控制 |
+| scale | php7.2 引入，设置返回结果中小数点后的小数位数，默认 0，可使用 `bcscale()` 全局设置 |
 
 #### 范例
 
@@ -43,3 +44,19 @@ bcscale(1);
 echo bcmod('5.5', '2.8');  // 2.7
 echo bcmod('5.5', '2.8', 2);  // 2.70
 ```
+
+### 2.2 bcdiv
+
+#### 说明
+
+两个任意精度的数字除法计算。
+
+#### 用法
+
+```php
+bcdiv(string $num1, string $num2, ?int $scale = null): string
+```
+
+`num1` 除以 `num2`。
+
+#### 
