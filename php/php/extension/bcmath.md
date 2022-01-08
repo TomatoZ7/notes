@@ -24,6 +24,7 @@ bcmod(string $num1, string $num2, ?int $scale = null): string
 
 #### 参数
 
+| parameter | description |
 | :-- | :-- |
 | num1 | 被除数，`string` 类型 |
 | num2 | 除数，`string` 类型 |
