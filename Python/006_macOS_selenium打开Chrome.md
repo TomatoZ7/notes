@@ -19,10 +19,20 @@
 ```python
 from selenium import webdriver
 
-driver = webdriver.Chrome(executable_path=r'/Users/test/drivers/chromedriver_97') # 你的 chromedriver 安装路径
+driver = webdriver.Chrome(executable_path=r'/Users/test/drivers/chromedriver') # 你的 chromedriver 安装路径
 
 driver.maximize_window()
 driver.get('https://www.baidu.com/')
 ```
 
 如果 Chrome 浏览器没有安装在默认路径下，需要在代码里指明 Chrome 安装的路径。
+
+```python
+...
+
+options = webdriver.ChromeOptions()
+options.binary_location = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+driver = webdriver.Chrome(executable_path=r'/Users/tz7/Tools/chromedriver', chrome_options=options)
+
+...
+```
