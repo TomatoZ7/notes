@@ -28,7 +28,7 @@ bcmod(string $num1, string $num2, ?int $scale = null): string
 | :-- | :-- |
 | num1 | 被除数，`string` 类型 |
 | num2 | 除数，`string` 类型 |
-| scale | php7.2 引入，设置返回结果中小数点后的小数位数，默认 0，可使用 `bcscale()` 全局设置 |
+| scale | php7.2 引入，设置返回结果中小数点后的小数位数，可使用 `bcscale()` 全局设置，默认 0 |
 
 #### 范例
 
@@ -60,4 +60,16 @@ bcdiv(string $num1, string $num2, ?int $scale = null): string
 
 `num1` 除以 `num2`。
 
-#### 
+#### 参数
+
+| parameter | description |
+| :-- | :-- |
+| num1 | 被除数，`string` 类型 |
+| num2 | 除数，`string` 类型 |
+| scale | 设置返回结果中小数点后的小数位数，可使用 `bcscale()` 全局设置，默认 0 |
+
+#### 范例
+
+```php
+echo bcdiv('105', '6.55957', 3);  // 16.007
+```
