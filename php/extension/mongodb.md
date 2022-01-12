@@ -6,7 +6,7 @@
 
 运行 `phpinfo()` 可得到相关的一些信息，对于后面选择安装文件有帮助：
 
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/php/php/images/php_extension_1.jpg)
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/php/images/php_extension_1.jpg)
 
 ### 1.2 下载
 
@@ -16,7 +16,7 @@
 
 结合上面拿到的 `php` 相关信息，最终选择：
 
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/php/php/images/php_extension_2.jpg)
+![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/php/images/php_extension_2.jpg)
 
 ### 1.3 配置
 
