@@ -3,10 +3,11 @@
 ## 1.简介
 `nwidart/laravel-modules` 是一个 `Laravel` 包，通过模块化能够管理大型 `Laravel` 应用。 一个模块就像一个 `Laravel` 框架，包含控制器、模型、视图等。 该扩展包在 `Laravel 5` 中得到支持和测试。
 
-
 ## 2.版本要求
 
 + >= PHP7.1
+
+![laravel-modules-1](https://github.com/TomatoZ7/notes-of-tz/blob/master/php/laravel/images/laravel_modules_1.jpg)
 
 ## 3.安装&配置
 
