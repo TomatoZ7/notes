@@ -60,13 +60,16 @@
 
 | 参数 | 说明 |
 | :--- | :--- |
-| -g gop_size | 设置图像组大小 |
-
+| -ab bitrate | 设置图像组大小 |
+| -ar freq | 设置音频采样率（单位：Hz），`PSP` 只认 24000 |
+| -ac channels | 设置声道数，1 就是单声道，2 就是立体声，转换单声道的 TVrip 可以用 1（节省一半容量），高品质的 DVDrip 就可以用 2 |
+| -an | 取消音频 |
+| -acodec codec | 指定音频编码（'copy' to copy stream） |
+| -vol volume | 设置录制音量大小（默认为 256）<百分比>，某些 DVDrip 的 AC3 轨音量极小，转换时可以用这个提高音量，比如 200 就是原来的 2 倍 |
+| -newaudio | 在现在的音频流后面加入新的音频流 |
 
 ## 资料
 
-[ffmpeg常用参数一览表](https://www.cnblogs.com/mwl523/p/10856633.html)
+[ffmpeg常用参数一览表 - 博客园](https://www.cnblogs.com/mwl523/p/10856633.html)
 
-[ffmpeg参数中文详细解释](https://blog.csdn.net/leixiaohua1020/article/details/12751349)
-
-[FFmpeg 参数中文详解](https://blog.csdn.net/zhouzhiwengang/article/details/109229698)
+[ffmpeg参数中文详细解释 - CSDN](https://blog.csdn.net/leixiaohua1020/article/details/12751349)
