@@ -1,6 +1,6 @@
 # php + ffmpeg 实战
 
-## 1 获取视频信息
+## 1.获取视频信息
 
 ```php
 /**
@@ -49,7 +49,7 @@ function getVideoInfo(string $video_path)
 }
 ```
 
-## 2 视频转 GIF
+## 2.视频转 GIF
 
 ```php
 /**
@@ -92,3 +92,15 @@ function getVideoInfo(string $video_path)
     }
 }
 ```
+
+## 3.静音检测
+
+```shell
+ffmpeg -i xxx.mp3 -af silencedetect=n=-50dB:d=0.5 -f null - 2>&1
+```
+
+**参考**
+
+[FFplay文档解读-23-音频过滤器八 - 简书](https://www.jianshu.com/p/e0824a9bac4e)
+
+[如何检测音频文件末尾的静音 - Thinbug](https://www.thinbug.com/q/42507879)
