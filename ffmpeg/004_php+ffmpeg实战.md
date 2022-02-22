@@ -96,7 +96,7 @@ function getVideoInfo(string $video_path)
 ## 3.静音检测
 
 ```shell
-ffmpeg -i xxx.mp3 -af silencedetect=n=-50dB:d=0.5 -f null - 2>&1
+ffmpeg -i xxx.mp4 -af silencedetect=n=-50dB:d=0.5 -f null - 2>&1
 ```
 
 **参考**
