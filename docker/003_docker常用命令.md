@@ -110,6 +110,12 @@ docker.io/library/mysql:lates   # 真实地址
 [root@tz7 ~]# docker tag busybox:latest mybusybox:latest         # 通过此命令我们会看到两个镜像的 IMAGE ID 完全一样，是因为它们指向了同一个镜像文件。
 ```
 
+### 删除无用镜像
+
+```shell
+docker image prune -a -f
+```
+
 ## 容器命令
 
 说明 : 有了镜像才可以构建容器
