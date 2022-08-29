@@ -1,12 +1,12 @@
 # redis 持久化之 RDB
 
-Redis 是内存数据库，如果不讲内存中的数据库状态保存到磁盘，那么一旦服务器进程退出，服务器中的数据库状态也会消失。所以 Redis 提供了持久化功能。
+Redis 是内存数据库，如果不将内存中的数据库状态保存到磁盘，那么一旦服务器进程退出，服务器中的数据库状态也会消失。所以 Redis 提供了持久化功能。
 
 ## RDB(Redis Database)
 
 ### 什么是 RDB
 
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/redis_rdb1.png)
+![image](Images/redis_rdb1.png)
 
 在指定的时间间隔内将内存中的数据集快照进入磁盘，也就是 Snapshot 快照，恢复时将快照文件直接读到内存里。
 
