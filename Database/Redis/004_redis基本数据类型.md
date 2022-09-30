@@ -6,6 +6,11 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
 
 - [1.Redis Key 操作](#1redis-key-操作)
 - [2.String](#2string)
+- [3.List](#3list)
+- [4.Hash](#4hash)
+- [5.Set](#5set)
+- [6.Zset](#6zset)
+- [7.参考](#7参考)
 
 ## 1.Redis Key 操作
 
@@ -357,7 +362,7 @@ List 可以使用 LPUSH + RPOP （或者反过来，RPUSH+LPOP）命令实现消
 
 这就要说起 Redis 从 5.0 版本开始提供的 Stream 数据类型了，Stream 同样能够满足消息队列的三大需求，而且它还支持「消费组」形式的消息读取。
 
-## 4.Hash(哈希)
+## 4.Hash
 
 ### 4.1 介绍
 
@@ -809,7 +814,7 @@ Zset 类型（Sorted Set，有序集合） 可以根据元素的权重来排序�
 6) "200"
 ```
 
-### 7.参考
+## 7.参考
 
 [命令中心(中文)](http://redis.cn/commands.html)
 
