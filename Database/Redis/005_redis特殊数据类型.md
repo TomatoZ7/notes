@@ -1,5 +1,10 @@
 # Redis 特殊数据类型
 
+- [1.Bitmap](#1bitmap)
+- [2.HyperLogLog](#2hyperloglog)
+- [3.GEO](#3geo)
+- [4.Stream](#4stream)
+
 ## 1.BitMap
 
 ### 1.1 介绍
