@@ -1,12 +1,32 @@
-# redis 主从复制
+# Redis 主从复制
 
-## 概念
+- [Redis 主从复制](#redis-主从复制)
+  - [1.概念](#1概念)
+    - [1.1 作用](#11-作用)
+  - [2.环境配置实例](#2环境配置实例)
+    - [2.1 一主二从配置实例](#21-一主二从配置实例)
+    - [2.2 层层链路](#22-层层链路)
+  - [3.主写从读](#3主写从读)
+  - [4.测试宕机](#4测试宕机)
+  - [5.哨兵模式(自动选举主机的模式)](#5哨兵模式自动选举主机的模式)
+    - [5.1 概述](#51-概述)
+    - [5.2 单哨兵](#52-单哨兵)
+    - [5.3 多哨兵](#53-多哨兵)
+    - [5.4 测试](#54-测试)
+      - [5.4.1 配置哨兵配置文件 sentinel.conf](#541-配置哨兵配置文件-sentinelconf)
+      - [5.4.2 启动哨兵](#542-启动哨兵)
+      - [5.4.3 测试](#543-测试)
+    - [5.5 哨兵模式的优缺点](#55-哨兵模式的优缺点)
+    - [5.6 哨兵模式配置文件](#56-哨兵模式配置文件)
+  - [复制原理](#复制原理)
+
+## 1.概念
 
 主从复制，是指将一台 Redis 服务器的数据，复制到其他的 Redis 服务器。前者称为**主节点**(master/leader)，后者称为**从节点**(slave/follower)；**数据的复制是单向的，只能由主节点到从节点。**Master 以写为主，Slave 以读为主。
 
 默认情况下，每台 Redis 服务器都是主节点；且一个主节点可以有多个从节点(或没有从节点)，但一个从节点只能有一个主节点。
 
-### 作用
+### 1.1 作用
 
 1、数据冗余 : 主从复制实现了数据的热备份，是持久化之外的一种数据冗余方式。
 
@@ -18,17 +38,16 @@
 
 一般来说，要将 Redis 运用于工程项目中，只使用一台 Redis 是万万不能的(宕机)，原因如下:
 
-1、从结构上，单个 Redis 服务器会发生单点故障，并月一台服务器需要处理所有的请求负载，压力较大；
+1、从结构上，单个 Redis 服务器会发生单点故障，并且一台服务器需要处理所有的请求负载，压力较大；
 
 2、从容量上，单个 Redis 服务器内存容量有限，就算一台 Redis 服务器内存容量为 256G，也不能将所有内存用作 Redis 存储内存一般来说，单台 Redis 最大使用内存不应该超过 20G。
 
 电商网站上的商品，一般都是一次上传，无数次浏览的，也就是"读多写少"。
 对于这种场景，我们可以使如下这种架构:
 
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/redis_master1.png)
+![image](Images/redis_master_1.png)
 
-
-## 环境配置实例
+## 2.环境配置实例
 
 只配置从库，不用配置主库！
 
@@ -60,9 +79,9 @@ repl_backlog_histlen:0
 
 修改完毕之后启动 redis 服务：
 
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/redis_master2.png)
+![image](Images/redis_master_2.png)
 
-### 一主二从配置实例
+### 2.1 一主二从配置实例
 
 默认情况下，每台 redis 服务器都是主节点；我们一般情况下只用**配置从机**就好了。
 
@@ -114,15 +133,15 @@ repl_backlog_histlen:56
 
 > 真实的主从配置应该是在配置文件中配置的，这样的话是永久的。我们这里使用命令的方式是暂时的。
 
-### 层层链路
+### 2.2 层层链路
 
 还有一种配置类似于**链表**的配置，一台服务器既是从机，也是主机。
 
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/redis_replication1.png)
+![image](Images/redis_replication_1.png)
 
 这个时候也能完成主从复制。
 
-## 主写从读
+## 3.主写从读
 
 主机可写可读：
 
@@ -144,7 +163,7 @@ OK
 (error) READONLY You can't write against a read only replica.
 ```
 
-## 测试宕机
+## 4.测试宕机
 
 主机宕机，从机依旧连接到主机，但是没有写操作，如果主机恢复，从机依旧可以获取到主机新写入的数据。
 
@@ -152,9 +171,9 @@ OK
 
 主机宕机，从机可以使用 `SLAVEOF no one` 命令**手动**将自己升级为主机。
 
-## 哨兵模式(自动选举主机的模式)
+## 5.哨兵模式(自动选举主机的模式)
 
-### 概述
+### 5.1 概述
 
 主从切换技术是当主服务器宕机后，需要手动把一台从服务器切换为主服务器，这就需要人工干预，费时费力，还会造成一段时间内服务不可用。这不是一种推荐的方式，更多时候，我们优先考虑**哨兵模式**。Redis 从 2.8 开始正式提供了 Sentinel (哨兵模式)架构来解决这个问题。
 
@@ -162,9 +181,9 @@ OK
 
 哨兵模式是一种特殊的模式，首先 Redis 提供了哨兵的命令，哨兵是一个独立的进程，作为进程，它会独立运行。其原理是**哨兵通过发送命令，等待 Redis 服务器响应，从而监控运行的多个 Redis 实例**。
 
-### 单哨兵
+### 5.2 单哨兵
 
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/redis_replication2.png)
+![image](Images/redis_replication_2.png)
 
 这里的哨兵有两个作用
 
@@ -174,17 +193,17 @@ OK
 
 然后一个哨兵进程也可能存在突发问题，为此，我们可以使用多个哨兵进行监控。各个哨兵之间还会进行监控，这样就形成了多哨兵模式。
 
-### 多哨兵
+### 5.3 多哨兵
 
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/redis_replication3.png)
+![image](Images/redis_replication_3.png)
 
 假设主服务器宕机，哨兵1先检测到这个结果，系统并不会马上进行 failover 过程，仅仅是哨兵1主观认为主服务器不可用，这个现象称为**主观下线**。
 
 当后面的哨兵也检测到主服务器不可用，并且数量达到一定值时，那么哨兵之间就会进行一次投票，投票的结果由一个哨兵发起，进行 failover (故障转移)操作。切换成功后，就会通过发布订阅模式，让各个哨兵把自己监控的从服务器切换主机，这个过程称为**客观下线**。
 
-### 测试
+### 5.4 测试
 
-#### 1、配置哨兵配置文件 sentinel.conf
+#### 5.4.1 配置哨兵配置文件 sentinel.conf
 
 ```bash
 # sentinel monitor 被监控的名称 host port 1
@@ -192,7 +211,7 @@ OK
 sentinel monitor myredis 127.0.0.1 6379 1
 ```
 
-#### 2、启动哨兵
+#### 5.4.2 启动哨兵
 
 ```bash
 [root@izuf61wwjib0gi7cyckz02z bin]# redis-sentinel myredisconf/sentinel.conf 
@@ -225,15 +244,15 @@ sentinel monitor myredis 127.0.0.1 6379 1
 19865:X 28 Jun 2021 10:01:08.706 * +slave slave 127.0.0.1:6381 127.0.0.1 6381 @ myredis 127.0.0.1 6379
 ```
 
-### 3、测试
+#### 5.4.3 测试
 
 我们把主机 `SHUTDOWN` 掉后，可以在 sentinel 进程里看到如下处理信息，会在从机中随机选择一个服务器(这里有一个投票算法)。
 
-![image](https://github.com/TomatoZ7/notes-of-tz/blob/master/images/redis_replication3.png)
+![image](Images/redis_replication_4.png)
 
 如果主机(6379)此时回来了，只能归并到新的主机(6381)下，当从机。
 
-### 哨兵模式的优缺点
+### 5.5 哨兵模式的优缺点
 
 优点 : 
 
@@ -249,7 +268,7 @@ sentinel monitor myredis 127.0.0.1 6379 1
 
 2、实现哨兵模式的配置比较复杂，有很多配置项。
 
-### 哨兵模式配置文件
+### 5.6 哨兵模式配置文件
 
 ```conf
 # Example sentinel.conf
