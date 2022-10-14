@@ -18,7 +18,7 @@
       - [5.4.3 测试](#543-测试)
     - [5.5 哨兵模式的优缺点](#55-哨兵模式的优缺点)
     - [5.6 哨兵模式配置文件](#56-哨兵模式配置文件)
-  - [复制原理](#复制原理)
+  - [6.复制原理](#6复制原理)
 
 ## 1.概念
 
@@ -347,7 +347,7 @@ sentinel notification-script mymaster /var/redis/notify.sh
 sentinel client-reconfig-script mymaster /var/redis/reconfig.sh
 ```
 
-## 复制原理
+## 6.复制原理
 
 slave 启动成功连接到 master 后会发送一个 sync 同步命令。
 
