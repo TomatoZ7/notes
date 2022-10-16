@@ -8,6 +8,7 @@
     - [2.3 多 Reactor 多进程/线程](#23-多-reactor-多进程线程)
   - [3.Proactor](#3proactor)
   - [4.总结](#4总结)
+  - [5.参考](#5参考)
 
 ## 1.演进
 
@@ -35,7 +36,7 @@
 
 I/O 多路复用技术会用一个系统调用函数来监听我们所有关心的连接，也就说可以在一个监控线程里面监控很多的连接。
 
-![image](Images/net_model_1.webp)
+![image](Images/net_pattern_1.webp)
 
 我们熟悉的 select/poll/epoll 就是内核提供给用户态的多路复用系统调用，线程可以通过一个系统调用函数从内核中获取多个事件。
 
@@ -98,7 +99,7 @@ Reactor 模式是灵活多变的，可以应对不同的业务场景，灵活在
 
 我们来看看「**单 Reactor 单进程**」的方案示意图：
 
-![image](Images/net_model_2.webp)
+![image](Images/net_pattern_2.webp)
 
 可以看到进程里有 **Reactor**、**Acceptor**、**Handler** 这三个对象：
 
@@ -132,7 +133,7 @@ Redis 是由 C 语言实现的，在 Redis 6.0 版本之前采用的正是「单
 
 闻其名不如看其图，先来看看「单 Reactor 多线程」方案的示意图如下：
 
-![image](Images/net_model_3.webp)
+![image](Images/net_pattern_3.webp)
 
 详细说一下这个方案：
 
@@ -165,7 +166,7 @@ Redis 是由 C 语言实现的，在 Redis 6.0 版本之前采用的正是「单
 
 老规矩，闻其名不如看其图。多 Reactor 多进程/线程方案的示意图如下（以线程为例）：
 
-![image](Images/net_model_4.webp)
+![image](Images/net_pattern_4.webp)
 
 方案详细说明如下：
 
@@ -195,11 +196,11 @@ Redis 是由 C 语言实现的，在 Redis 6.0 版本之前采用的正是「单
 
 注意，**阻塞等待的是「内核数据准备好」和「数据从内核态拷贝到用户态」这两个过程**。过程如下图：
 
-![image](Images/net_model_5.webp)
+![image](Images/net_pattern_5.webp)
 
 知道了阻塞 I/O ，来看看**非阻塞 I/O**，非阻塞的 `read` 请求在数据未准备好的情况下立即返回，可以继续往下执行，此时应用程序不断轮询内核，直到数据准备好，内核将数据拷贝到应用程序缓冲区，`read` 调用才可以获取到结果。过程如下图：
 
-![image](Images/net_model_6.webp)
+![image](Images/net_pattern_6.webp)
 
 注意，**这里最后一次 read 调用，获取数据的过程，是一个同步的过程，是需要等待的过程。这里的同步指的是内核态的数据拷贝到用户程序的缓存区这个过程。**
 
@@ -211,7 +212,7 @@ Redis 是由 C 语言实现的，在 Redis 6.0 版本之前采用的正是「单
 
 当我们发起 `aio_read`（异步 I/O） 之后，就立即返回，内核自动将数据从内核空间拷贝到用户空间，这个拷贝过程同样是异步的，内核自动完成的，和前面的同步操作不一样，**应用程序并不需要主动发起拷贝动作**。过程如下图：
 
-![image](Images/net_model_7.webp)
+![image](Images/net_pattern_7.webp)
 
 举个你去饭堂吃饭的例子，你好比应用程序，饭堂好比操作系统。
 
@@ -238,7 +239,7 @@ Proactor 正是采用了异步 I/O 技术，所以被称为异步网络模型。
 
 接下来，一起看看 Proactor 模式的示意图：
 
-![image](Images/net_model_8.webp)
+![image](Images/net_pattern_8.webp)
 
 介绍一下 Proactor 模式的工作流程：
 
@@ -268,3 +269,6 @@ Reactor 可以理解为「来了事件操作系统通知应用进程，让应用
 
 不过，无论是 Reactor，还是 Proactor，都是一种基于「事件分发」的网络编程模式，区别在于 Reactor 模式是基于「待完成」的 I/O 事件，而 Proactor 模式则是基于「已完成」的 I/O 事件。
 
+## 5.参考
+
+[高性能网络模式：Reactor 和 Proactor](https://xiaolincoding.com/os/8_network_system/reactor.html)
