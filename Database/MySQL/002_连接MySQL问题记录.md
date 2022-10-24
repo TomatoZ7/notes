@@ -1,14 +1,16 @@
-# 远程连接 MySQL 问题记录
+# 连接 MySQL 问题记录
 
-## 1、确认账号密码
+## 1.连接 MySQL 问题排查流程
 
-## 2、确认端口是否打开(阿里云安全组、linux 防火墙端口)
+### 1.1 确认账号密码
 
-## 3、根据返回状态码
+### 1.2 确认端口是否打开(阿里云安全组、linux 防火墙端口)
 
-### 权限问题
+### 1.3 根据返回状态码
 
-> 1045 - Access denied for user 'root'@'::1' (using password: YES)
+#### 1.3.1 权限问题
+
+`1045 - Access denied for user 'root'@'::1' (using password: YES)`
 
 ```sql
 use mysql;
