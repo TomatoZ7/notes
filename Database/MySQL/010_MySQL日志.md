@@ -1,10 +1,10 @@
 # MySQL 日志：undo log、redo log、binlog 有什么用？
 
 - [MySQL 日志：undo log、redo log、binlog 有什么用？](#mysql-日志undo-logredo-logbinlog-有什么用)
-  - [1.为什么需要 undo log？](#1为什么需要-undo-log)
-  - [2.为什么需要 Buffer Pool？](#2为什么需要-buffer-pool)
+  - [1.undo log](#1undo-log)
+  - [2.Buffer Pool](#2buffer-pool)
     - [2.1 Buffer Pool 缓存什么？](#21-buffer-pool-缓存什么)
-  - [3.为什么需要 redo log ？](#3为什么需要-redo-log-)
+  - [3.redo log](#3redo-log)
     - [3.1 什么是 redo log？](#31-什么是-redo-log)
     - [3.2 被修改 Undo 页面，需要记录对应 redo log 吗？](#32-被修改-undo-页面需要记录对应-redo-log-吗)
     - [3.3 redo log 和 undo log 区别在哪？](#33-redo-log-和-undo-log-区别在哪)
@@ -65,7 +65,7 @@ UPDATE t_user SET name = 'xiaolin' WHERE id = 1;
 
 所以这次就带着这个问题，看看这三种日志是怎么工作的。
 
-## 1.为什么需要 undo log？
+## 1.undo log
 
 我们在执行执行一条“增删改”语句的时候，虽然没有输入 begin 开启事务和 commit 提交事务，但是 MySQL 会**隐式开启事务**来执行“增删改”语句的，执行完就自动提交事务的，这样就保证了执行完“增删改”语句后，我们可以及时在数据库表看到“增删改”的结果了。
 
@@ -122,7 +122,7 @@ undo log 是一种用于撤销回退的日志。在事务没提交之前，MySQL
 > 
 > buffer pool 中有 undo 页，对 undo 页的修改也都会记录到 redo log。redo log 会每秒刷盘，提交事务时也会刷盘，数据页和 undo 页都是靠这个机制保证持久化的。
 
-## 2.为什么需要 Buffer Pool？
+## 2.Buffer Pool
 
 MySQL 的数据都是存在磁盘中的，那么我们要更新一条记录的时候，得先要从磁盘读取该记录，然后在内存中修改这条记录。那修改完这条记录是选择直接写回到磁盘，还是选择缓存起来呢？
 
@@ -159,13 +159,13 @@ Buffer Pool 除了缓存「索引页」和「数据页」，还包括了 Undo �
 
 当我们查询一条记录时，InnoDB 是会把整个页的数据加载到 Buffer Pool 中，将页加载到 Buffer Pool 后，再通过页里的「页目录」去定位到某条具体的记录。
 
-## 3.为什么需要 redo log ？
+## 3.redo log
 
 Buffer Pool 是提高了读写效率没错，但是问题来了，Buffer Pool 是基于内存的，而内存总是不可靠，万一断电重启，还没来得及落盘的脏页数据就会丢失。
 
 为了防止断电导致数据丢失的问题，当有一条记录需要更新的时候，InnoDB 引擎就会先更新内存（同时标记为脏页），然后将本次对这个页的修改以 redo log 的形式记录下来，**这个时候更新就算完成了**。
 
-后续，InnoDB 引擎会在适当的时候，由后台线程将缓存在 Buffer Pool 的脏页刷新到磁盘里，这就是 **WAL （Write-Ahead Logging）技术**。
+后续，InnoDB 引擎会在适当的时候，由后台线程将缓存在 Buffer Pool 的脏页刷新到磁盘里，这就是 **WAL（Write-Ahead Logging）技术**。
 
 WAL 技术指的是， MySQL 的写操作并不是立刻写到磁盘上，而是先写日志，然后在合适的时间再写到磁盘上。
 
@@ -227,7 +227,7 @@ redo log 是物理日志，记录了某个数据页做了什么修改，比如**
 
 ![image](Images/log_7.webp)
 
-redo log buffer 默认大小 16 MB，可以通过 `innodb_log_Buffer_size` 参数动态的调整大小，增大它的大小可以让 MySQL 处理「大事务」是不必写入磁盘，进而提升写 IO 性能。
+redo log buffer 默认大小 16 MB，可以通过 `innodb_log_Buffer_size` 参数动态的调整大小，增大它的大小可以让 MySQL 处理「大事务」时不必写入磁盘，进而提升写 IO 性能。
 
 ### 3.6 redo log 什么时候刷盘？
 
@@ -237,7 +237,7 @@ redo log buffer 默认大小 16 MB，可以通过 `innodb_log_Buffer_size` 参�
 
 + MySQL 正常关闭时；
 + 当 redo log buffer 中记录的写入量大于 redo log buffer 内存空间的一半时，会触发落盘；
-+ InnoDB 的后台线程每隔 1 秒，将 redo log buffer 持久化到磁盘。
++ InnoDB 的后台线程每隔 1 秒，将 redo log buffer 持久化到磁盘；
 + 每次事务提交时都将缓存在 redo log buffer 里的 redo log 直接持久化到磁盘（这个策略可由 innodb_flush_log_at_trx_commit 参数控制，下面会说）。
 
 **innodb_flush_log_at_trx_commit 参数控制的是什么？**
@@ -272,7 +272,7 @@ InnoDB 的后台线程每隔 1 秒：
 这三个参数的数据安全性和写入性能的比较如下：
 
 + 数据安全性：参数 1 > 参数 2 > 参数 0
-+ 写入性能：参数 0 > 参数 2> 参数 1
++ 写入性能：参数 0 > 参数 2 > 参数 1
 
 所以，数据安全性和写入性能是熊掌不可得兼的，**要不追求数据安全性，牺牲性能；要不追求性能，牺牲数据安全性。**
 
