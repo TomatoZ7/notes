@@ -264,7 +264,7 @@ Innodb 存储引擎设计了一个**缓冲池（Buffer Pool）**，来提高数�
 
 Buffer Pool 以页为单位缓冲数据，可以通过 `innodb_buffer_pool_size` 参数调整缓冲池的大小，默认是 128 M。
 
-Innodb 通过三种链表来管理缓页：
+Innodb 通过三种链表来管理缓存页：
 
 + Free List （空闲页链表），管理空闲页；
 + Flush List （脏页链表），管理脏页；
