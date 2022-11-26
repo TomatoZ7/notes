@@ -67,6 +67,10 @@ Buffer Pool 除了缓存「索引页」和「数据页」，还包括了 undo �
 
 当我们查询一条记录时，InnoDB 是会把整个页的数据加载到 Buffer Pool 中，因为，通过索引只能定位到磁盘中的页，而不能定位到页中的一条记录。将页加载到 Buffer Pool 后，再通过页里的页目录去定位到某条具体的记录。
 
+**undo 页记录什么？**
+
+开启事务后，InnoDB 层更新记录前，首先要记录相应的 undo log，如果是更新操作，需要把被更新的列的旧值记下来，也就是要生成一条 undo log，undo log 会写入 Buffer Pool 中的 Undo 页面。
+
 ## 4.如何管理 Buffer Pool？
 
 ### 4.1 如何管理空闲页？

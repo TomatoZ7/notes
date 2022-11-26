@@ -3,7 +3,6 @@
 - [MySQL 日志：undo log、redo log、binlog 有什么用？](#mysql-日志undo-logredo-logbinlog-有什么用)
   - [1.undo log](#1undo-log)
   - [2.Buffer Pool](#2buffer-pool)
-    - [2.1 Buffer Pool 缓存什么？](#21-buffer-pool-缓存什么)
   - [3.redo log](#3redo-log)
     - [3.1 什么是 redo log？](#31-什么是-redo-log)
     - [3.2 被修改 Undo 页面，需要记录对应 redo log 吗？](#32-被修改-undo-页面需要记录对应-redo-log-吗)
@@ -124,40 +123,7 @@ undo log 是一种用于撤销回退的日志。在事务没提交之前，MySQL
 
 ## 2.Buffer Pool
 
-MySQL 的数据都是存在磁盘中的，那么我们要更新一条记录的时候，得先要从磁盘读取该记录，然后在内存中修改这条记录。那修改完这条记录是选择直接写回到磁盘，还是选择缓存起来呢？
-
-当然是缓存起来好，这样下次有查询语句命中了这条记录，直接读取缓存中的记录，就不需要从磁盘获取数据了。
-
-为此，Innodb 存储引擎设计了一个**缓冲池（Buffer Pool）**，来提高数据库的读写性能。
-
-![image](Images/log_3.webp)
-
-有了 Buffer Pool 后：
-
-+ 当读取数据时，如果数据存在于 Buffer Pool 中，客户端就会直接读取 Buffer Pool 中的数据，否则再去磁盘中读取。
-+ 当修改数据时，如果数据存在于 Buffer Pool 中，那直接修改 Buffer Pool 中数据所在的页，然后将其页设置为脏页（该页的内存数据和磁盘上的数据已经不一致），为了减少磁盘I/O，不会立即将脏页写入磁盘，后续由后台线程选择一个合适的时机将脏页写入到磁盘。
-
-### 2.1 Buffer Pool 缓存什么？
-
-InnoDB 会把存储的数据划分为若干个「页」，以页作为磁盘和内存交互的基本单位，一个页的默认大小为 16KB。因此，Buffer Pool 同样需要按「页」来划分。
-
-在 MySQL 启动的时候，**InnoDB 会为 Buffer Pool 申请一片连续的内存空间，然后按照默认的 16KB 的大小划分出一个个的页， Buffer Pool 中的页就叫做缓存页。**此时这些缓存页都是空闲的，之后随着程序的运行，才会有磁盘上的页被缓存到 Buffer Pool 中。
-
-所以，MySQL 刚启动的时候，你会观察到使用的虚拟内存空间很大，而使用到的物理内存空间却很小，这是因为只有这些虚拟内存被访问后，操作系统才会触发缺页中断，申请物理内存，接着将虚拟地址和物理地址建立映射关系。
-
-Buffer Pool 除了缓存「索引页」和「数据页」，还包括了 Undo 页，插入缓存、自适应哈希索引、锁信息等等。
-
-![image](Images/log_4.webp)
-
-**Undo 页是记录什么？**
-
-开启事务后，InnoDB 层更新记录前，首先要记录相应的 undo log，如果是更新操作，需要把被更新的列的旧值记下来，也就是要生成一条 undo log，undo log 会写入 Buffer Pool 中的 Undo 页面。
-
-**查询一条记录，就只需要缓冲一条记录吗？**
-
-不是的。
-
-当我们查询一条记录时，InnoDB 是会把整个页的数据加载到 Buffer Pool 中，将页加载到 Buffer Pool 后，再通过页里的「页目录」去定位到某条具体的记录。
+[揭开 Buffer Pool 的面纱](011_Buffer%20Pool.md)
 
 ## 3.redo log
 
