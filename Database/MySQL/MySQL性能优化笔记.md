@@ -85,24 +85,6 @@ innodb_buffer_pool_size = 750M  // 在只运行MySQL的服务器下，一般可�
 
 ## SQL 语句性能优化
 
-SQL 语句做性能优化，一般步骤如下：
-
-### 开启慢查询日志，定位运行慢的 SQL 语句
-
-利用慢查询日志可以获取所有查询时间比较长的 SQL 语句。
-
-开启慢查询日志：
-
-```
-slow_query_log = ON
-
-long_query_time = 3
-
-slow_query_log_file = /var/lib/mysql/
-
-slow-log.log
-```
-
 ### 利用 explain 执行计划，查看 SQL 执行情况
 
 关注几个比较重要的参数：
