@@ -5,7 +5,6 @@ MySQL 性能优化包括：
 1. 硬件升级
 2. 系统配置
 3. 表结构设计
-4. SQL语句及索引优化
 
 从**成本**上来看由高到低，从**效率**上来看由低到高。
 
@@ -82,29 +81,3 @@ innodb_buffer_pool_size = 750M  // 在只运行MySQL的服务器下，一般可�
 将表中的字段的宽度设得尽可能小，能用数值型尽量用数值型。
 
 > 数值型有两个优势：1、小，占空间少；2、有序
-
-## SQL 语句性能优化
-
-### 利用 explain 执行计划，查看 SQL 执行情况
-
-关注几个比较重要的参数：
-
-1. select_type：表示了查询的类型，常见的有：SIMPLE、PRIMARY、UNION、SUBQUERY等。
-
-2. type：数据库引擎查找表的方式，常见的有：all、index、range、ref、eq_ref、const 和 NULL。
-
-3. key_len：表示查询优化器使用了索引的字节数。
-
-4. extra：额外的信息，通常包括 Using Index、Using where、Using index condition、Using filesort、Using temporary。
-
-### 关注索引使用情况：type
-
-### 关注 Extra：没有信息最好
-
-### 加索引后，查看索引使用情况，index 只是覆盖索引，并不算很好的使用索引
-
-### 如果有关联尽量将索引用到 eq_ref 或者 ref 级别
-
-### 复杂 SQL 可以做成视图，视图在 MySQL 内部有优化，而且开发也比较友好
-
-### 对于复杂的 SQL 要逐一分析，找到比较费时的 SQL 语句片段进行优化
