@@ -1,5 +1,16 @@
 # slice
 
+- [slice](#slice)
+  - [1.底层](#1底层)
+    - [1.1 实现原理](#11-实现原理)
+    - [1.2 初始化时的底层实现](#12-初始化时的底层实现)
+  - [2.array 和 slice 的区别](#2array-和-slice-的区别)
+  - [3.slice 的深拷贝和浅拷贝](#3slice-的深拷贝和浅拷贝)
+  - [4.slice 的扩容机制](#4slice-的扩容机制)
+    - [4.1 Go 1.17 及更早版本](#41-go-117-及更早版本)
+    - [4.2 Go 1.18 至 Go 1.20 版本](#42-go-118-至-go-120-版本)
+  - [5.slice 是线程安全的吗？](#5slice-是线程安全的吗)
+
 ## 1.底层
 
 ### 1.1 实现原理
@@ -133,3 +144,110 @@ func MulUintptr(a, b uintptr) (uintptr, bool) {
 实现浅拷贝的方式：
 
 1. 默认的赋值操作。
+
+## 4.slice 的扩容机制
+
+### 4.1 Go 1.17 及更早版本
+
+1. 如果期望容量大于当前容量的 2 倍，那么扩容后的容量大小为期望容量；
+2. 否则：
+   1. 如果原始容量小于 1024，那么扩容后的容量为原始容量的 2 倍；
+   2. 如果原始容量大于等于 1024，那么会进入一个循环，每次循环扩容 1.25 倍，直到扩容后的容量大于期望容量，如果循环过程中发生整数溢出，则将扩容后的容量置为期望容量。
+
+相关[源码](https://github.com/golang/go/blob/release-branch.go1.17/src/runtime/slice.go#L180)：
+
+```go
+// $GOROOT/src/runtime/slice.go:181
+newcap := old.cap
+doublecap := newcap + newcap
+if cap > doublecap {
+    newcap = cap
+} else {
+    if old.cap < 1024 {
+        newcap = doublecap
+    } else {
+        // Check 0 < newcap to detect overflow
+        // and prevent an infinite loop.
+        for 0 < newcap && newcap < cap {
+            newcap += newcap / 4
+        }
+        // Set newcap to the requested cap when
+        // the newcap calculation overflowed.
+        if newcap <= 0 {
+            newcap = cap
+        }
+    }
+}
+```
+
+### 4.2 Go 1.18 至 Go 1.20 版本
+
+1. 如果期望容量大于当前容量的 2 倍，那么扩容后的容量大小为期望容量；
+2. 否则：
+   1. 如果原始容量小于 256，那么扩容后的容量为原始容量的 2 倍；
+   2. 如果原始容量大于等于 256，那么会进入一个循环，每次循环都会增加 `(当前容量 + 3 ✖️ 256) / 4` 的容量，这条公式意味着从 2 倍扩容到 1.25 倍扩容的平滑过渡，如果循环过程中发生整数溢出，则将扩容后的容量置为期望容量。
+
+相关[源码](https://github.com/golang/go/blob/release-branch.go1.19/src/runtime/slice.go#L200)
+
+```go
+newcap := old.cap
+doublecap := newcap + newcap
+if cap > doublecap {
+    newcap = cap
+} else {
+    const threshold = 256
+    if old.cap < threshold {
+        newcap = doublecap
+    } else {
+        // Check 0 < newcap to detect overflow
+        // and prevent an infinite loop.
+        for 0 < newcap && newcap < cap {
+            // Transition from growing 2x for small slices
+            // to growing 1.25x for large slices. This formula
+            // gives a smooth-ish transition between the two.
+            newcap += (newcap + 3*threshold) / 4
+        }
+        // Set newcap to the requested cap when
+        // the newcap calculation overflowed.
+        if newcap <= 0 {
+            newcap = cap
+        }
+    }
+}
+```
+
+## 5.slice 是线程安全的吗？
+
+不是。
+
+我们可以简单写个函数验证一下：
+
+```go
+func main() {
+	slice := make([]int, 0)
+
+	for i := 0; i < 10; i++ {
+		go func() {
+			slice = append(slice, 1)
+		}()
+	}
+
+	for i := 0; i < 10; i++ {
+		go func() {
+			if len(slice) > 0 {
+				slice = slice[:len(slice)-1]
+			}
+		}()
+	}
+
+	time.Sleep(time.Second * 2)
+
+	fmt.Println("length of slice:", len(slice))
+}
+```
+
+可以发现运行后每次结果都不同，说明 slice 并不支持并发读写。
+
+从 slice 的底层结构也可以看出，因为它没有使用锁等方式。
+
+slice 在并发执行中不会报错，但是数据会丢失。
