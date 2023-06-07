@@ -184,7 +184,7 @@ func chansend(c *hchan, ep unsafe.Pointer, block bool, callerpc uintptr) bool {
 		print("chansend: chan=", c, "\n")
 	}
 
-    // 如果启用了 race 检测，则进行读取操作的 race 检测
+    // 如果启用了竞争检测，则进行读取操作的 race 检测
     if raceenabled {
 		racereadpc(c.raceaddr(), callerpc, abi.FuncPCABIInternal(chansend))
 	}
