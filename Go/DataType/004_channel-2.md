@@ -1,5 +1,16 @@
 # Go 语言之 channel 进阶（下）
 
+- [Go 语言之 channel 进阶（下）](#go-语言之-channel-进阶下)
+  - [1.对不同状态的 channel 操作一览表](#1对不同状态的-channel-操作一览表)
+  - [2.channel 是通过什么保证线程安全的？](#2channel-是通过什么保证线程安全的)
+  - [3.使用 channel 来共享内存有什么优缺点？](#3使用-channel-来共享内存有什么优缺点)
+  - [4.channel 死锁场景](#4channel-死锁场景)
+    - [4.1 无缓冲 channel 在一个 goroutine 同时读写](#41-无缓冲-channel-在一个-goroutine-同时读写)
+    - [4.2 无缓冲 channel 先写后读/只写不读](#42-无缓冲-channel-先写后读只写不读)
+    - [4.3 有缓冲 channel 缓存继续写入数据](#43-有缓冲-channel-缓存继续写入数据)
+    - [4.4 多个 goroutine 互相等待](#44-多个-goroutine-互相等待)
+    - [4.5 直接读取空 channel（不存在对 channel 的写入操作）](#45-直接读取空-channel不存在对-channel-的写入操作)
+
 在[上篇文章](./003_channel-1.md)我们分析了 channel 的源码，这篇文章我们来看看 channel 的常见问题。
 
 ## 1.对不同状态的 channel 操作一览表

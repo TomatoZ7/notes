@@ -192,7 +192,7 @@ func chansend(c *hchan, ep unsafe.Pointer, block bool, callerpc uintptr) bool {
     // 一条捷径：可以用来在不获取锁的前提下，快速判断非阻塞发送操作是否可行；
     // !block 为 true 则说明是非阻塞操作；
     // c.closed == 0：通道未关闭
-    // full(c)：channel 未满
+    // full(c)：channel 已满
     if !block && c.closed == 0 && full(c) {
 		return false
 	}
@@ -459,12 +459,12 @@ func chanrecv(c *hchan, ep unsafe.Pointer, block bool) (selected, received bool)
 
 我们简单总结下阻塞式数据接收流程：
 
-+ 如果 channel 的写等待队列存在发送者 goroutine
-  + 如果是无缓冲 channel，**直接**从第一个发送者 goroutine 那里把数据拷贝给接收变量，**唤醒发送的 goroutine**
-  + 如果是有缓冲 channel（已满），将循环数组 buf 的队首元素拷贝给接收变量，将第一个发送者 goroutine 的数据拷贝到 buf 循环数组队尾，**唤醒发送的 goroutine**
-+ 如果 channel 的写等待队列不存在发送者 goroutine
-  + 如果循环数组 buf 非空，将循环数组 buf 的队首元素拷贝给接收变量
-  + 如果循环数组 buf 为空，这个时候就会走阻塞接收的流程，将当前 goroutine 加入读等待队列，并**挂起等待唤醒**
++ 如果 channel 的写等待队列存在发送者 goroutine：
+  + 如果是无缓冲 channel，**直接**从第一个发送者 goroutine 那里把数据拷贝给接收变量，**唤醒发送的 goroutine**；
+  + 如果是有缓冲 channel（已满），将循环数组 buf 的队首元素拷贝给接收变量，将第一个发送者 goroutine 的数据拷贝到 buf 循环数组队尾，**唤醒发送的 goroutine**；
++ 如果 channel 的写等待队列不存在发送者 goroutine：
+  + 如果循环数组 buf 非空，将循环数组 buf 的队首元素拷贝给接收变量；
+  + 如果循环数组 buf 为空，这个时候就会走阻塞接收的流程，将当前 goroutine 加入读等待队列，并**挂起等待唤醒**。
 
 ### 2.4 关闭
 
