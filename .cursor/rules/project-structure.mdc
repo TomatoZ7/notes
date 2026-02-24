@@ -1,0 +1,55 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 项目结构导航指南
+
+## 项目概述
+这是一个综合性技术学习笔记仓库，涵盖多种编程语言、框架、工具和技术栈的学习资料。
+
+## 主要目录结构
+
+### 编程语言类
+- [Go/](mdc:Go) - Go语言学习笔记和实践代码
+- [Java/](mdc:Java) - Java语言相关内容
+- [Python/](mdc:Python) - Python语言学习资料
+- [PHP/](mdc:PHP) - PHP语言笔记
+
+### 前端技术
+- [frontend/](mdc:frontend) - 前端技术栈学习笔记
+
+### 后端技术与中间件
+- [messageMiddlerware/](mdc:messageMiddlerware) - 消息中间件相关
+- [etcd/](mdc:etcd) - etcd分布式键值存储
+- [nginx/](mdc:nginx) - Nginx服务器配置和使用
+- [docker/](mdc:docker) - Docker容器化技术
+
+### 数据存储
+- [Database/](mdc:Database) - 关系型数据库学习笔记
+- [nosql/](mdc:nosql) - NoSQL数据库相关
+- [elasticsearch/](mdc:elasticsearch) - Elasticsearch搜索引擎
+
+### 系统与网络
+- [System/](mdc:System) - 系统级编程和操作系统
+- [Network/](mdc:Network) - 网络编程和协议
+- [Git/](mdc:Git) - Git版本控制
+
+### 算法与理论
+- [DataStructuresAndAlgorithms/](mdc:DataStructuresAndAlgorithms) - 数据结构与算法
+- [concept/](mdc:concept) - 计算机科学核心概念
+
+### 其他技术
+- [AI/](mdc:AI) - 人工智能相关学习
+- [Interview/](mdc:Interview) - 技术面试准备
+- [Programming/](mdc:Programming) - 通用编程概念
+- [ffmpeg/](mdc:ffmpeg) - 音视频处理
+
+### 资源文件
+- [images/](mdc:images) - 文档中使用的图片资源
+
+## 导航建议
+1. 根据学习目标选择对应的技术栈目录
+2. 每个目录通常包含理论学习、实践代码和总结笔记
+3. 图片资源统一存放在 `images/` 目录中
+4. 使用相对路径引用资源文件

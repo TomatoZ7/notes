@@ -1,0 +1,189 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 文档编写规范
+
+## Markdown文档标准
+
+### 文件结构规范
+```markdown
+# 主标题
+## 概述
+## 核心概念
+### 子概念1
+### 子概念2
+## 实践示例
+## 最佳实践
+## 常见问题
+## 参考资料
+```
+
+### 标题层级规则
+- `#` 主标题：文档主题
+- `##` 二级标题：主要章节
+- `###` 三级标题：具体概念
+- `####` 四级标题：详细说明（谨慎使用）
+
+### 代码块规范
+```markdown
+# 语言标识的代码块
+```go
+func main() {
+    fmt.Println("Hello, World!")
+}
+```
+
+# 终端命令
+```bash
+docker run -d nginx
+```
+
+# 配置文件
+```yaml
+version: '3'
+services:
+  web:
+    image: nginx
+```
+```
+
+### 链接和引用
+- **内部链接**: 使用相对路径 `[文档名](mdc:../path/to/doc.md)`
+- **图片引用**: `![描述](mdc:../images/filename.png)`
+- **外部链接**: `[标题](mdc:https:/example.com)`
+
+## 代码注释标准
+
+### Go语言注释
+```go
+// Package main 提供应用程序入口点
+package main
+
+import "fmt"
+
+// Person 表示一个人的基本信息
+type Person struct {
+    Name string // 姓名
+    Age  int    // 年龄
+}
+
+// SayHello 输出问候语
+// 参数: name - 要问候的人的姓名
+// 返回: 格式化的问候字符串
+func SayHello(name string) string {
+    return fmt.Sprintf("Hello, %s!", name)
+}
+```
+
+### Java语言注释
+```java
+/**
+ * 用户服务类
+ * 提供用户相关的业务逻辑处理
+ */
+public class UserService {
+    
+    /**
+     * 根据用户ID获取用户信息
+     * @param userId 用户ID
+     * @return 用户信息对象
+     * @throws UserNotFoundException 当用户不存在时抛出
+     */
+    public User getUserById(Long userId) throws UserNotFoundException {
+        // 实现逻辑
+    }
+}
+```
+
+### Python语言注释
+```python
+class UserManager:
+    """用户管理器
+    
+    负责用户的增删改查操作
+    """
+    
+    def create_user(self, username: str, email: str) -> User:
+        """创建新用户
+        
+        Args:
+            username: 用户名，必须唯一
+            email: 电子邮箱地址
+            
+        Returns:
+            User: 创建的用户对象
+            
+        Raises:
+            ValidationError: 当输入参数不合法时
+        """
+        pass
+```
+
+## 图片和资源管理
+
+### 图片命名规范
+- 使用描述性名称：`redis-cluster-architecture.png`
+- 技术栈前缀：`go-concurrency-model.jpg`
+- 避免空格和特殊字符
+
+### 图片存储位置
+- 统一存放在 [images/](mdc:images) 目录
+- 按技术栈分子目录：`images/go/`, `images/docker/`
+- 使用相对路径引用：`![架构图](mdc:../images/go/architecture.png)`
+
+## 学习笔记模板
+
+### 概念学习模板
+```markdown
+# [技术/概念名称]
+
+## 什么是X？
+简要定义和核心概念说明
+
+## 为什么需要X？
+解决的问题和应用场景
+
+## 如何使用X？
+基本用法和核心API
+
+## 实践示例
+具体的代码示例和使用场景
+
+## 最佳实践
+经验总结和注意事项
+
+## 相关技术
+关联的技术栈和扩展阅读
+```
+
+### 工具使用模板
+```markdown
+# [工具名称] 使用指南
+
+## 安装和配置
+安装步骤和基本配置
+
+## 常用命令
+日常使用的核心命令
+
+## 配置文件
+重要配置项说明
+
+## 实战案例
+实际项目中的使用示例
+
+## 故障排查
+常见问题和解决方案
+
+## 参考资料
+官方文档和学习资源
+```
+
+## 质量标准
+1. **准确性**: 技术信息必须准确无误
+2. **完整性**: 包含必要的背景知识和上下文
+3. **可读性**: 结构清晰，语言简洁
+4. **实用性**: 提供可执行的示例和实践指导
+5. **时效性**: 标注版本信息和更新时间
